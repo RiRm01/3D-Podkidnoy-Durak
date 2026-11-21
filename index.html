@@ -341,16 +341,13 @@
         </div>
 
         <div class="flex items-center gap-2 sm:gap-3">
-            <!-- Banknote Balance Pill -->
             <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-400/35 shadow-inner">
                 <span class="text-base leading-none">💵</span>
                 <span id="hud-balance" class="font-extrabold text-sm sm:text-base text-emerald-300 tabular-nums">500</span>
             </div>
-            <!-- Music Quick Toggle -->
             <button id="btn-quick-music" title="Музыка" class="w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 flex items-center justify-center text-sm transition">
                 🎵
             </button>
-            <!-- Fullscreen Button -->
             <button id="btn-fullscreen" title="На весь экран" class="w-9 h-9 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 flex items-center justify-center text-base font-bold transition">
                 ⛶
             </button>
@@ -401,7 +398,7 @@
         </div>
     </main>
 
-    <!-- BOT SETUP SCREEN (WITH STAKE & PAYOUT DISTRIBUTION) -->
+    <!-- BOT SETUP SCREEN -->
     <section id="screen-bot-setup" class="hidden flex-1 flex items-center justify-center p-4 overflow-y-auto">
         <div class="w-full max-w-md rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 sm:p-6 max-h-[88dvh] overflow-y-auto thin-scroll">
             <div class="flex items-center justify-between mb-4">
@@ -430,7 +427,6 @@
                     </div>
                 </div>
 
-                <!-- Stake Selection -->
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Ставка стола (💵)</label>
                     <div id="bot-stake-picker" class="grid grid-cols-5 gap-1.5">
@@ -442,7 +438,6 @@
                     </div>
                 </div>
 
-                <!-- Live Bank & Payout Distribution Box -->
                 <div class="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/25 space-y-2">
                     <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2">
                         <span class="text-xs font-bold text-emerald-200 uppercase">Общий банк стола</span>
@@ -463,7 +458,7 @@
         </div>
     </section>
 
-    <!-- ONLINE LOBBY SCREEN (TABLES + WHO IS ONLINE + FRIENDS) -->
+    <!-- ONLINE LOBBY SCREEN -->
     <section id="screen-online" class="hidden flex-1 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
         <div class="w-full max-w-lg rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-4 sm:p-6 flex flex-col max-h-[88dvh]">
             <div class="flex items-center justify-between mb-3">
@@ -474,7 +469,6 @@
                 <button class="btn-back-menu px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">← Меню</button>
             </div>
 
-            <!-- Online Sub-Tabs -->
             <div class="grid grid-cols-3 gap-1.5 mb-3 bg-slate-950/70 p-1 rounded-2xl border border-white/10">
                 <button id="tab-online-rooms" class="py-2 rounded-xl font-extrabold text-xs sm:text-sm bg-sky-600 text-white transition">
                     🃏 Столы
@@ -487,10 +481,8 @@
                 </button>
             </div>
 
-            <!-- Online Error / Diagnostics Banner -->
             <div id="online-error-banner" class="hidden mb-3 p-3 rounded-2xl bg-amber-950/70 border border-amber-500/40 text-amber-200 text-xs leading-relaxed"></div>
 
-            <!-- Online Room Creation Config -->
             <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 mb-3 space-y-2">
                 <div class="grid grid-cols-3 gap-2 text-xs">
                     <div>
@@ -538,7 +530,6 @@
                     </button>
                 </div>
 
-                <!-- Search / Join by Code -->
                 <div class="flex gap-2 mb-3">
                     <input id="input-room-search" type="text" placeholder="Код стола (напр. AB12) или ник..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
                     <button id="btn-join-by-code" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs sm:text-sm shrink-0">Войти</button>
@@ -566,7 +557,6 @@
 
             <!-- TAB 3: FRIENDS -->
             <div id="panel-online-friends" class="hidden flex-1 flex flex-col min-h-0">
-                <!-- My Friend Code Card -->
                 <div class="p-3 rounded-2xl bg-sky-950/40 border border-sky-400/25 mb-3 flex items-center justify-between gap-2">
                     <div class="min-w-0">
                         <div class="text-[11px] text-sky-300 font-bold uppercase">Ваш код друга</div>
@@ -578,7 +568,6 @@
                     </div>
                 </div>
 
-                <!-- Add Friend Input -->
                 <div class="flex gap-2 mb-3">
                     <input id="input-add-friend" type="text" placeholder="Код друга или ник игрока..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
                     <button id="btn-add-friend" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs sm:text-sm shrink-0">+ Добавить</button>
@@ -603,18 +592,15 @@
                 <button class="btn-back-menu px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">← Меню</button>
             </div>
 
-            <!-- Shop Tabs -->
             <div class="grid grid-cols-2 gap-2 mb-4 bg-slate-950/60 p-1 rounded-2xl">
                 <button id="tab-shop-faces" class="py-2 rounded-xl font-extrabold text-sm bg-sky-600 text-white transition">Дизайн карты</button>
                 <button id="tab-shop-backs" class="py-2 rounded-xl font-extrabold text-sm text-slate-400 hover:text-white transition">Дизайн колоды</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 flex-1 overflow-y-auto thin-scroll pr-1">
-                <!-- 3D Live Preview Panel -->
                 <div class="md:col-span-5 rounded-2xl bg-slate-950/70 border border-white/10 p-4 flex flex-col items-center justify-center">
                     <div id="shop-preview-title" class="text-sm font-black text-sky-300 mb-3">Классика</div>
                     <div class="preview-card-size flex items-center justify-center my-1" id="shop-preview-slot"></div>
-                    <!-- Preview Card Switcher for Face Designs -->
                     <div id="shop-preview-ranks" class="flex gap-1.5 mt-4">
                         <button data-rank="A" class="shop-rank-btn px-2.5 py-1 rounded-lg bg-sky-600 text-white text-xs font-black">Т</button>
                         <button data-rank="K" class="shop-rank-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-black">К</button>
@@ -623,8 +609,6 @@
                         <button data-rank="9" class="shop-rank-btn px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-black">9</button>
                     </div>
                 </div>
-
-                <!-- Items List -->
                 <div id="shop-items-grid" class="md:col-span-7 space-y-2.5"></div>
             </div>
         </div>
@@ -677,10 +661,8 @@
 
     <!-- GAMEPLAY TABLE SCREEN -->
     <section id="screen-game" class="hidden flex-1 flex flex-col justify-between overflow-hidden relative">
-        <!-- Opponents Row -->
         <div id="opponents-row" class="w-full px-2 pt-2 pb-1 flex items-end justify-center gap-3 sm:gap-5 flex-wrap z-20 shrink-0 min-h-[84px]"></div>
 
-        <!-- Turn Status, Table Bank & 15s Timer Banner -->
         <div class="w-full flex flex-col items-center justify-center gap-1 px-3 py-1 z-20 shrink-0">
             <div class="flex items-center justify-center gap-2 flex-wrap">
                 <div id="game-bank-pill" class="px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-400/40 text-xs font-black text-emerald-300 shadow-lg">
@@ -698,14 +680,12 @@
             </div>
         </div>
 
-        <!-- 3D Table Center -->
         <div class="table-stage-3d">
             <div class="table-assembly">
                 <div class="table-top-3d">
                     <div id="table-felt" class="table-felt">
                         <div class="drop-zone-ring"></div>
 
-                        <!-- Deck & Trump Indicator (Left Side of Table) -->
                         <div id="deck-area" class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 flex flex-col items-center gap-1 z-10">
                             <div class="relative w-12 h-16 sm:w-14 sm:h-20 flex items-center justify-center">
                                 <div id="trump-card-under" class="absolute -right-4 top-1/2 -translate-y-1/2 rotate-90 scale-75 origin-center"></div>
@@ -716,10 +696,8 @@
                             </div>
                         </div>
 
-                        <!-- Battle Cards Area -->
                         <div id="table-battle-grid" class="battle-grid pl-14 sm:pl-16 pr-2"></div>
 
-                        <!-- Empty Drop Hint -->
                         <div id="table-drop-hint" class="text-xs sm:text-sm font-bold text-white/40 pointer-events-none select-none pl-10">
                             Перетащите карту сюда
                         </div>
@@ -732,7 +710,6 @@
             </div>
         </div>
 
-        <!-- Bottom Action Bar & Player Hand -->
         <div class="w-full bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent pt-1 pb-2 px-2 z-20 shrink-0">
             <div id="spectator-banner" class="hidden max-w-xl mx-auto mb-2 px-4 py-2 rounded-2xl bg-emerald-950/90 border border-emerald-400/50 text-center text-xs sm:text-sm font-extrabold text-emerald-200 shadow-xl"></div>
             <div class="max-w-3xl mx-auto flex items-center justify-between gap-2 mb-1 px-2">
@@ -748,7 +725,7 @@
         </div>
     </section>
 
-    <!-- Custom Modal (Game Over / Results Table / Room Waiting / Incoming Invite) -->
+    <!-- Custom Modal -->
     <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="w-full max-w-sm rounded-3xl bg-slate-900 border border-white/15 shadow-2xl p-6 text-center">
             <div id="modal-icon" class="text-5xl mb-3">🏆</div>
@@ -761,12 +738,11 @@
     <!-- Toast Notification -->
     <div id="toast-box" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-2xl bg-slate-900/95 border border-sky-400/40 text-white text-xs sm:text-sm font-bold shadow-2xl toast-anim"></div>
 </div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import {
-    getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+    initializeFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
     onSnapshot, collection, runTransaction
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
@@ -839,21 +815,55 @@ function showOnlineError(msg) {
     }
 }
 
+function getFallbackUid() {
+    if (tgUser?.id) return `tg_${tgUser.id}`;
+    try {
+        let saved = localStorage.getItem('durak_3d_guest_uid');
+        if (!saved) {
+            saved = 'g_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+            localStorage.setItem('durak_3d_guest_uid', saved);
+        }
+        return saved;
+    } catch (_) {
+        return 'g_' + Math.random().toString(36).slice(2, 12);
+    }
+}
+
 async function initFirebase() {
+    let authErrorCode = '';
     try {
         const cfg = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : USER_FIREBASE_CONFIG;
         const app = initializeApp(cfg);
-        auth = getAuth(app);
-        db = getFirestore(app);
+        db = initializeFirestore(app, { experimentalForceLongPolling: true });
 
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-            await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-            await signInAnonymously(auth);
+        try {
+            auth = getAuth(app);
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else {
+                await signInAnonymously(auth);
+            }
+            currentUser = auth.currentUser;
+        } catch (authErr) {
+            authErrorCode = authErr?.code || authErr?.message || 'auth-error';
+            console.warn('Firebase Auth fallback (using Telegram/Guest UID):', authErr);
+            currentUser = { uid: getFallbackUid(), isFallback: true };
         }
-        currentUser = auth.currentUser;
+
         state.friendCode = getFriendCodeForUid(currentUser?.uid);
         updateHUD();
+
+        await setDoc(playerDocRef(currentUser.uid), {
+            uid: currentUser.uid,
+            name: state.nickname,
+            friendCode: state.friendCode,
+            tgUsername: tgUser?.username || '',
+            status: 'online',
+            roomId: null,
+            roomCode: null,
+            lastSeen: Date.now()
+        }, { merge: true });
+
         setOnlineBadge(true, 'Онлайн готов');
         showOnlineError('');
 
@@ -864,14 +874,22 @@ async function initFirebase() {
         checkIncomingDeepLink();
     } catch (err) {
         console.warn('Firebase offline fallback:', err);
-        const code = err?.code || '';
-        let hint = 'Не удалось подключиться к онлайн-серверу. Игра с ботом работает в обычном режиме.';
-        if (code === 'auth/operation-not-allowed') {
-            hint = 'В Firebase не включён анонимный вход (Authentication → Anonymous). Включите его в консоли Firebase для работы онлайна.';
-        } else if (code === 'permission-denied') {
-            hint = 'Нет доступа к базе Firestore (permission-denied). Проверьте правила безопасности Firestore для пути artifacts/{appId}/public/data.';
+        const code = err?.code || authErrorCode || 'unknown';
+        let hint = `Ошибка подключения (${code}). Игра с ботом работает в обычном режиме.`;
+        if (code === 'permission-denied') {
+            hint = authErrorCode
+                ? `Firestore отклонил доступ (${code}), а вход не прошёл (${authErrorCode}). В Firebase Console включите Authentication → Anonymous и добавьте домен сайта в Authorized domains, либо откройте правила Firestore.`
+                : 'Firestore отклонил доступ (permission-denied). В Firebase Console → Firestore → Rules обновите правила (возможно, истёк 30-дневный Test Mode).';
+        } else if (code === 'auth/operation-not-allowed') {
+            hint = 'В Firebase не включён анонимный вход (Authentication → Sign-in method → Anonymous).';
+        } else if (code === 'auth/unauthorized-domain') {
+            hint = `Домен ${window.location.hostname} не добавлен в Firebase Console → Authentication → Settings → Authorized domains.`;
+        } else if (code === 'unavailable' || code === 'failed-precondition') {
+            hint = `Сервер Firebase недоступен (${code}). Проверьте интернет или VPN.`;
         }
-        setOnlineBadge(false, 'Офлайн (Боты)');
+        db = null;
+        currentUser = null;
+        setOnlineBadge(false, `Офлайн (${code})`);
         showOnlineError(hint);
     }
 }
@@ -1563,8 +1581,7 @@ function renderCardBackSVG(backId = state.activeBack) {
         <text x="50" y="77" text-anchor="middle" font-size="22" fill="${c3}">♠</text>
     </svg>`;
 }
-
-/* ============================================================================
+    /* ============================================================================
 7. CORE DURAK GAME ENGINE (BOTS + ONLINE + FIXED TURN RULES)
    ============================================================================ */
 const TURN_DURATION_MS = 15000;
@@ -3231,7 +3248,6 @@ document.getElementById('btn-menu-exit').addEventListener('click', () => {
 document.querySelectorAll('.btn-back-menu').forEach(b => b.addEventListener('click', () => { AudioEngine.sfx('click'); showScreen('screen-menu'); }));
 document.getElementById('btn-leave-game').addEventListener('click', () => { AudioEngine.sfx('click'); leaveGame(); });
 
-// Bot Setup Pickers (Players, Deck, Stake)
 document.querySelectorAll('.bot-opt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         state.botPlayers = Number(btn.dataset.val);
@@ -3254,7 +3270,6 @@ document.querySelectorAll('.stake-opt-btn').forEach(btn => {
 });
 document.getElementById('btn-start-bot-game').addEventListener('click', () => { AudioEngine.sfx('click'); startLocalBotGame(); });
 
-// Online Tabs, Config & Social Buttons
 document.getElementById('tab-online-rooms').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('rooms'); });
 document.getElementById('tab-online-players').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('players'); });
 document.getElementById('tab-online-friends').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('friends'); });
@@ -3282,7 +3297,6 @@ document.getElementById('btn-copy-friend-code').addEventListener('click', () => 
 document.getElementById('btn-share-tg-app').addEventListener('click', () => shareInviteViaTelegram());
 document.getElementById('btn-add-friend').addEventListener('click', handleAddFriendByQuery);
 
-// Shop Tabs & Rank Switcher
 document.getElementById('tab-shop-faces').addEventListener('click', () => { state.shopTab = 'faces'; renderShop(); });
 document.getElementById('tab-shop-backs').addEventListener('click', () => { state.shopTab = 'backs'; renderShop(); });
 document.querySelectorAll('.shop-rank-btn').forEach(btn => {
@@ -3293,7 +3307,6 @@ document.querySelectorAll('.shop-rank-btn').forEach(btn => {
     });
 });
 
-// Settings Controls
 document.getElementById('btn-save-nick').addEventListener('click', () => {
     const v = document.getElementById('input-nickname').value.trim();
     if (v) {
