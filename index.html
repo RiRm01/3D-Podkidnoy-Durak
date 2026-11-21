@@ -135,9 +135,20 @@
             cursor: pointer;
             transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.16s ease;
             transform-style: preserve-3d;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             flex-shrink: 0;
             box-shadow: 0 6px 16px rgba(0,0,0,0.48);
-            will-change: transform;
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+        .card-3d-wrap svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 10px;
+            shape-rendering: geometricPrecision;
+            text-rendering: geometricPrecision;
         }
         .card-3d-wrap svg {
             width: 100%;
@@ -169,27 +180,118 @@
         /* Opponent Fan Cards */
         .opp-fan-container {
             position: relative;
-            height: 44px;
-            width: 100px;
+            height: 56px;
+            width: 118px;
             margin: 0 auto;
+            overflow: visible;
         }
         .opp-fan-card {
             position: absolute;
             left: 50%;
             bottom: 0;
-            width: 28px;
-            height: 42px;
-            margin-left: -14px;
-            border-radius: 5px;
+            width: 36px;
+            height: 52px;
+            margin-left: -18px;
+            border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.58);
             transform-origin: bottom center;
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .opp-fan-card svg {
             width: 100%;
             height: 100%;
             display: block;
+            shape-rendering: geometricPrecision;
         }
+
+        /* 60 FPS Turn Timer Progress Bar */
+        .turn-timer-track {
+            width: 100%;
+            max-width: 240px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .turn-timer-fill {
+            height: 100%;
+            width: 100%;
+            transform-origin: left center;
+            will-change: transform;
+            background: linear-gradient(90deg, #38bdf8, #34d399);
+            border-radius: 999px;
+        }
+        .turn-timer-fill.warn {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        .turn-timer-fill.danger {
+            background: linear-gradient(90deg, #ef4444, #fb7185);
+        }
+
+        /* Smooth 60 FPS Card Placement Animations */
+        @keyframes cardFlyFromPlayer {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 145px, 40px) scale(1.16) rotate(8deg);
+            }
+            65% {
+                opacity: 1;
+                transform: translate3d(0, -6px, 12px) scale(1.03) rotate(-4deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1) rotate(-3deg);
+            }
+        }
+        @keyframes cardFlyFromOpp {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -135px, 40px) scale(0.72) rotateY(70deg) rotate(-14deg);
+            }
+            65% {
+                opacity: 1;
+                transform: translate3d(0, 5px, 10px) scale(1.03) rotateY(0deg) rotate(-2deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1) rotate(-3deg);
+            }
+        }
+        @keyframes cardDefendFromPlayer {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 145px, 50px) scale(1.18) rotate(-8deg);
+            }
+            70% {
+                opacity: 1;
+                transform: translate3d(0, -4px, 14px) scale(1.04) rotate(9deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1) rotate(7deg);
+            }
+        }
+        @keyframes cardDefendFromOpp {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -135px, 50px) scale(0.75) rotateY(-65deg) rotate(18deg);
+            }
+            70% {
+                opacity: 1;
+                transform: translate3d(0, 4px, 14px) scale(1.04) rotateY(0deg) rotate(6deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1) rotate(7deg);
+            }
+        }
+        .anim-atk-player { animation: cardFlyFromPlayer 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .anim-atk-opp { animation: cardFlyFromOpp 0.46s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .anim-def-player { animation: cardDefendFromPlayer 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .anim-def-opp { animation: cardDefendFromOpp 0.46s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
         /* Table Battle Pairs */
         .battle-grid {
@@ -261,8 +363,8 @@
             .card-3d-wrap { width: 96px; height: 140px; }
             .battle-pair { width: 98px; height: 142px; }
             .preview-card-size .card-3d-wrap { width: 178px; height: 258px; }
-            .opp-fan-container { height: 60px; width: 130px; }
-            .opp-fan-card { width: 40px; height: 58px; margin-left: -20px; }
+            .opp-fan-container { height: 74px; width: 156px; }
+            .opp-fan-card { width: 48px; height: 68px; margin-left: -24px; }
             #player-hand-container { min-height: 162px; }
         }
         @media (min-width: 1600px) and (min-height: 940px) {
@@ -505,7 +607,7 @@
             <!-- Shop Tabs -->
             <div class="grid grid-cols-2 gap-2 mb-4 bg-slate-950/60 p-1 rounded-2xl">
                 <button id="tab-shop-faces" class="py-2 rounded-xl font-extrabold text-sm bg-sky-600 text-white transition">Дизайн карты</button>
-                <button id="tab-shop-backs" class="py-2 rounded-xl font-extrabold text-sm text-slate-400 hover:text-white transition">Рубашка колоды</button>
+                <button id="tab-shop-backs" class="py-2 rounded-xl font-extrabold text-sm text-slate-400 hover:text-white transition">Дизайн колоды</button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 flex-1 overflow-y-auto thin-scroll pr-1">
@@ -571,21 +673,21 @@
                     ⛶ Развернуть на весь экран (60 FPS)
                 </button>
             </div>
-        </div>
-    </section>
-
-    <!-- GAMEPLAY SCREEN -->
-    <section id="screen-game" class="hidden flex-1 flex flex-col justify-between overflow-hidden relative">
-        <!-- Opponents Top Row -->
-        <div id="opponents-row" class="w-full max-w-5xl mx-auto px-2 pt-1.5 flex items-start justify-center gap-2 sm:gap-5 z-20 shrink-0"></div>
-
-        <!-- Turn Status & Table Bank Banner -->
-        <div class="w-full flex items-center justify-center gap-2 px-3 py-1 z-20 shrink-0 flex-wrap">
-            <div id="game-bank-pill" class="px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-400/40 text-xs font-black text-emerald-300 shadow-lg">
-                🏦 Банк: 200 💵
+        <!-- Turn Status, Table Bank & 15s Timer Banner -->
+        <div class="w-full flex flex-col items-center justify-center gap-1 px-3 py-1 z-20 shrink-0">
+            <div class="flex items-center justify-center gap-2 flex-wrap">
+                <div id="game-bank-pill" class="px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-400/40 text-xs font-black text-emerald-300 shadow-lg">
+                    🏦 Банк: 200 💵
+                </div>
+                <div id="game-status-pill" class="px-4 py-1 rounded-full bg-slate-900/85 border border-white/15 text-xs sm:text-sm font-extrabold text-amber-300 shadow-lg">
+                    Ваш ход — атакуйте!
+                </div>
+                <div id="turn-timer-badge" class="px-3 py-1 rounded-full bg-slate-900/90 border border-sky-400/40 text-xs font-black text-sky-300 shadow-lg tabular-nums">
+                    ⏱️ 15с
+                </div>
             </div>
-            <div id="game-status-pill" class="px-4 py-1 rounded-full bg-slate-900/85 border border-white/15 text-xs sm:text-sm font-extrabold text-amber-300 shadow-lg">
-                Ваш ход — атакуйте!
+            <div class="turn-timer-track">
+                <div id="turn-timer-fill" class="turn-timer-fill"></div>
             </div>
         </div>
 
@@ -625,6 +727,7 @@
 
         <!-- Bottom Action Bar & Player Hand -->
         <div class="w-full bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent pt-1 pb-2 px-2 z-20 shrink-0">
+            <div id="spectator-banner" class="hidden max-w-xl mx-auto mb-2 px-4 py-2 rounded-2xl bg-emerald-950/90 border border-emerald-400/50 text-center text-xs sm:text-sm font-extrabold text-emerald-200 shadow-xl"></div>
             <div class="max-w-3xl mx-auto flex items-center justify-between gap-2 mb-1 px-2">
                 <button id="btn-leave-game" class="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-rose-900/80 border border-white/10 text-xs font-bold text-slate-300 transition">
                     ✕ Выйти
@@ -1178,9 +1281,102 @@ function renderCardBackSVG(backId = state.activeBack) {
 /* ============================================================================
    7. CORE DURAK GAME ENGINE (BOTS + ONLINE + STAKE & PAYOUT SETTLEMENT)
    ============================================================================ */
+const TURN_DURATION_MS = 15000;
 let game = null;
 let selectedCardId = null;
 let botTimeout = null;
+let animatedTableCardIds = new Set();
+let rafTimerId = null;
+let timeoutActionLock = false;
+
+function getActiveTurnPlayerIdx() {
+    if (!game || game.over) return -1;
+    const undefended = game.table.filter(p => !p.defense);
+    if (undefended.length > 0) return game.defenderIdx;
+    if (game.players[game.attackerIdx]?.hand.length > 0) return game.attackerIdx;
+    return nextActiveIdx(game.attackerIdx);
+}
+
+function resetTurnTimer() {
+    if (!game) return;
+    game.turnDeadline = Date.now() + TURN_DURATION_MS;
+    timeoutActionLock = false;
+}
+
+function startTurnTimerLoop() {
+    if (rafTimerId) cancelAnimationFrame(rafTimerId);
+    const tick = () => {
+        if (game && !game.over) {
+            const now = Date.now();
+            const deadline = game.turnDeadline || (now + TURN_DURATION_MS);
+            const remainMs = Math.max(0, deadline - now);
+            const ratio = Math.min(1, remainMs / TURN_DURATION_MS);
+            const sec = Math.ceil(remainMs / 1000);
+
+            const fill = document.getElementById('turn-timer-fill');
+            const badge = document.getElementById('turn-timer-badge');
+            if (fill) {
+                fill.style.transform = `scaleX(${ratio.toFixed(4)})`;
+                fill.className = `turn-timer-fill ${sec <= 4 ? 'danger' : sec <= 8 ? 'warn' : ''}`;
+            }
+            if (badge) {
+                badge.textContent = `⏱️ ${sec}с`;
+                badge.className = `px-3 py-1 rounded-full bg-slate-900/90 border text-xs font-black shadow-lg tabular-nums ${
+                    sec <= 4 ? 'border-rose-500/70 text-rose-300' : sec <= 8 ? 'border-amber-400/60 text-amber-300' : 'border-sky-400/40 text-sky-300'
+                }`;
+            }
+
+            if (remainMs <= 0 && !timeoutActionLock) {
+                handleTurnTimeout();
+            }
+        }
+        rafTimerId = requestAnimationFrame(tick);
+    };
+    rafTimerId = requestAnimationFrame(tick);
+}
+
+function handleTurnTimeout() {
+    if (!game || game.over) return;
+    const activeIdx = getActiveTurnPlayerIdx();
+    if (activeIdx === -1) return;
+    const myIdx = myPlayerIndex();
+
+    // In online mode only the active player (or host after +1.5s grace) triggers timeout to avoid race conditions
+    if (game.mode === 'online' && activeIdx !== myIdx) {
+        const isHost = game.players[0]?.id === currentUser?.uid;
+        if (!isHost || Date.now() - (game.turnDeadline || 0) < 1500) return;
+    }
+
+    timeoutActionLock = true;
+    const activePlayer = game.players[activeIdx];
+    const undefended = game.table.filter(p => !p.defense);
+
+    if (undefended.length > 0 && activeIdx === game.defenderIdx) {
+        showToast(`⏱️ Время вышло: ${activePlayer.name} берёт карты`);
+        playerActionTake();
+    } else if (game.table.length === 0) {
+        // Auto-play lowest card to keep game moving
+        if (activePlayer.hand.length > 0) {
+            const pick = activePlayer.hand[0];
+            activePlayer.hand.shift();
+            pick.styleId = activePlayer.faceStyle || 'classic';
+            pick.playedBy = activePlayer.id;
+            game.table.push({ attack: pick, defense: null });
+            AudioEngine.sfx('card');
+            showToast(`⏱️ Время вышло: авто-ход за ${activePlayer.name}`);
+            resetTurnTimer();
+            afterMoveSync();
+        } else {
+            game.attackerIdx = nextActiveIdx(game.attackerIdx);
+            game.defenderIdx = nextActiveIdx(game.attackerIdx);
+            resetTurnTimer();
+            afterMoveSync();
+        }
+    } else {
+        showToast(`⏱️ Время вышло: Бито!`);
+        playerActionBito();
+    }
+}
 
 function createDeck(size = 36) {
     const minRank = size === 24 ? 9 : size === 52 ? 2 : 6;
@@ -1244,9 +1440,26 @@ function startLocalBotGame() {
     const trumpSuit = trumpCard.suit;
 
     const botNames = ['Алекс', 'Виктория', 'Макс', 'Елена', 'Дмитрий'];
-    const players = [{ id: 'me', name: state.nickname, isBot: false, hand: [] }];
+    const players = [{
+        id: 'me',
+        name: state.nickname,
+        isBot: false,
+        faceStyle: state.activeFace,
+        backStyle: state.activeBack,
+        hand: []
+    }];
     for (let i = 1; i < count; i++) {
-        players.push({ id: `bot_${i}`, name: botNames[i - 1] || `Бот ${i}`, isBot: true, hand: [] });
+        // Each opponent has their own distinct card & deck design
+        const botFace = FACE_COLLECTIONS[i % FACE_COLLECTIONS.length].id;
+        const botBack = BACK_COLLECTIONS[i % BACK_COLLECTIONS.length].id;
+        players.push({
+            id: `bot_${i}`,
+            name: botNames[i - 1] || `Бот ${i}`,
+            isBot: true,
+            faceStyle: botFace,
+            backStyle: botBack,
+            hand: []
+        });
     }
 
     for (let r = 0; r < 6; r++) {
@@ -1282,14 +1495,18 @@ function startLocalBotGame() {
         defenderIdx: (attackerIdx + 1) % players.length,
         table: [],
         finishedOrder: [],
+        turnDeadline: Date.now() + TURN_DURATION_MS,
         over: false,
         settled: false
     };
 
     sortHands();
     selectedCardId = null;
+    animatedTableCardIds.clear();
+    timeoutActionLock = false;
     showScreen('screen-game');
     renderGame();
+    startTurnTimerLoop();
     scheduleBotTurn();
 }
 
@@ -1334,112 +1551,103 @@ function refillHands(startIdx) {
 
 function checkGameOver() {
     if (!game || game.over) return false;
-    if (game.deck.length > 0) return false;
-
-    // Record players who emptied their hands
-    game.players.forEach(p => {
-        if (p.hand.length === 0 && !game.finishedOrder.includes(p.id)) {
-            game.finishedOrder.push(p.id);
-        }
-    });
-
     const myId = game.mode === 'online' ? currentUser?.uid : 'me';
-    const stillIn = game.players.filter(p => p.hand.length > 0);
-    const iFinishedEarly = game.finishedOrder.includes(myId) && game.mode === 'bot' && stillIn.length > 1;
 
-    if (stillIn.length <= 1 || iFinishedEarly) {
-        game.over = true;
-        // Build final ranking
-        const finalRanking = [...game.finishedOrder];
-        const remainingSorted = stillIn
-            .filter(p => !finalRanking.includes(p.id))
-            .sort((a, b) => a.hand.length - b.hand.length);
-        remainingSorted.forEach(p => finalRanking.push(p.id));
-
-        const { totalBank, payouts } = calculatePayouts(game.players.length, game.stake || 100);
-        const myRankIdx = finalRanking.indexOf(myId);
-        const myPayout = payouts[myRankIdx] || 0;
-        const isDurak = myRankIdx === finalRanking.length - 1;
-
-        if (!game.settled) {
-            game.settled = true;
-            if (myPayout > 0) {
-                state.balance += myPayout;
-                updateHUD();
-                saveUserProfileToCloud();
+    // Record players who emptied their hands once the deck is empty
+    if (game.deck.length === 0) {
+        game.players.forEach(p => {
+            if (p.hand.length === 0 && !game.finishedOrder.includes(p.id)) {
+                game.finishedOrder.push(p.id);
+                const place = game.finishedOrder.length;
+                if (p.id !== myId) {
+                    showToast(`🏅 ${p.name} вышел (${place} место)! Игра продолжается`);
+                }
             }
-        }
+        });
+    }
 
-        const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '🃏'];
-        const resultsHtml = `
-            <div class="text-xs text-slate-400 mb-2">Ставка: <b class="text-white">${game.stake || 100} 💵</b> • Банк: <b class="text-emerald-300">${totalBank} 💵</b></div>
-            <div class="rounded-2xl bg-slate-950/80 border border-white/10 p-3 space-y-1.5 text-left text-xs">
-                ${finalRanking.map((pid, idx) => {
-                    const pl = game.players.find(x => x.id === pid);
-                    const amt = payouts[idx] || 0;
-                    const last = idx === finalRanking.length - 1;
-                    const highlight = pid === myId ? 'bg-sky-500/20 border border-sky-400/40 rounded-lg px-2 py-1' : 'px-2 py-0.5';
-                    return `<div class="flex items-center justify-between ${highlight}">
-                        <span class="font-bold text-white">${last ? '🃏' : (medals[idx] || (idx+1)+'.')} ${escapeHtml(pl?.name || 'Игрок')} ${last ? '(Дурак)' : ''}</span>
-                        <span class="${amt > 0 ? 'text-emerald-300 font-black' : 'text-rose-400 font-bold'}">${amt > 0 ? '+' + amt + ' 💵' : '0 💵'}</span>
-                    </div>`;
-                }).join('')}
-            </div>`;
+    const stillIn = game.players.filter(p => p.hand.length > 0);
+    const myFinished = game.finishedOrder.includes(myId);
 
-        if (!isDurak) {
-            AudioEngine.sfx('win');
-            showModal('🏆', `${myRankIdx + 1} место!`, resultsHtml, [
-                { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
-                { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
-            ]);
-        } else {
-            AudioEngine.sfx('take');
-            showModal('🃏', 'Вы остались в дураках!', resultsHtml, [
-                { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
-                { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
-            ]);
-        }
+    // BOT MODE:
+    // - If the human player wins (empties hand), immediately award prize for their place and finish.
+    // - If a bot wins, the human keeps playing against the remaining bots until finished or last (Durak).
+    if (game.mode === 'bot' && myFinished) {
+        finalizeAndShowResults(myId, stillIn);
         return true;
     }
+
+    // ONLINE MODE (and BOT MODE when human is still playing):
+    // - Wait until only 1 player (or 0) remains with cards, then distribute prizes to all.
+    if (game.deck.length === 0 && stillIn.length <= 1) {
+        finalizeAndShowResults(myId, stillIn);
+        return true;
+    }
+
     return false;
 }
 
-function myPlayerIndex() {
-    if (!game) return -1;
-    const myId = game.mode === 'online' ? currentUser?.uid : 'me';
-    return game.players.findIndex(p => p.id === myId);
+function finalizeAndShowResults(myId, stillIn) {
+    game.over = true;
+    clearTimeout(botTimeout);
+
+    const finalRanking = [...game.finishedOrder];
+    const remainingSorted = stillIn
+        .filter(p => !finalRanking.includes(p.id))
+        .sort((a, b) => a.hand.length - b.hand.length);
+    remainingSorted.forEach(p => finalRanking.push(p.id));
+
+    const { totalBank, payouts } = calculatePayouts(game.players.length, game.stake || 100);
+    const myRankIdx = finalRanking.indexOf(myId);
+    const myPayout = payouts[myRankIdx] || 0;
+    const isDurak = myRankIdx === finalRanking.length - 1;
+
+    if (!game.settled) {
+        game.settled = true;
+        if (myPayout > 0) {
+            state.balance += myPayout;
+            updateHUD();
+            saveUserProfileToCloud();
+        }
+    }
+
+    const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '🃏'];
+    const resultsHtml = `
+        <div class="text-xs text-slate-400 mb-2">Ставка: <b class="text-white">${game.stake || 100} 💵</b> • Банк: <b class="text-emerald-300">${totalBank} 💵</b></div>
+        <div class="rounded-2xl bg-slate-950/80 border border-white/10 p-3 space-y-1.5 text-left text-xs">
+            ${finalRanking.map((pid, idx) => {
+                const pl = game.players.find(x => x.id === pid);
+                const amt = payouts[idx] || 0;
+                const last = idx === finalRanking.length - 1;
+                const highlight = pid === myId ? 'bg-sky-500/20 border border-sky-400/40 rounded-lg px-2 py-1' : 'px-2 py-0.5';
+                return `<div class="flex items-center justify-between ${highlight}">
+                    <span class="font-bold text-white">${last ? '🃏' : (medals[idx] || (idx+1)+'.')} ${escapeHtml(pl?.name || 'Игрок')} ${last ? '(Дурак)' : ''}</span>
+                    <span class="${amt > 0 ? 'text-emerald-300 font-black' : 'text-rose-400 font-bold'}">${amt > 0 ? '+' + amt + ' 💵' : '0 💵'}</span>
+                </div>`;
+            }).join('')}
+        </div>`;
+
+    if (!isDurak) {
+        AudioEngine.sfx('win');
+        showModal('🏆', `${myRankIdx + 1} место! (+${myPayout} 💵)`, resultsHtml, [
+            { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
+            { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
+        ]);
+    } else {
+        AudioEngine.sfx('take');
+        showModal('🃏', 'Вы остались в дураках!', resultsHtml, [
+            { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
+            { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
+        ]);
+    }
 }
-
-function playerPlayCard(cardId, targetPairIdx = null) {
-    if (!game || game.over) return;
-    const myIdx = myPlayerIndex();
-    if (myIdx === -1) return;
-    const me = game.players[myIdx];
-    const cardIdx = me.hand.findIndex(c => c.id === cardId);
-    if (cardIdx === -1) return;
-    const card = me.hand[cardIdx];
-
-    const isDefender = myIdx === game.defenderIdx;
-    const isAttacker = myIdx === game.attackerIdx || (!isDefender && game.table.length > 0);
-
-    if (isDefender) {
-        const undefendedIndices = game.table.map((p, i) => p.defense ? -1 : i).filter(i => i !== -1);
-        if (undefendedIndices.length === 0) {
-            showToast('Все карты на столе уже отбиты!');
-            return;
-        }
-        let chosenIdx = targetPairIdx !== null && !game.table[targetPairIdx]?.defense
-            ? targetPairIdx
-            : undefendedIndices.find(i => canBeat(game.table[i].attack, card, game.trumpSuit));
-
-        if (chosenIdx === undefined || !canBeat(game.table[chosenIdx].attack, card, game.trumpSuit)) {
-            showToast('Эта карта не бьёт карту на столе');
-            return;
-        }
         me.hand.splice(cardIdx, 1);
+        card.styleId = me.faceStyle || state.activeFace;
+        card.playedBy = me.id;
         game.table[chosenIdx].defense = card;
         AudioEngine.sfx('defend');
         selectedCardId = null;
+        resetTurnTimer();
         afterMoveSync();
     } else if (isAttacker) {
         const defender = game.players[game.defenderIdx];
@@ -1453,9 +1661,12 @@ function playerPlayCard(cardId, targetPairIdx = null) {
             return;
         }
         me.hand.splice(cardIdx, 1);
+        card.styleId = me.faceStyle || state.activeFace;
+        card.playedBy = me.id;
         game.table.push({ attack: card, defense: null });
         AudioEngine.sfx('card');
         selectedCardId = null;
+        resetTurnTimer();
         afterMoveSync();
     } else {
         showToast('Сейчас не ваш ход');
@@ -1470,11 +1681,16 @@ function playerActionBito() {
     AudioEngine.sfx('bito');
     const oldAttacker = game.attackerIdx;
     game.table = [];
+    animatedTableCardIds.clear();
     refillHands(oldAttacker);
-    if (checkGameOver()) return;
+    if (checkGameOver()) {
+        if (game.mode === 'online') pushOnlineRoomState();
+        return;
+    }
 
     game.attackerIdx = game.players[game.defenderIdx].hand.length > 0 ? game.defenderIdx : nextActiveIdx(game.defenderIdx);
     game.defenderIdx = nextActiveIdx(game.attackerIdx);
+    resetTurnTimer();
     afterMoveSync();
 }
 
@@ -1490,20 +1706,26 @@ function playerActionTake() {
     }
     const oldAttacker = game.attackerIdx;
     game.table = [];
+    animatedTableCardIds.clear();
     refillHands(oldAttacker);
-    if (checkGameOver()) return;
+    if (checkGameOver()) {
+        if (game.mode === 'online') pushOnlineRoomState();
+        return;
+    }
 
     game.attackerIdx = nextActiveIdx(game.defenderIdx);
     game.defenderIdx = nextActiveIdx(game.attackerIdx);
+    resetTurnTimer();
     afterMoveSync();
 }
 
 function afterMoveSync() {
+    const ended = checkGameOver();
     renderGame();
     if (game.mode === 'online') {
         pushOnlineRoomState();
-    } else {
-        if (!checkGameOver()) scheduleBotTurn();
+    } else if (!ended) {
+        scheduleBotTurn();
     }
 }
 
@@ -1530,14 +1752,17 @@ function scheduleBotTurn() {
             if (candidates.length > 0) {
                 const pick = candidates[0];
                 defender.hand = defender.hand.filter(c => c.id !== pick.id);
+                pick.styleId = defender.faceStyle || 'classic';
+                pick.playedBy = defender.id;
                 target.defense = pick;
                 AudioEngine.sfx('defend');
+                resetTurnTimer();
                 afterMoveSync();
             } else {
                 showToast(`${defender.name} берёт карты`);
                 playerActionTake();
             }
-        }, 650);
+        }, 720);
         return;
     }
 
@@ -1552,25 +1777,37 @@ function scheduleBotTurn() {
             if (game.table.length === 0 && valid.length > 0) {
                 const pick = valid[0];
                 attacker.hand = attacker.hand.filter(c => c.id !== pick.id);
+                pick.styleId = attacker.faceStyle || 'classic';
+                pick.playedBy = attacker.id;
                 game.table.push({ attack: pick, defense: null });
                 AudioEngine.sfx('card');
+                resetTurnTimer();
                 afterMoveSync();
             } else if (game.table.length > 0 && canAddMore && valid.length > 0 && (valid[0].suit !== game.trumpSuit || game.deck.length === 0)) {
                 const pick = valid[0];
                 attacker.hand = attacker.hand.filter(c => c.id !== pick.id);
+                pick.styleId = attacker.faceStyle || 'classic';
+                pick.playedBy = attacker.id;
                 game.table.push({ attack: pick, defense: null });
                 AudioEngine.sfx('card');
+                resetTurnTimer();
                 afterMoveSync();
             } else if (game.table.length > 0) {
                 showToast(`${attacker.name}: Бито!`);
                 playerActionBito();
+            } else if (attacker.hand.length === 0) {
+                game.attackerIdx = nextActiveIdx(game.attackerIdx);
+                game.defenderIdx = nextActiveIdx(game.attackerIdx);
+                resetTurnTimer();
+                afterMoveSync();
             }
-        }, 700);
+        }, 760);
         return;
     }
 
-    if (game.table.length > 0 && undefended.length === 0 && defender.hand.length === 0) {
-        botTimeout = setTimeout(() => playerActionBito(), 620);
+    // If current attacker emptied hand (finished) and all cards on table are defended, auto-Bito
+    if (game.table.length > 0 && undefended.length === 0 && (defender.hand.length === 0 || attacker.hand.length === 0)) {
+        botTimeout = setTimeout(() => playerActionBito(), 650);
     }
 }
 
@@ -1652,7 +1889,14 @@ async function createOnlineRoom() {
         maxPlayers,
         deckSize,
         stake,
-        players: [{ id: currentUser.uid, name: state.nickname, isBot: false, hand: [] }],
+        players: [{
+            id: currentUser.uid,
+            name: state.nickname,
+            isBot: false,
+            faceStyle: state.activeFace,
+            backStyle: state.activeBack,
+            hand: []
+        }],
         updatedAt: Date.now()
     });
     subscribeToRoom(roomId, true);
@@ -1673,7 +1917,14 @@ async function joinOnlineRoom(roomId) {
         state.balance -= stake;
         updateHUD();
         saveUserProfileToCloud();
-        players.push({ id: currentUser.uid, name: state.nickname, isBot: false, hand: [] });
+        players.push({
+            id: currentUser.uid,
+            name: state.nickname,
+            isBot: false,
+            faceStyle: state.activeFace,
+            backStyle: state.activeBack,
+            hand: []
+        });
     }
 
     if (players.length >= (data.maxPlayers || 2)) {
@@ -1693,6 +1944,7 @@ async function joinOnlineRoom(roomId) {
             defenderIdx: 1,
             table: [],
             finishedOrder: [],
+            turnDeadline: Date.now() + TURN_DURATION_MS,
             updatedAt: Date.now()
         });
     } else {
@@ -1752,12 +2004,15 @@ function subscribeToRoom(roomId, isHost) {
                 defenderIdx: d.defenderIdx || 1,
                 table: d.table || [],
                 finishedOrder: d.finishedOrder || [],
+                turnDeadline: d.turnDeadline || (Date.now() + TURN_DURATION_MS),
                 over: false,
                 settled: wasSettled
             };
+            timeoutActionLock = false;
             sortHands();
             showScreen('screen-game');
             renderGame();
+            startTurnTimerLoop();
             checkGameOver();
         }
     }, (err) => console.warn('Room sync error:', err));
@@ -1773,6 +2028,7 @@ async function pushOnlineRoomState() {
         defenderIdx: game.defenderIdx,
         table: game.table,
         finishedOrder: game.finishedOrder,
+        turnDeadline: game.turnDeadline || (Date.now() + TURN_DURATION_MS),
         updatedAt: Date.now()
     }).catch(() => {});
 }
@@ -1784,75 +2040,132 @@ function renderGame() {
     if (!game) return;
     const myIdx = myPlayerIndex();
     const me = game.players[myIdx];
+    const myId = me?.id || (game.mode === 'online' ? currentUser?.uid : 'me');
     const isDefender = myIdx === game.defenderIdx;
     const isAttacker = myIdx === game.attackerIdx;
     const undefended = game.table.filter(p => !p.defense);
 
+    // Keep player's current design synced if changed
+    if (me) {
+        me.faceStyle = state.activeFace;
+        me.backStyle = state.activeBack;
+    }
+
     // Table Bank Pill
     document.getElementById('game-bank-pill').textContent = `🏦 Банк: ${game.totalBank || (game.players.length * 100)} 💵`;
 
-    // 1. Render Opponents
+    // 1. Render Opponents (Always visible with their own deck back design)
     const oppRow = document.getElementById('opponents-row');
     const opps = game.players.map((p, idx) => ({ p, idx })).filter(x => x.idx !== myIdx);
+    const activeTurnIdx = getActiveTurnPlayerIdx();
     oppRow.innerHTML = opps.map(({ p, idx }) => {
-        const activeRing = idx === game.attackerIdx ? 'border-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.45)]'
-            : idx === game.defenderIdx ? 'border-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.45)]'
-            : 'border-white/10';
-        const roleTag = idx === game.attackerIdx ? '⚔️' : idx === game.defenderIdx ? '🛡️' : '';
-        const fanCount = Math.min(p.hand.length, 7);
+        const isCurrentTurn = idx === activeTurnIdx;
+        const activeRing = isCurrentTurn ? 'border-amber-400 shadow-[0_0_16px_rgba(251,191,36,0.65)] scale-105'
+            : idx === game.defenderIdx ? 'border-sky-400 shadow-[0_0_10px_rgba(56,189,248,0.4)]'
+            : 'border-white/15';
+        const finPlace = game.finishedOrder.indexOf(p.id);
+        const roleTag = finPlace !== -1 ? `🏅${finPlace + 1}` : idx === game.attackerIdx ? '⚔️' : idx === game.defenderIdx ? '🛡️' : '👤';
+        const oppBack = p.backStyle || 'blue_classic';
+        const fanCount = Math.min(p.hand.length, 10);
+        const spreadAngle = fanCount > 7 ? 7 : 10;
         let fanHtml = '';
         for (let i = 0; i < fanCount; i++) {
-            const angle = (i - (fanCount - 1) / 2) * 11;
-            fanHtml += `<div class="opp-fan-card" style="transform: rotate(${angle}deg) translateY(${Math.abs(angle)*0.18}px); z-index:${i};">${renderCardBackSVG()}</div>`;
+            const angle = (i - (fanCount - 1) / 2) * spreadAngle;
+            const shiftX = (i - (fanCount - 1) / 2) * (fanCount > 7 ? 5 : 7);
+            fanHtml += `<div class="opp-fan-card" style="transform: translateX(${shiftX}px) rotate(${angle}deg) translateY(${Math.abs(angle)*0.16}px); z-index:${i};">${renderCardBackSVG(oppBack)}</div>`;
         }
         return `
-            <div class="flex flex-col items-center min-w-[78px] max-w-[130px]">
-                <div class="opp-fan-container">${fanHtml}</div>
-                <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/90 border ${activeRing} text-[11px] font-bold text-white flex items-center gap-1">
+            <div data-player-id="${p.id}" class="flex flex-col items-center min-w-[92px] max-w-[148px] transition-transform duration-200">
+                <div class="opp-fan-container">${fanHtml || `<div class="text-[11px] text-emerald-300 font-black pt-4">${finPlace !== -1 ? (finPlace + 1) + ' место!' : 'Вышел!'}</div>`}</div>
+                <div class="mt-1 px-2.5 py-0.5 rounded-full bg-slate-900/95 border ${activeRing} text-[11px] sm:text-xs font-bold text-white flex items-center gap-1 shadow-md transition">
                     <span>${roleTag}</span>
-                    <span class="truncate max-w-[68px]">${escapeHtml(p.name)}</span>
+                    <span class="truncate max-w-[78px]">${escapeHtml(p.name)}</span>
                     <span class="text-sky-300 font-black">(${p.hand.length})</span>
                 </div>
             </div>`;
     }).join('');
 
-    // 2. Deck & Trump
+    // 2. Deck & Trump Visuals
     document.getElementById('deck-count-text').textContent = game.deck.length;
     const trumpBadge = document.getElementById('trump-suit-badge');
-    trumpBadge.textContent = SUIT_SYM[game.trumpSuit];
-    trumpBadge.className = (game.trumpSuit === 'hearts' || game.trumpSuit === 'diamonds') ? 'text-rose-400 font-black' : 'text-sky-300 font-black';
+    const isRedTrump = game.trumpSuit === 'hearts' || game.trumpSuit === 'diamonds';
+    trumpBadge.textContent = SUIT_SYM[game.trumpSuit] || '♠';
+    trumpBadge.className = isRedTrump ? 'text-rose-400 font-black' : 'text-sky-200 font-black';
 
-    const deckVis = document.getElementById('deck-stack-visual');
     const trumpUnder = document.getElementById('trump-card-under');
-    if (game.deck.length > 0) {
-        deckVis.innerHTML = renderCardBackSVG();
-        deckVis.classList.remove('opacity-20');
-        trumpUnder.innerHTML = `<div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg overflow-hidden shadow-lg">${renderCardFaceSVG(game.trumpCard)}</div>`;
+    const deckStack = document.getElementById('deck-stack-visual');
+    if (game.deck.length > 0 && game.trumpCard) {
+        trumpUnder.innerHTML = `<div class="w-12 h-16 sm:w-14 sm:h-20 rounded-lg overflow-hidden shadow-lg">${renderCardFaceSVG(game.trumpCard, state.activeFace)}</div>`;
     } else {
-        deckVis.innerHTML = '';
-        deckVis.classList.add('opacity-20');
         trumpUnder.innerHTML = '';
     }
+    if (game.deck.length > 1) {
+        deckStack.innerHTML = renderCardBackSVG(state.activeBack);
+        deckStack.style.opacity = '1';
+    } else {
+        deckStack.innerHTML = `<div class="w-full h-full flex items-center justify-center text-2xl ${isRedTrump ? 'text-rose-400/50' : 'text-white/40'}">${SUIT_SYM[game.trumpSuit] || '♠'}</div>`;
+        deckStack.style.opacity = '0.65';
+    }
 
-    // 3. Battle Pairs on Table
+    // 3. Battle Pairs on Table (Exact 60 FPS Flight from Opponent/Player Hand + Player's Card Design)
     const battleGrid = document.getElementById('table-battle-grid');
     const dropHint = document.getElementById('table-drop-hint');
     dropHint.classList.toggle('hidden', game.table.length > 0);
+    if (game.table.length === 0) animatedTableCardIds.clear();
 
+    const newlyPlaced = [];
     battleGrid.innerHTML = game.table.map((pair, idx) => {
         const canTarget = isDefender && !pair.defense && selectedCardId !== null;
+        const atkStyle = pair.attack.styleId || state.activeFace;
+        if (!animatedTableCardIds.has(pair.attack.id)) {
+            animatedTableCardIds.add(pair.attack.id);
+            newlyPlaced.push({ id: pair.attack.id, playedBy: pair.attack.playedBy, isDef: false });
+        }
+
+        let defHtml = '';
+        if (pair.defense) {
+            const defStyle = pair.defense.styleId || state.activeFace;
+            if (!animatedTableCardIds.has(pair.defense.id)) {
+                animatedTableCardIds.add(pair.defense.id);
+                newlyPlaced.push({ id: pair.defense.id, playedBy: pair.defense.playedBy, isDef: true });
+            }
+            defHtml = `<div data-card-id="${pair.defense.id}" class="card-3d-wrap card-defend">${renderCardFaceSVG(pair.defense, defStyle)}</div>`;
+        }
+
         return `
             <div class="battle-pair ${canTarget ? 'targetable' : ''}" data-pair-idx="${idx}">
-                <div class="card-3d-wrap card-attack">${renderCardFaceSVG(pair.attack)}</div>
-                ${pair.defense ? `<div class="card-3d-wrap card-defend">${renderCardFaceSVG(pair.defense)}</div>` : ''}
+                <div data-card-id="${pair.attack.id}" class="card-3d-wrap card-attack">${renderCardFaceSVG(pair.attack, atkStyle)}</div>
+                ${defHtml}
             </div>`;
     }).join('');
+
+    // Trigger smooth 60 FPS GPU-accelerated flight from the exact player/opponent position
+    if (newlyPlaced.length > 0) {
+        requestAnimationFrame(() => {
+            newlyPlaced.forEach(item => {
+                const cardEl = battleGrid.querySelector(`[data-card-id="${item.id}"]`);
+                if (cardEl) animateCardFlight(cardEl, item.playedBy, item.isDef, myId);
+            });
+        });
+    }
 
     battleGrid.querySelectorAll('.battle-pair.targetable').forEach(el => {
         el.addEventListener('click', () => {
             if (selectedCardId) playerPlayCard(selectedCardId, Number(el.dataset.pairIdx));
         });
     });
+
+    // Online spectator banner when player finished early and waits for others
+    const specBanner = document.getElementById('spectator-banner');
+    const myFinIdx = game.finishedOrder.indexOf(myId);
+    if (game.mode === 'online' && myFinIdx !== -1 && !game.over) {
+        const { payouts } = calculatePayouts(game.players.length, game.stake || 100);
+        const prize = payouts[myFinIdx] || 0;
+        specBanner.textContent = `🏆 Вы вышли на ${myFinIdx + 1} месте! Ожидаем окончания партии для получения приза (+${prize} 💵)...`;
+        specBanner.classList.remove('hidden');
+    } else {
+        specBanner.classList.add('hidden');
+    }
 
     // 4. Status Pill & Action Buttons
     const statusPill = document.getElementById('game-status-pill');
@@ -1903,6 +2216,55 @@ function renderGame() {
         attachCardDragAndTap(el, card);
         handBox.appendChild(el);
     });
+}
+
+function animateCardFlight(cardEl, playedBy, isDefense, myId) {
+    try {
+        const dstRect = cardEl.getBoundingClientRect();
+        let srcX = window.innerWidth / 2;
+        let srcY = playedBy === myId ? window.innerHeight - 60 : 80;
+
+        if (playedBy && playedBy !== myId) {
+            const oppEl = document.querySelector(`#opponents-row [data-player-id="${playedBy}"]`);
+            if (oppEl) {
+                const r = oppEl.getBoundingClientRect();
+                srcX = r.left + r.width / 2;
+                srcY = r.top + r.height / 2;
+            }
+        } else if (playedBy === myId) {
+            const handEl = document.getElementById('player-hand-container');
+            if (handEl) {
+                const r = handEl.getBoundingClientRect();
+                srcX = r.left + r.width / 2;
+                srcY = r.top + r.height / 2;
+            }
+        }
+
+        const dx = srcX - (dstRect.left + dstRect.width / 2);
+        const dy = srcY - (dstRect.top + dstRect.height / 2);
+        const endRot = isDefense ? 7 : -3;
+        const startRotY = playedBy === myId ? 0 : (isDefense ? -78 : 78);
+
+        cardEl.animate([
+            {
+                opacity: 0.2,
+                transform: `translate3d(${dx}px, ${dy}px, 60px) scale(0.62) rotateY(${startRotY}deg) rotate(${endRot * 2}deg)`
+            },
+            {
+                opacity: 1,
+                transform: `translate3d(${dx * 0.08}px, ${dy * 0.08}px, 18px) scale(1.06) rotateY(0deg) rotate(${endRot}deg)`,
+                offset: 0.72
+            },
+            {
+                opacity: 1,
+                transform: `translate3d(0, 0, 0) scale(1) rotateY(0deg) rotate(${endRot}deg)`
+            }
+        ], {
+            duration: 480,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'both'
+        });
+    } catch (_) {}
 }
 
 function attachCardDragAndTap(el, card) {
@@ -2008,7 +2370,7 @@ function renderShop() {
             <div data-preview="${item.id}" class="shop-item-row p-3 rounded-2xl border ${selectedRing} flex items-center justify-between gap-2 cursor-pointer transition">
                 <div>
                     <div class="font-extrabold text-sm text-white">${item.name}</div>
-                    <div class="text-xs text-slate-400">${item.desc || 'Дизайн рубашки'}</div>
+                    <div class="text-xs text-slate-400">${item.desc || 'Дизайн колоды'}</div>
                 </div>
                 ${btnHtml}
             </div>`;
@@ -2068,9 +2430,13 @@ function showScreen(id) {
 
 function leaveGame() {
     clearTimeout(botTimeout);
+    if (rafTimerId) { cancelAnimationFrame(rafTimerId); rafTimerId = null; }
     if (activeRoomUnsub) { activeRoomUnsub(); activeRoomUnsub = null; }
     game = null;
     selectedCardId = null;
+    animatedTableCardIds.clear();
+    timeoutActionLock = false;
+    document.getElementById('spectator-banner')?.classList.add('hidden');
     showScreen('screen-menu');
 }
 
