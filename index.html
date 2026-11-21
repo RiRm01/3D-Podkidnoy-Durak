@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>3D Дурак Онлайн — Telegram Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
@@ -150,6 +150,9 @@
             shape-rendering: geometricPrecision;
             text-rendering: geometricPrecision;
         }
+        .hand-card {
+            touch-action: none;
+        }
         .hand-card:hover {
             transform: translateY(-14px) scale(1.05);
             z-index: 40 !important;
@@ -224,68 +227,6 @@
         .turn-timer-fill.danger {
             background: linear-gradient(90deg, #ef4444, #fb7185);
         }
-
-        /* Smooth 60 FPS Card Placement Animations */
-        @keyframes cardFlyFromPlayer {
-            0% {
-                opacity: 0;
-                transform: translate3d(0, 145px, 40px) scale(1.16) rotate(8deg);
-            }
-            65% {
-                opacity: 1;
-                transform: translate3d(0, -6px, 12px) scale(1.03) rotate(-4deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1) rotate(-3deg);
-            }
-        }
-        @keyframes cardFlyFromOpp {
-            0% {
-                opacity: 0;
-                transform: translate3d(0, -135px, 40px) scale(0.72) rotateY(70deg) rotate(-14deg);
-            }
-            65% {
-                opacity: 1;
-                transform: translate3d(0, 5px, 10px) scale(1.03) rotateY(0deg) rotate(-2deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1) rotate(-3deg);
-            }
-        }
-        @keyframes cardDefendFromPlayer {
-            0% {
-                opacity: 0;
-                transform: translate3d(0, 145px, 50px) scale(1.18) rotate(-8deg);
-            }
-            70% {
-                opacity: 1;
-                transform: translate3d(0, -4px, 14px) scale(1.04) rotate(9deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1) rotate(7deg);
-            }
-        }
-        @keyframes cardDefendFromOpp {
-            0% {
-                opacity: 0;
-                transform: translate3d(0, -135px, 50px) scale(0.75) rotateY(-65deg) rotate(18deg);
-            }
-            70% {
-                opacity: 1;
-                transform: translate3d(0, 4px, 14px) scale(1.04) rotateY(0deg) rotate(6deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate3d(0, 0, 0) scale(1) rotate(7deg);
-            }
-        }
-        .anim-atk-player { animation: cardFlyFromPlayer 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .anim-atk-opp { animation: cardFlyFromOpp 0.46s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .anim-def-player { animation: cardDefendFromPlayer 0.42s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .anim-def-opp { animation: cardDefendFromOpp 0.46s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
         /* Table Battle Pairs */
         .battle-grid {
@@ -433,8 +374,8 @@
 
             <div class="space-y-3">
                 <button id="btn-menu-online" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 active:scale-[0.98] text-white font-extrabold text-base shadow-lg shadow-blue-600/30 flex items-center justify-between transition">
-                    <span class="flex items-center gap-3"><span class="text-xl">🌐</span> Онлайн</span>
-                    <span class="text-white/80">→</span>
+                    <span class="flex items-center gap-3"><span class="text-xl">🌐</span> Онлайн и друзья</span>
+                    <span id="menu-online-badge" class="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-bold">→</span>
                 </button>
 
                 <button id="btn-menu-bot" class="w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 active:scale-[0.98] text-white font-extrabold text-base shadow-lg shadow-emerald-600/30 flex items-center justify-between transition">
@@ -511,6 +452,10 @@
                     <div id="bot-payout-breakdown" class="space-y-1 text-xs"></div>
                 </div>
 
+                <div class="text-[11px] text-sky-300/90 text-center font-semibold">
+                    ✨ В игре с ботом первый ход всегда ваш
+                </div>
+
                 <button id="btn-start-bot-game" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 font-black text-base shadow-lg shadow-emerald-600/30 transition">
                     Играть (Ставка 100 💵)
                 </button>
@@ -518,16 +463,35 @@
         </div>
     </section>
 
-    <!-- ONLINE LOBBY SCREEN -->
-    <section id="screen-online" class="hidden flex-1 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="w-full max-w-lg rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 sm:p-6 flex flex-col max-h-[86dvh]">
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-black">🌐 Онлайн столы</h2>
+    <!-- ONLINE LOBBY SCREEN (TABLES + WHO IS ONLINE + FRIENDS) -->
+    <section id="screen-online" class="hidden flex-1 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+        <div class="w-full max-w-lg rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-4 sm:p-6 flex flex-col max-h-[88dvh]">
+            <div class="flex items-center justify-between mb-3">
+                <div>
+                    <h2 class="text-xl font-black">🌐 Онлайн</h2>
+                    <div class="text-[11px] text-slate-400 font-semibold">Первый ход в онлайне выбирается случайно 🎲</div>
+                </div>
                 <button class="btn-back-menu px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">← Меню</button>
             </div>
 
+            <!-- Online Sub-Tabs -->
+            <div class="grid grid-cols-3 gap-1.5 mb-3 bg-slate-950/70 p-1 rounded-2xl border border-white/10">
+                <button id="tab-online-rooms" class="py-2 rounded-xl font-extrabold text-xs sm:text-sm bg-sky-600 text-white transition">
+                    🃏 Столы
+                </button>
+                <button id="tab-online-players" class="py-2 rounded-xl font-extrabold text-xs sm:text-sm text-slate-400 hover:text-white transition">
+                    🟢 В сети (<span id="online-players-count-tab">0</span>)
+                </button>
+                <button id="tab-online-friends" class="py-2 rounded-xl font-extrabold text-xs sm:text-sm text-slate-400 hover:text-white transition">
+                    👥 Друзья (<span id="friends-count-tab">0</span>)
+                </button>
+            </div>
+
+            <!-- Online Error / Diagnostics Banner -->
+            <div id="online-error-banner" class="hidden mb-3 p-3 rounded-2xl bg-amber-950/70 border border-amber-500/40 text-amber-200 text-xs leading-relaxed"></div>
+
             <!-- Online Room Creation Config -->
-            <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 mb-3 space-y-2.5">
+            <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 mb-3 space-y-2">
                 <div class="grid grid-cols-3 gap-2 text-xs">
                     <div>
                         <div class="text-slate-400 font-bold mb-1">Игроки</div>
@@ -559,33 +523,74 @@
                     </div>
                 </div>
                 <div id="online-payout-summary" class="text-[11px] text-emerald-300/90 font-semibold">
-                    Банк: 200 💵 • 1 место: 200 💵
+                    Банк: 200 💵 • 1м: 200💵
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-2 gap-2.5 mb-3">
-                <button id="btn-online-quick" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-sm shadow-lg shadow-blue-600/25">
-                    ⚡ Быстрый подбор
-                </button>
-                <button id="btn-online-create" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 font-extrabold text-sm shadow-lg shadow-emerald-600/25">
-                    ➕ Создать стол
-                </button>
+            <!-- TAB 1: OPEN ROOMS -->
+            <div id="panel-online-rooms" class="flex-1 flex flex-col min-h-0">
+                <div class="grid grid-cols-2 gap-2.5 mb-3">
+                    <button id="btn-online-quick" class="py-2.5 px-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-sm shadow-lg shadow-blue-600/25">
+                        ⚡ Быстрый подбор
+                    </button>
+                    <button id="btn-online-create" class="py-2.5 px-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 font-extrabold text-sm shadow-lg shadow-emerald-600/25">
+                        ➕ Создать стол
+                    </button>
+                </div>
+
+                <!-- Search / Join by Code -->
+                <div class="flex gap-2 mb-3">
+                    <input id="input-room-search" type="text" placeholder="Код стола (напр. AB12) или ник..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                    <button id="btn-join-by-code" class="px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs sm:text-sm shrink-0">Войти</button>
+                </div>
+
+                <div class="text-xs font-bold text-slate-400 uppercase mb-2 flex justify-between">
+                    <span>Открытые столы</span>
+                    <span id="online-rooms-count">0 столов</span>
+                </div>
+                <div id="online-rooms-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[140px]">
+                    <div class="text-center text-slate-500 text-sm py-8">Загрузка столов...</div>
+                </div>
             </div>
 
-            <!-- Search by Nickname / Code -->
-            <div class="flex gap-2 mb-3">
-                <input id="input-room-search" type="text" placeholder="Поиск по нику или коду стола..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
-                <button id="btn-room-search" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-sm">Найти</button>
+            <!-- TAB 2: WHO IS ONLINE -->
+            <div id="panel-online-players" class="hidden flex-1 flex flex-col min-h-0">
+                <div class="text-xs font-bold text-slate-400 uppercase mb-2 flex justify-between items-center">
+                    <span>Игроки в сети прямо сейчас</span>
+                    <button id="btn-refresh-presence" class="text-sky-400 hover:text-sky-300 font-bold">↻ Обновить</button>
+                </div>
+                <div id="online-players-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[160px]">
+                    <div class="text-center text-slate-500 text-sm py-8">Поиск игроков в сети...</div>
+                </div>
             </div>
 
-            <!-- Open Rooms List -->
-            <div class="text-xs font-bold text-slate-400 uppercase mb-2 flex justify-between">
-                <span>Открытые столы</span>
-                <span id="online-rooms-count">0 столов</span>
-            </div>
-            <div id="online-rooms-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[140px]">
-                <div class="text-center text-slate-500 text-sm py-8">Загрузка столов...</div>
+            <!-- TAB 3: FRIENDS -->
+            <div id="panel-online-friends" class="hidden flex-1 flex flex-col min-h-0">
+                <!-- My Friend Code Card -->
+                <div class="p-3 rounded-2xl bg-sky-950/40 border border-sky-400/25 mb-3 flex items-center justify-between gap-2">
+                    <div class="min-w-0">
+                        <div class="text-[11px] text-sky-300 font-bold uppercase">Ваш код друга</div>
+                        <div id="my-friend-code" class="font-black text-base tracking-widest text-white">------</div>
+                    </div>
+                    <div class="flex gap-1.5 shrink-0">
+                        <button id="btn-copy-friend-code" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white">📋 Код</button>
+                        <button id="btn-share-tg-app" class="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-xs font-bold text-white">📨 В Telegram</button>
+                    </div>
+                </div>
+
+                <!-- Add Friend Input -->
+                <div class="flex gap-2 mb-3">
+                    <input id="input-add-friend" type="text" placeholder="Код друга или ник игрока..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                    <button id="btn-add-friend" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs sm:text-sm shrink-0">+ Добавить</button>
+                </div>
+
+                <div class="text-xs font-bold text-slate-400 uppercase mb-2 flex justify-between">
+                    <span>Ваши друзья</span>
+                    <span id="friends-online-summary">0 в сети</span>
+                </div>
+                <div id="friends-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[140px]">
+                    <div class="text-center text-slate-500 text-sm py-8">Пока нет друзей. Добавьте друга по коду или из вкладки «В сети»!</div>
+                </div>
             </div>
         </div>
     </section>
@@ -743,7 +748,7 @@
         </div>
     </section>
 
-    <!-- Custom Modal (Game Over / Results Table / Room Waiting) -->
+    <!-- Custom Modal (Game Over / Results Table / Room Waiting / Incoming Invite) -->
     <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="w-full max-w-sm rounded-3xl bg-slate-900 border border-white/15 shadow-2xl p-6 text-center">
             <div id="modal-icon" class="text-5xl mb-3">🏆</div>
@@ -760,10 +765,13 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import {
+    getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+    onSnapshot, collection, runTransaction
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 /* ============================================================================
-   1. FIREBASE CONFIGURATION & INITIALIZATION
+1. FIREBASE CONFIGURATION, PRESENCE & INITIALIZATION
    ============================================================================ */
 const USER_FIREBASE_CONFIG = {
     apiKey: "AIzaSyBrM9NVhwVUqrHm06J4pTJd0Tqp386-jJo",
@@ -776,11 +784,60 @@ const USER_FIREBASE_CONFIG = {
 };
 
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'durak-3d-tg';
+const ONLINE_TTL_MS = 65000;
+const ROOM_TTL_MS = 1000 * 60 * 30;
+const INVITE_TTL_MS = 120000;
+
 let db = null;
 let auth = null;
 let currentUser = null;
 let roomsUnsub = null;
 let activeRoomUnsub = null;
+let presenceUnsub = null;
+let invitesUnsub = null;
+let presenceHeartbeatTimer = null;
+
+let cachedRooms = [];
+let cachedOnlinePlayers = [];
+let activeWaitingRoom = null;
+let activeInviteShownId = null;
+let settledRoomIds = new Set();
+
+function roomsCollectionRef() {
+    return collection(db, 'artifacts', appId, 'public', 'data', 'rooms');
+}
+function roomDocRef(roomId) {
+    return doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+}
+function playersCollectionRef() {
+    return collection(db, 'artifacts', appId, 'public', 'data', 'players');
+}
+function playerDocRef(uid) {
+    return doc(db, 'artifacts', appId, 'public', 'data', 'players', uid);
+}
+function invitesCollectionRef() {
+    return collection(db, 'artifacts', appId, 'public', 'data', 'invites');
+}
+function inviteDocRef(inviteId) {
+    return doc(db, 'artifacts', appId, 'public', 'data', 'invites', inviteId);
+}
+
+function getFriendCodeForUid(uid) {
+    if (!uid) return 'LOCAL1';
+    return uid.replace(/[^a-zA-Z0-9]/g, '').slice(0, 6).toUpperCase().padEnd(6, 'X');
+}
+
+function showOnlineError(msg) {
+    const el = document.getElementById('online-error-banner');
+    if (!el) return;
+    if (!msg) {
+        el.classList.add('hidden');
+        el.textContent = '';
+    } else {
+        el.textContent = msg;
+        el.classList.remove('hidden');
+    }
+}
 
 async function initFirebase() {
     try {
@@ -795,11 +852,27 @@ async function initFirebase() {
             await signInAnonymously(auth);
         }
         currentUser = auth.currentUser;
+        state.friendCode = getFriendCodeForUid(currentUser?.uid);
+        updateHUD();
         setOnlineBadge(true, 'Онлайн готов');
+        showOnlineError('');
+
         await loadUserProfileFromCloud();
+        startPresenceSystem();
+        listenToIncomingInvites();
+        startRoomsListener();
+        checkIncomingDeepLink();
     } catch (err) {
         console.warn('Firebase offline fallback:', err);
-        setOnlineBadge(false, 'Локальный режим (Боты)');
+        const code = err?.code || '';
+        let hint = 'Не удалось подключиться к онлайн-серверу. Игра с ботом работает в обычном режиме.';
+        if (code === 'auth/operation-not-allowed') {
+            hint = 'В Firebase не включён анонимный вход (Authentication → Anonymous). Включите его в консоли Firebase для работы онлайна.';
+        } else if (code === 'permission-denied') {
+            hint = 'Нет доступа к базе Firestore (permission-denied). Проверьте правила безопасности Firestore для пути artifacts/{appId}/public/data.';
+        }
+        setOnlineBadge(false, 'Офлайн (Боты)');
+        showOnlineError(hint);
     }
 }
 
@@ -810,8 +883,152 @@ function setOnlineBadge(ok, text) {
     if (lbl) lbl.textContent = text;
 }
 
+async function updateMyPresence(status = 'online', roomId = null, roomCode = null) {
+    if (!db || !currentUser) return;
+    try {
+        await setDoc(playerDocRef(currentUser.uid), {
+            uid: currentUser.uid,
+            name: state.nickname,
+            friendCode: getFriendCodeForUid(currentUser.uid),
+            tgUsername: tgUser?.username || '',
+            status,
+            roomId: roomId || null,
+            roomCode: roomCode || null,
+            lastSeen: Date.now()
+        }, { merge: true });
+    } catch (err) {
+        if (err?.code === 'permission-denied') {
+            showOnlineError('Ошибка доступа Firestore (permission-denied). Разрешите чтение/запись для авторизованных пользователей в Firestore Rules.');
+        }
+    }
+}
+
+function startPresenceSystem() {
+    if (!db || !currentUser) return;
+    const syncNow = () => {
+        const st = game?.mode === 'online' ? 'playing' : activeWaitingRoom ? 'waiting' : 'online';
+        const rId = game?.roomId || activeWaitingRoom?.roomId || null;
+        const rCode = activeWaitingRoom?.code || null;
+        updateMyPresence(st, rId, rCode);
+    };
+    syncNow();
+    if (presenceHeartbeatTimer) clearInterval(presenceHeartbeatTimer);
+    presenceHeartbeatTimer = setInterval(syncNow, 20000);
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) syncNow();
+    });
+    window.addEventListener('beforeunload', () => {
+        if (db && currentUser) {
+            setDoc(playerDocRef(currentUser.uid), { status: 'offline', lastSeen: 0 }, { merge: true }).catch(() => {});
+        }
+    });
+
+    if (presenceUnsub) presenceUnsub();
+    presenceUnsub = onSnapshot(playersCollectionRef(), (snap) => {
+        const list = [];
+        snap.forEach(d => list.push({ uid: d.id, ...d.data() }));
+        cachedOnlinePlayers = list;
+        const now = Date.now();
+        const activeCount = list.filter(p => p.uid !== currentUser?.uid && p.status !== 'offline' && (now - (p.lastSeen || 0) < ONLINE_TTL_MS)).length;
+        const tabBadge = document.getElementById('online-players-count-tab');
+        if (tabBadge) tabBadge.textContent = String(activeCount);
+        const menuBadge = document.getElementById('menu-online-badge');
+        if (menuBadge) menuBadge.textContent = activeCount > 0 ? `${activeCount} в сети` : '→';
+        renderOnlinePlayersList();
+        renderFriendsList();
+    }, (err) => {
+        console.warn('Presence listen error:', err);
+        if (err?.code === 'permission-denied') {
+            showOnlineError('Firestore заблокировал чтение списка игроков (permission-denied). Проверьте правила Firestore.');
+        }
+    });
+}
+
+function startRoomsListener() {
+    if (!db || !currentUser) return;
+    if (roomsUnsub) roomsUnsub();
+    roomsUnsub = onSnapshot(roomsCollectionRef(), (snap) => {
+        const rooms = [];
+        snap.forEach(d => rooms.push({ id: d.id, ...d.data() }));
+        cachedRooms = rooms;
+        renderOnlineRoomsList();
+    }, (err) => {
+        console.warn('Rooms listen error:', err);
+        if (err?.code === 'permission-denied') {
+            showOnlineError('Firestore заблокировал доступ к столам (permission-denied). Проверьте правила безопасности.');
+        }
+    });
+}
+
+function listenToIncomingInvites() {
+    if (!db || !currentUser) return;
+    if (invitesUnsub) invitesUnsub();
+    invitesUnsub = onSnapshot(invitesCollectionRef(), (snap) => {
+        const now = Date.now();
+        const pending = [];
+        snap.forEach(d => {
+            const inv = { id: d.id, ...d.data() };
+            if (
+                inv.toUid === currentUser.uid &&
+                inv.status === 'pending' &&
+                (now - (inv.createdAt || 0) < INVITE_TTL_MS)
+            ) {
+                pending.push(inv);
+            }
+        });
+        pending.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        const latest = pending[0];
+        if (!latest || latest.id === activeInviteShownId) return;
+        if (game && !game.over) return;
+
+        activeInviteShownId = latest.id;
+        AudioEngine.sfx('bito');
+        showModal(
+            '📨',
+            'Приглашение за стол!',
+            `<b>${escapeHtml(latest.fromName || 'Игрок')}</b> приглашает вас сыграть в Дурака!<br>
+            Стол <b class="text-sky-300">#${escapeHtml(latest.roomCode || '')}</b> • Игроков: <b>${latest.maxPlayers || 2}</b> • Ставка: <b class="text-emerald-300">${latest.stake || 100} 💵</b>`,
+            [
+                {
+                    label: 'Принять и войти',
+                    primary: true,
+                    onClick: async () => {
+                        hideModal();
+                        await updateDoc(inviteDocRef(latest.id), { status: 'accepted' }).catch(() => {});
+                        await joinOnlineRoom(latest.roomId);
+                    }
+                },
+                {
+                    label: 'Отклонить',
+                    primary: false,
+                    onClick: async () => {
+                        hideModal();
+                        await updateDoc(inviteDocRef(latest.id), { status: 'declined' }).catch(() => {});
+                    }
+                }
+            ]
+        );
+    }, (err) => console.warn('Invites listen error:', err));
+}
+
+async function checkIncomingDeepLink() {
+    const startParam = tg?.initDataUnsafe?.start_param || '';
+    const urlRoom = new URLSearchParams(window.location.search).get('room') || '';
+    let targetCode = '';
+    if (startParam.startsWith('room_')) targetCode = startParam.slice(5).trim().toUpperCase();
+    else if (urlRoom) targetCode = urlRoom.trim().toUpperCase();
+    if (!targetCode) return;
+
+    showScreen('screen-online');
+    showToast(`Ищем стол #${targetCode}...`);
+    setTimeout(() => {
+        joinOnlineRoomByCode(targetCode);
+    }, 900);
+}
+
 /* ============================================================================
-   2. TELEGRAM WEB APP INTEGRATION & PC FULLSCREEN (1280x1024 / 1920x1080)
+2. TELEGRAM WEB APP INTEGRATION, CLIPBOARD & PC FULLSCREEN
    ============================================================================ */
 const tg = window.Telegram?.WebApp;
 if (tg) {
@@ -832,19 +1049,60 @@ function toggleFullscreen() {
     } catch (_) {}
 }
 
+function copyTextToClipboard(text, successMsg = 'Скопировано!') {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => fallbackCopy(text, successMsg));
+    } else {
+        fallbackCopy(text, successMsg);
+    }
+}
+
+function fallbackCopy(text, successMsg) {
+    try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showToast(successMsg);
+    } catch (_) {
+        showToast('Не удалось скопировать');
+    }
+}
+
+function shareInviteViaTelegram(roomCode = null, stake = null) {
+    const baseUrl = window.location.origin + window.location.pathname;
+    const inviteUrl = roomCode ? `${baseUrl}?room=${encodeURIComponent(roomCode)}` : baseUrl;
+    const text = roomCode
+        ? `Заходи ко мне за стол #${roomCode} в 3D Дурак Онлайн (ставка ${stake || 100} 💵)! Код стола: ${roomCode}`
+        : `Давай сыграем в 3D Дурак Онлайн! Мой код друга: ${state.friendCode}`;
+    const tgShareUrl = `https://t.me/share/url?url=${encodeURIComponent(inviteUrl)}&text=${encodeURIComponent(text)}`;
+
+    if (tg && typeof tg.openTelegramLink === 'function') {
+        tg.openTelegramLink(tgShareUrl);
+    } else if (navigator.share) {
+        navigator.share({ title: '3D Дурак Онлайн', text, url: inviteUrl }).catch(() => {
+            copyTextToClipboard(`${text}\n${inviteUrl}`, 'Приглашение скопировано!');
+        });
+    } else {
+        copyTextToClipboard(`${text}\n${inviteUrl}`, 'Приглашение скопировано — отправьте другу!');
+    }
+}
+
 let desktopAutoFsDone = false;
 window.addEventListener('pointerdown', () => {
     AudioEngine.unlock();
     if (!desktopAutoFsDone && window.innerWidth >= 1024 && !tg?.initData) {
         desktopAutoFsDone = true;
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen?.().catch(() => {});
-        }
     }
 }, { passive: true });
 
 /* ============================================================================
-   3. STAKE & INCOME DISTRIBUTION RULES (2–6 PLAYERS)
+3. STAKE & INCOME DISTRIBUTION RULES (2–6 PLAYERS)
    ============================================================================ */
 const PAYOUT_SPLITS = {
     2: [1.00, 0],
@@ -858,7 +1116,6 @@ function calculatePayouts(playerCount, stake) {
     const totalBank = playerCount * stake;
     const ratios = PAYOUT_SPLITS[playerCount] || PAYOUT_SPLITS[2];
     const payouts = ratios.map(r => Math.round(totalBank * r));
-    // Ensure rounding sums cleanly to totalBank
     const sum = payouts.reduce((a, b) => a + b, 0);
     if (payouts.length > 0 && sum !== totalBank) {
         payouts[0] += (totalBank - sum);
@@ -897,26 +1154,66 @@ function updateOnlinePayoutUI() {
 }
 
 /* ============================================================================
-   4. PLAYER PROFILE, SHOP CATALOG & STATE
+4. PLAYER PROFILE, FRIENDS, SHOP CATALOG & STATE
    ============================================================================ */
 const tgUser = tg?.initDataUnsafe?.user;
+const LOCAL_STORAGE_KEY = 'durak_3d_profile_v2';
+
 const state = {
     nickname: tgUser?.first_name ? tgUser.first_name.slice(0, 14) : 'Игрок',
+    friendCode: '------',
     balance: 500,
     ownedFaces: ['classic'],
     ownedBacks: ['blue_classic'],
     activeFace: 'classic',
     activeBack: 'blue_classic',
+    friends: [],
     sfxEnabled: true,
     musicEnabled: true,
     musicTrack: 'calm',
     botPlayers: 2,
     botDeckSize: 36,
     botStake: 100,
+    onlineTab: 'rooms',
     shopTab: 'faces',
     shopPreviewId: 'classic',
     shopPreviewRank: 'A'
 };
+
+function loadLocalProfile() {
+    try {
+        const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (!raw) return;
+        const d = JSON.parse(raw);
+        if (d.nickname) state.nickname = d.nickname;
+        if (typeof d.balance === 'number') state.balance = d.balance;
+        if (Array.isArray(d.ownedFaces)) state.ownedFaces = d.ownedFaces;
+        if (Array.isArray(d.ownedBacks)) state.ownedBacks = d.ownedBacks;
+        if (d.activeFace) state.activeFace = d.activeFace;
+        if (d.activeBack) state.activeBack = d.activeBack;
+        if (Array.isArray(d.friends)) state.friends = d.friends;
+        if (d.musicTrack) state.musicTrack = d.musicTrack;
+        if (typeof d.sfxEnabled === 'boolean') state.sfxEnabled = d.sfxEnabled;
+        if (typeof d.musicEnabled === 'boolean') state.musicEnabled = d.musicEnabled;
+    } catch (_) {}
+}
+
+function saveLocalProfile() {
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({
+            nickname: state.nickname,
+            balance: state.balance,
+            ownedFaces: state.ownedFaces,
+            ownedBacks: state.ownedBacks,
+            activeFace: state.activeFace,
+            activeBack: state.activeBack,
+            friends: state.friends,
+            musicTrack: state.musicTrack,
+            sfxEnabled: state.sfxEnabled,
+            musicEnabled: state.musicEnabled
+        }));
+    } catch (_) {}
+}
 
 const FACE_COLLECTIONS = [
     { id: 'classic', name: 'Классика', price: 0, desc: 'Светлая классическая колода' },
@@ -948,9 +1245,12 @@ async function loadUserProfileFromCloud() {
             if (Array.isArray(d.ownedBacks)) state.ownedBacks = d.ownedBacks;
             if (d.activeFace) state.activeFace = d.activeFace;
             if (d.activeBack) state.activeBack = d.activeBack;
+            if (Array.isArray(d.friends)) state.friends = d.friends;
             if (d.musicTrack) state.musicTrack = d.musicTrack;
+            saveLocalProfile();
             updateHUD();
             syncMusicTrackButtons();
+            renderFriendsList();
         }
     } catch (e) {
         console.warn('Profile load skipped:', e);
@@ -958,6 +1258,7 @@ async function loadUserProfileFromCloud() {
 }
 
 async function saveUserProfileToCloud() {
+    saveLocalProfile();
     if (!db || !currentUser) return;
     try {
         const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'profile', 'main');
@@ -968,6 +1269,7 @@ async function saveUserProfileToCloud() {
             ownedBacks: state.ownedBacks,
             activeFace: state.activeFace,
             activeBack: state.activeBack,
+            friends: state.friends,
             musicTrack: state.musicTrack,
             updatedAt: Date.now()
         }, { merge: true });
@@ -975,7 +1277,7 @@ async function saveUserProfileToCloud() {
 }
 
 /* ============================================================================
-   5. WEB AUDIO ENGINE (SFX + 4 DISTINCT MUSIC THEMES)
+5. WEB AUDIO ENGINE (SFX + 4 DISTINCT MUSIC THEMES)
    ============================================================================ */
 const AudioEngine = (() => {
     let ctx = null;
@@ -983,7 +1285,6 @@ const AudioEngine = (() => {
     let step = 0;
 
     const TRACKS = {
-        // 1. Calm: warm lounge chords
         calm: {
             tempo: 520,
             leadWave: 'sine',
@@ -991,7 +1292,6 @@ const AudioEngine = (() => {
             lead: [261.6, 329.6, 392.0, 493.9, 440.0, 392.0, 329.6, 293.7],
             bass: [130.8, 0, 164.8, 0, 174.6, 0, 146.8, 0]
         },
-        // 2. Fun: upbeat major melody
         fun: {
             tempo: 240,
             leadWave: 'triangle',
@@ -999,7 +1299,6 @@ const AudioEngine = (() => {
             lead: [523.3, 659.3, 784.0, 659.3, 880.0, 784.0, 659.3, 587.3, 523.3, 587.3, 659.3, 784.0],
             bass: [261.6, 0, 196.0, 0, 220.0, 0, 196.0, 0, 261.6, 0, 196.0, 0]
         },
-        // 3. Classic: chamber waltz 3/4 feel
         classic: {
             tempo: 350,
             leadWave: 'sine',
@@ -1007,7 +1306,6 @@ const AudioEngine = (() => {
             lead: [440.0, 523.3, 659.3, 587.3, 523.3, 493.9, 440.0, 493.9, 523.3, 392.0, 440.0, 493.9],
             bass: [220.0, 329.6, 329.6, 196.0, 293.7, 293.7, 174.6, 261.6, 261.6, 164.8, 246.9, 246.9]
         },
-        // 4. Playable: rhythmic arcade/card groove
         playable: {
             tempo: 215,
             leadWave: 'triangle',
@@ -1081,7 +1379,7 @@ const AudioEngine = (() => {
 })();
 
 /* ============================================================================
-   6. SVG CARD RENDERER (NEON-NOIR WITH DETAILED ORNATE ACE & COURT CARDS)
+6. SVG CARD RENDERER
    ============================================================================ */
 const SUITS = ['spades', 'hearts', 'diamonds', 'clubs'];
 const SUIT_SYM = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' };
@@ -1101,7 +1399,6 @@ const PIP_COORDS = {
 };
 
 function renderNeonNoirArt(card, t, sym, uid) {
-    // Detailed ornate layout from the black deck, rendered in vibrant neon on deep black
     if (card.rank === 14) {
         return `
             <g filter="url(#glow_${uid})">
@@ -1109,7 +1406,6 @@ function renderNeonNoirArt(card, t, sym, uid) {
                       fill="none" stroke="${t.ink}" stroke-width="2.2"/>
                 <path d="M50 23 C50 23 27 48 27 67 C27 78 37 82 46 75 L43 92 L57 92 L54 75 C63 82 73 78 73 67 C73 48 50 23 50 23 Z"
                       fill="none" stroke="${t.accent}" stroke-width="1.3" stroke-dasharray="2.4 2.4"/>
-                <!-- Inner Victorian vine swirls & diamond -->
                 <polygon points="50,43 60,57 50,71 40,57" fill="#05050a" stroke="${t.ink}" stroke-width="1.3"/>
                 <path d="M38 66 C32 62 33 52 40 50 M62 66 C68 62 67 52 60 50 M42 74 C36 74 35 69 39 67 M58 74 C64 74 65 69 61 67"
                       fill="none" stroke="${t.accent}" stroke-width="1.2" stroke-linecap="round"/>
@@ -1117,19 +1413,14 @@ function renderNeonNoirArt(card, t, sym, uid) {
             </g>`;
     }
     if (card.rank === 12) {
-        // Mirrored Victorian Queen in wide-brimmed plumed hat + cigarette holder in neon contour
         const halfQueen = `
             <g>
-                <!-- Wide-brimmed hat & plume -->
                 <ellipse cx="47" cy="24" rx="22" ry="7" transform="rotate(-14 47 24)" fill="${t.accent}" fill-opacity="0.22" stroke="${t.ink}" stroke-width="1.3"/>
                 <path d="M54 15 C68 10 78 24 73 44 C68 35 62 28 52 24 Z" fill="${t.accent}" fill-opacity="0.38" stroke="${t.accent}" stroke-width="1.2"/>
-                <!-- Face profile & hair -->
                 <path d="M39 28 C37 36 40 45 48 46 C55 45 58 37 56 29 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
                 <path d="M42 35 L46 35 M50 35 L53 35 M45 41 Q48 43 50 41" stroke="${t.ink}" stroke-width="0.9" fill="none"/>
-                <!-- Victorian collar, necklace & gown -->
                 <path d="M32 62 C34 50 42 46 48 46 C55 46 65 50 68 62 Z" fill="${t.accent}" fill-opacity="0.25" stroke="${t.ink}" stroke-width="1.3"/>
                 <text x="48" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
-                <!-- Cigarette holder -->
                 <line x1="34" y1="52" x2="21" y2="34" stroke="${t.ink}" stroke-width="1.2"/>
                 <circle cx="20.5" cy="33" r="1.6" fill="${t.accent}"/>
             </g>`;
@@ -1142,7 +1433,6 @@ function renderNeonNoirArt(card, t, sym, uid) {
             </g>`;
     }
     if (card.rank === 13) {
-        // Mirrored Neon King with crown & sword
         const halfKing = `
             <g>
                 <path d="M36 24 L39 14 L45 20 L50 12 L55 20 L61 14 L64 24 Z" fill="${t.accent}" fill-opacity="0.32" stroke="${t.ink}" stroke-width="1.3"/>
@@ -1150,7 +1440,6 @@ function renderNeonNoirArt(card, t, sym, uid) {
                 <path d="M44 41 Q50 45 56 41" stroke="${t.accent}" stroke-width="1.2" fill="none"/>
                 <path d="M30 62 C33 49 42 46 50 46 C58 46 67 49 70 62 Z" fill="${t.accent}" fill-opacity="0.24" stroke="${t.ink}" stroke-width="1.3"/>
                 <text x="50" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
-                <!-- Sword -->
                 <line x1="27" y1="54" x2="27" y2="20" stroke="${t.ink}" stroke-width="1.4"/>
                 <line x1="22" y1="44" x2="32" y2="44" stroke="${t.accent}" stroke-width="1.4"/>
             </g>`;
@@ -1163,7 +1452,6 @@ function renderNeonNoirArt(card, t, sym, uid) {
             </g>`;
     }
     if (card.rank === 11) {
-        // Mirrored Neon Jack with feathered beret & halberd
         const halfJack = `
             <g>
                 <path d="M34 25 C38 15 62 15 66 25 Z" fill="${t.accent}" fill-opacity="0.3" stroke="${t.ink}" stroke-width="1.3"/>
@@ -1180,7 +1468,6 @@ function renderNeonNoirArt(card, t, sym, uid) {
                 <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
             </g>`;
     }
-    // Numbered cards 2–10 with crisp neon pips
     const coords = PIP_COORDS[card.rank] || [[50, 50]];
     return coords.map(([x, y]) => {
         const flip = y > 55 ? `transform="rotate(180 ${x} ${y + 10})"` : '';
@@ -1243,14 +1530,11 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
             </filter>` : ''}
         </defs>
         <rect x="0.8" y="0.8" width="98.4" height="138.4" rx="9" fill="url(#bg_${uid})" stroke="${t.border}" stroke-width="${styleId === 'neon_noir' ? '2.2' : '1.6'}"/>
-        <!-- Top-Left Index -->
         <g ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
             <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
             <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
         </g>
-        <!-- Center Art -->
         ${centerArt}
-        <!-- Bottom-Right Index -->
         <g transform="rotate(180 50 70)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
             <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
             <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
@@ -1281,7 +1565,7 @@ function renderCardBackSVG(backId = state.activeBack) {
 }
 
 /* ============================================================================
-   7. CORE DURAK GAME ENGINE (BOTS + ONLINE + STAKE & PAYOUT SETTLEMENT)
+7. CORE DURAK GAME ENGINE (BOTS + ONLINE + FIXED TURN RULES)
    ============================================================================ */
 const TURN_DURATION_MS = 15000;
 let game = null;
@@ -1291,12 +1575,22 @@ let animatedTableCardIds = new Set();
 let rafTimerId = null;
 let timeoutActionLock = false;
 
+function getEffectiveAttackerIdx() {
+    if (!game) return 0;
+    if (game.players[game.attackerIdx]?.hand.length > 0) return game.attackerIdx;
+    const n = game.players.length;
+    for (let i = 1; i < n; i++) {
+        const idx = (game.attackerIdx + i) % n;
+        if (idx !== game.defenderIdx && game.players[idx].hand.length > 0) return idx;
+    }
+    return game.attackerIdx;
+}
+
 function getActiveTurnPlayerIdx() {
     if (!game || game.over) return -1;
     const undefended = game.table.filter(p => !p.defense);
     if (undefended.length > 0) return game.defenderIdx;
-    if (game.players[game.attackerIdx]?.hand.length > 0) return game.attackerIdx;
-    return nextActiveIdx(game.attackerIdx);
+    return getEffectiveAttackerIdx();
 }
 
 function resetTurnTimer() {
@@ -1343,13 +1637,13 @@ function handleTurnTimeout() {
     if (activeIdx === -1) return;
     const myIdx = myPlayerIndex();
 
-    // In online mode only the active player (or host after +1.5s grace) triggers timeout to avoid race conditions
     if (game.mode === 'online' && activeIdx !== myIdx) {
         const isHost = game.players[0]?.id === currentUser?.uid;
         if (!isHost || Date.now() - (game.turnDeadline || 0) < 1500) return;
     }
 
     timeoutActionLock = true;
+    clearTimeout(botTimeout);
     const activePlayer = game.players[activeIdx];
     const undefended = game.table.filter(p => !p.defense);
 
@@ -1357,10 +1651,8 @@ function handleTurnTimeout() {
         showToast(`⏱️ Время вышло: ${activePlayer.name} берёт карты`);
         playerActionTake();
     } else if (game.table.length === 0) {
-        // Auto-play lowest card to keep game moving
         if (activePlayer.hand.length > 0) {
-            const pick = activePlayer.hand[0];
-            activePlayer.hand.shift();
+            const pick = activePlayer.hand.shift();
             pick.styleId = activePlayer.faceStyle || 'classic';
             pick.playedBy = activePlayer.id;
             game.table.push({ attack: pick, defense: null });
@@ -1430,7 +1722,6 @@ function ensureBalanceForStake(stake) {
 function startLocalBotGame() {
     if (!ensureBalanceForStake(state.botStake)) return;
 
-    // Deduct player's stake
     state.balance -= state.botStake;
     updateHUD();
     saveUserProfileToCloud();
@@ -1451,7 +1742,6 @@ function startLocalBotGame() {
         hand: []
     }];
     for (let i = 1; i < count; i++) {
-        // Each opponent has their own distinct card & deck design
         const botFace = FACE_COLLECTIONS[i % FACE_COLLECTIONS.length].id;
         const botBack = BACK_COLLECTIONS[i % BACK_COLLECTIONS.length].id;
         players.push({
@@ -1470,17 +1760,9 @@ function startLocalBotGame() {
         }
     }
 
-    let attackerIdx = 0;
-    let lowestTrump = 99;
-    players.forEach((p, idx) => {
-        p.hand.forEach(c => {
-            if (c.suit === trumpSuit && c.rank < lowestTrump) {
-                lowestTrump = c.rank;
-                attackerIdx = idx;
-            }
-        });
-    });
-
+    // В игре с ботом первый ход ВСЕГДА у игрока
+    const attackerIdx = 0;
+    const defenderIdx = 1 % players.length;
     const { totalBank, payouts } = calculatePayouts(count, state.botStake);
 
     game = {
@@ -1494,7 +1776,7 @@ function startLocalBotGame() {
         trumpCard,
         players,
         attackerIdx,
-        defenderIdx: (attackerIdx + 1) % players.length,
+        defenderIdx,
         table: [],
         finishedOrder: [],
         turnDeadline: Date.now() + TURN_DURATION_MS,
@@ -1512,16 +1794,19 @@ function startLocalBotGame() {
     scheduleBotTurn();
 }
 
-function sortHands() {
+function sortHands(onlyPlayerIdx = null) {
     if (!game) return;
-    game.players.forEach(p => {
-        p.hand.sort((a, b) => {
-            const at = a.suit === game.trumpSuit ? 1 : 0;
-            const bt = b.suit === game.trumpSuit ? 1 : 0;
-            if (at !== bt) return at - bt;
-            return a.rank - b.rank;
-        });
-    });
+    const sortFn = (a, b) => {
+        const at = a.suit === game.trumpSuit ? 1 : 0;
+        const bt = b.suit === game.trumpSuit ? 1 : 0;
+        if (at !== bt) return at - bt;
+        return a.rank - b.rank;
+    };
+    if (onlyPlayerIdx !== null && game.players[onlyPlayerIdx]) {
+        game.players[onlyPlayerIdx].hand.sort(sortFn);
+    } else {
+        game.players.forEach(p => p.hand.sort(sortFn));
+    }
 }
 
 function nextActiveIdx(fromIdx) {
@@ -1555,14 +1840,13 @@ function checkGameOver() {
     if (!game || game.over) return false;
     const myId = game.mode === 'online' ? currentUser?.uid : 'me';
 
-    // Record players who emptied their hands once the deck is empty
     if (game.deck.length === 0) {
         game.players.forEach(p => {
             if (p.hand.length === 0 && !game.finishedOrder.includes(p.id)) {
                 game.finishedOrder.push(p.id);
                 const place = game.finishedOrder.length;
                 if (p.id !== myId) {
-                    showToast(`🏅 ${p.name} вышел (${place} место)! Игра продолжается`);
+                    showToast(`🏅 ${p.name} вышел (${place} место)!`);
                 }
             }
         });
@@ -1571,16 +1855,11 @@ function checkGameOver() {
     const stillIn = game.players.filter(p => p.hand.length > 0);
     const myFinished = game.finishedOrder.includes(myId);
 
-    // BOT MODE:
-    // - If the human player wins (empties hand), immediately award prize for their place and finish.
-    // - If a bot wins, the human keeps playing against the remaining bots until finished or last (Durak).
     if (game.mode === 'bot' && myFinished) {
         finalizeAndShowResults(myId, stillIn);
         return true;
     }
 
-    // ONLINE MODE (and BOT MODE when human is still playing):
-    // - Wait until only 1 player (or 0) remains with cards, then distribute prizes to all.
     if (game.deck.length === 0 && stillIn.length <= 1) {
         finalizeAndShowResults(myId, stillIn);
         return true;
@@ -1604,8 +1883,10 @@ function finalizeAndShowResults(myId, stillIn) {
     const myPayout = payouts[myRankIdx] || 0;
     const isDurak = myRankIdx === finalRanking.length - 1;
 
-    if (!game.settled) {
+    const alreadySettled = game.settled || (game.roomId && settledRoomIds.has(game.roomId));
+    if (!alreadySettled) {
         game.settled = true;
+        if (game.roomId) settledRoomIds.add(game.roomId);
         if (myPayout > 0) {
             state.balance += myPayout;
             updateHUD();
@@ -1632,13 +1913,13 @@ function finalizeAndShowResults(myId, stillIn) {
     if (!isDurak) {
         AudioEngine.sfx('win');
         showModal('🏆', `${myRankIdx + 1} место! (+${myPayout} 💵)`, resultsHtml, [
-            { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
+            { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game?.mode === 'bot') startLocalBotGame(); else { leaveGame(false); openOnlineLobby(); } } },
             { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
         ]);
     } else {
         AudioEngine.sfx('take');
         showModal('🃏', 'Вы остались в дураках!', resultsHtml, [
-            { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
+            { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game?.mode === 'bot') startLocalBotGame(); else { leaveGame(false); openOnlineLobby(); } } },
             { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
         ]);
     }
@@ -1655,13 +1936,14 @@ function playerPlayCard(cardId, targetPairIdx = null) {
     if (!game || game.over) return;
     const myIdx = myPlayerIndex();
     const me = game.players[myIdx];
-    if (!me) return;
+    if (!me || me.hand.length === 0) return;
     const cardIdx = me.hand.findIndex(c => c.id === cardId);
     if (cardIdx === -1) return;
     const card = me.hand[cardIdx];
 
     const isDefender = myIdx === game.defenderIdx;
-    const isAttacker = myIdx === game.attackerIdx || (game.table.length > 0 && !isDefender);
+    const canStartAttack = game.table.length === 0 && myIdx === game.attackerIdx;
+    const canThrowInNow = game.table.length > 0 && !isDefender;
 
     if (isDefender) {
         const undefendedIndices = game.table
@@ -1679,6 +1961,7 @@ function playerPlayCard(cardId, targetPairIdx = null) {
             showToast('Эта карта не может побить атаку');
             return;
         }
+        clearTimeout(botTimeout);
         me.hand.splice(cardIdx, 1);
         card.styleId = me.faceStyle || state.activeFace;
         card.playedBy = me.id;
@@ -1687,7 +1970,7 @@ function playerPlayCard(cardId, targetPairIdx = null) {
         selectedCardId = null;
         resetTurnTimer();
         afterMoveSync();
-    } else if (isAttacker) {
+    } else if (canStartAttack || canThrowInNow) {
         const defender = game.players[game.defenderIdx];
         const undefendedCount = game.table.filter(p => !p.defense).length;
         if (game.table.length >= 6 || undefendedCount >= defender.hand.length) {
@@ -1698,6 +1981,7 @@ function playerPlayCard(cardId, targetPairIdx = null) {
             showToast('Можно подкидывать только карты того же достоинства');
             return;
         }
+        clearTimeout(botTimeout);
         me.hand.splice(cardIdx, 1);
         card.styleId = me.faceStyle || state.activeFace;
         card.playedBy = me.id;
@@ -1716,6 +2000,7 @@ function playerActionBito() {
     const allDefended = game.table.length > 0 && game.table.every(p => p.defense);
     if (!allDefended) return;
 
+    clearTimeout(botTimeout);
     AudioEngine.sfx('bito');
     const oldAttacker = game.attackerIdx;
     game.table = [];
@@ -1736,6 +2021,7 @@ function playerActionTake() {
     if (!game || game.over) return;
     if (game.table.length === 0) return;
 
+    clearTimeout(botTimeout);
     AudioEngine.sfx('take');
     const defender = game.players[game.defenderIdx];
     for (const p of game.table) {
@@ -1768,7 +2054,7 @@ function afterMoveSync() {
 }
 
 /* ============================================================================
-   8. SMART BOT AI
+8. SMART BOT AI
    ============================================================================ */
 function scheduleBotTurn() {
     clearTimeout(botTimeout);
@@ -1776,7 +2062,8 @@ function scheduleBotTurn() {
 
     const undefended = game.table.filter(p => !p.defense);
     const defender = game.players[game.defenderIdx];
-    const attacker = game.players[game.attackerIdx];
+    const effectiveAtkIdx = getEffectiveAttackerIdx();
+    const attacker = game.players[effectiveAtkIdx];
 
     if (defender.isBot && undefended.length > 0) {
         botTimeout = setTimeout(() => {
@@ -1843,46 +2130,66 @@ function scheduleBotTurn() {
         return;
     }
 
-    // If current attacker emptied hand (finished) and all cards on table are defended, auto-Bito
     if (game.table.length > 0 && undefended.length === 0 && (defender.hand.length === 0 || attacker.hand.length === 0)) {
         botTimeout = setTimeout(() => playerActionBito(), 650);
     }
 }
 
 /* ============================================================================
-   9. ONLINE MULTIPLAYER (FIRESTORE ROOMS WITH STAKES)
+9. ONLINE MULTIPLAYER (ROOMS, WHO IS ONLINE, FRIENDS & DIRECT INVITES)
    ============================================================================ */
-function openOnlineLobby() {
-    showScreen('screen-online');
-    updateOnlinePayoutUI();
-    if (!db || !currentUser) {
-        document.getElementById('online-rooms-list').innerHTML =
-            `<div class="text-center text-amber-300 text-sm py-8">Онлайн временно недоступен — попробуйте игру с ботом.</div>`;
-        return;
-    }
-    if (roomsUnsub) roomsUnsub();
-    const roomsRef = collection(db, 'artifacts', appId, 'public', 'data', 'rooms');
-    roomsUnsub = onSnapshot(roomsRef, (snap) => {
-        const rooms = [];
-        snap.forEach(d => rooms.push({ id: d.id, ...d.data() }));
-        renderOnlineRoomsList(rooms);
-    }, (err) => {
-        console.warn('Rooms listen error:', err);
+function setOnlineTab(tab) {
+    state.onlineTab = tab;
+    const tabs = [
+        { key: 'rooms', btn: 'tab-online-rooms', panel: 'panel-online-rooms' },
+        { key: 'players', btn: 'tab-online-players', panel: 'panel-online-players' },
+        { key: 'friends', btn: 'tab-online-friends', panel: 'panel-online-friends' }
+    ];
+    tabs.forEach(t => {
+        const active = t.key === tab;
+        document.getElementById(t.btn).className = `py-2 rounded-xl font-extrabold text-xs sm:text-sm transition ${active ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-white'}`;
+        document.getElementById(t.panel).classList.toggle('hidden', !active);
     });
+    if (tab === 'rooms') renderOnlineRoomsList();
+    else if (tab === 'players') renderOnlinePlayersList();
+    else if (tab === 'friends') renderFriendsList();
 }
 
-function renderOnlineRoomsList(rooms) {
-    const q = (document.getElementById('input-room-search').value || '').trim().toLowerCase();
-    const active = rooms
-        .filter(r => r.status === 'waiting' && (Date.now() - (r.updatedAt || 0) < 1000 * 60 * 30))
+function openOnlineLobby(initialTab = null) {
+    showScreen('screen-online');
+    updateOnlinePayoutUI();
+    if (initialTab) setOnlineTab(initialTab);
+    else setOnlineTab(state.onlineTab || 'rooms');
+
+    if (!db || !currentUser) {
+        document.getElementById('online-rooms-list').innerHTML =
+            `<div class="text-center text-amber-300 text-sm py-8">Нет подключения к серверу — попробуйте игру с ботом.</div>`;
+        document.getElementById('online-players-list').innerHTML =
+            `<div class="text-center text-amber-300 text-sm py-8">Список игроков в сети недоступен в офлайн-режиме.</div>`;
+        return;
+    }
+    updateMyPresence('online', null, null);
+    if (!roomsUnsub) startRoomsListener();
+    renderOnlineRoomsList();
+    renderOnlinePlayersList();
+    renderFriendsList();
+}
+
+function renderOnlineRoomsList() {
+    const list = document.getElementById('online-rooms-list');
+    if (!list) return;
+    if (!db || !currentUser) return;
+
+    const q = (document.getElementById('input-room-search')?.value || '').trim().toLowerCase().replace(/^#/, '');
+    const active = cachedRooms
+        .filter(r => r.status === 'waiting' && (Date.now() - (r.updatedAt || 0) < ROOM_TTL_MS))
         .filter(r => !q || (r.hostName || '').toLowerCase().includes(q) || (r.code || '').toLowerCase().includes(q))
         .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
 
     document.getElementById('online-rooms-count').textContent = `${active.length} столов`;
-    const list = document.getElementById('online-rooms-list');
 
     if (active.length === 0) {
-        list.innerHTML = `<div class="text-center text-slate-400 text-sm py-8">Нет открытых столов. Создайте свой стол или нажмите «Быстрый подбор»!</div>`;
+        list.innerHTML = `<div class="text-center text-slate-400 text-sm py-8">Нет открытых столов. Создайте свой стол, пригласите друга или нажмите «Быстрый подбор»!</div>`;
         return;
     }
 
@@ -1891,8 +2198,8 @@ function renderOnlineRoomsList(rooms) {
         const maxP = r.maxPlayers || 2;
         return `
         <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 flex items-center justify-between gap-2">
-            <div>
-                <div class="font-extrabold text-sm text-white">${escapeHtml(r.hostName || 'Стол')} <span class="text-xs text-sky-400">#${escapeHtml(r.code || '')}</span></div>
+            <div class="min-w-0">
+                <div class="font-extrabold text-sm text-white truncate">${escapeHtml(r.hostName || 'Стол')} <span class="text-xs text-sky-400">#${escapeHtml(r.code || '')}</span></div>
                 <div class="text-xs text-slate-400">Игроки: ${(r.players || []).length}/${maxP} • Колода ${r.deckSize || 36} • <span class="text-emerald-300 font-bold">Ставка ${st} 💵 (Банк ${st * maxP} 💵)</span></div>
             </div>
             <button data-join="${r.id}" class="btn-join-room px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs text-white shrink-0">Войти</button>
@@ -1904,98 +2211,417 @@ function renderOnlineRoomsList(rooms) {
     });
 }
 
-async function createOnlineRoom() {
+function renderOnlinePlayersList() {
+    const list = document.getElementById('online-players-list');
+    if (!list) return;
+    if (!db || !currentUser) return;
+
+    const now = Date.now();
+    const online = cachedOnlinePlayers
+        .filter(p => p.uid !== currentUser.uid && p.status !== 'offline' && (now - (p.lastSeen || 0) < ONLINE_TTL_MS))
+        .sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
+
+    if (online.length === 0) {
+        list.innerHTML = `<div class="text-center text-slate-400 text-sm py-8">Сейчас никого нет в сети. Отправьте приглашение другу в Telegram во вкладке «Друзья»!</div>`;
+        return;
+    }
+
+    list.innerHTML = online.map(p => {
+        const isFriend = state.friends.some(f => f.uid === p.uid);
+        const statusText = p.status === 'playing'
+            ? '<span class="text-amber-300">В игре</span>'
+            : p.status === 'waiting' && p.roomCode
+                ? `<span class="text-sky-300">Ждёт за столом #${escapeHtml(p.roomCode)}</span>`
+                : '<span class="text-emerald-300">Свободен</span>';
+
+        const actionBtn = p.status === 'waiting' && p.roomId
+            ? `<button data-join-room="${p.roomId}" class="btn-player-join px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs text-white">Войти</button>`
+            : p.status === 'playing'
+                ? `<span class="px-2.5 py-1 rounded-xl bg-slate-800 text-slate-400 text-[11px] font-bold">Занят</span>`
+                : `<button data-invite-uid="${p.uid}" data-invite-name="${escapeHtml(p.name || 'Игрок')}" class="btn-player-invite px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-white">Пригласить</button>`;
+
+        const friendBtn = isFriend
+            ? `<span class="px-2 py-1 rounded-lg bg-sky-950/80 border border-sky-400/30 text-sky-300 text-[11px] font-bold">Друг</span>`
+            : `<button data-add-uid="${p.uid}" data-add-name="${escapeHtml(p.name || 'Игрок')}" data-add-code="${escapeHtml(p.friendCode || '')}" class="btn-quick-friend px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs">+ Друг</button>`;
+
+        return `
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 flex items-center justify-between gap-2">
+            <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] shrink-0"></span>
+                    <span class="font-extrabold text-sm text-white truncate">${escapeHtml(p.name || 'Игрок')}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(p.friendCode || '')}</span>
+                </div>
+                <div class="text-xs mt-0.5 pl-4">${statusText}</div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                ${friendBtn}
+                ${actionBtn}
+            </div>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('.btn-player-invite').forEach(btn => {
+        btn.addEventListener('click', () => invitePlayerToTable(btn.dataset.inviteUid, btn.dataset.inviteName));
+    });
+    list.querySelectorAll('.btn-player-join').forEach(btn => {
+        btn.addEventListener('click', () => joinOnlineRoom(btn.dataset.joinRoom));
+    });
+    list.querySelectorAll('.btn-quick-friend').forEach(btn => {
+        btn.addEventListener('click', () => addFriendEntry(btn.dataset.addUid, btn.dataset.addName, btn.dataset.addCode));
+    });
+}
+
+function renderFriendsList() {
+    const list = document.getElementById('friends-list');
+    const tabCount = document.getElementById('friends-count-tab');
+    const onlineSummary = document.getElementById('friends-online-summary');
+    if (tabCount) tabCount.textContent = String(state.friends.length);
+    if (!list) return;
+
+    const now = Date.now();
+    const enriched = state.friends.map(f => {
+        const live = cachedOnlinePlayers.find(p => p.uid === f.uid || (f.friendCode && p.friendCode === f.friendCode));
+        const isOnline = live && live.status !== 'offline' && (now - (live.lastSeen || 0) < ONLINE_TTL_MS);
+        return {
+            ...f,
+            name: live?.name || f.name,
+            uid: live?.uid || f.uid,
+            friendCode: live?.friendCode || f.friendCode,
+            isOnline: Boolean(isOnline),
+            status: isOnline ? live.status : 'offline',
+            roomId: isOnline ? live.roomId : null,
+            roomCode: isOnline ? live.roomCode : null
+        };
+    }).sort((a, b) => Number(b.isOnline) - Number(a.isOnline));
+
+    const onlineCount = enriched.filter(f => f.isOnline).length;
+    if (onlineSummary) onlineSummary.textContent = `${onlineCount} в сети`;
+
+    if (enriched.length === 0) {
+        list.innerHTML = `<div class="text-center text-slate-400 text-sm py-8">Список друзей пуст. Введите код друга выше или добавьте игроков из вкладки «В сети»!</div>`;
+        return;
+    }
+
+    list.innerHTML = enriched.map(f => {
+        const dotClass = f.isOnline ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-slate-600';
+        const statusLabel = !f.isOnline
+            ? '<span class="text-slate-500">Не в сети</span>'
+            : f.status === 'playing'
+                ? '<span class="text-amber-300">В игре</span>'
+                : f.status === 'waiting' && f.roomCode
+                    ? `<span class="text-sky-300">Ждёт за столом #${escapeHtml(f.roomCode)}</span>`
+                    : '<span class="text-emerald-300">В сети</span>';
+
+        const actionBtn = f.isOnline && f.status === 'waiting' && f.roomId
+            ? `<button data-join-room="${f.roomId}" class="btn-friend-join px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs text-white">Войти</button>`
+            : f.isOnline && f.status !== 'playing'
+                ? `<button data-invite-uid="${f.uid}" data-invite-name="${escapeHtml(f.name)}" class="btn-friend-invite px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 font-bold text-xs text-white">Играть</button>`
+                : '';
+
+        return `
+        <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 flex items-center justify-between gap-2">
+            <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full ${dotClass} shrink-0"></span>
+                    <span class="font-extrabold text-sm text-white truncate">${escapeHtml(f.name)}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(f.friendCode || '')}</span>
+                </div>
+                <div class="text-xs mt-0.5 pl-4">${statusLabel}</div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+                ${actionBtn}
+                <button data-remove-uid="${f.uid}" class="btn-friend-remove px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-900/80 text-slate-300 font-bold text-xs">✕</button>
+            </div>
+        </div>`;
+    }).join('');
+
+    list.querySelectorAll('.btn-friend-invite').forEach(btn => {
+        btn.addEventListener('click', () => invitePlayerToTable(btn.dataset.inviteUid, btn.dataset.inviteName));
+    });
+    list.querySelectorAll('.btn-friend-join').forEach(btn => {
+        btn.addEventListener('click', () => joinOnlineRoom(btn.dataset.joinRoom));
+    });
+    list.querySelectorAll('.btn-friend-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+            state.friends = state.friends.filter(f => f.uid !== btn.dataset.removeUid);
+            saveUserProfileToCloud();
+            renderFriendsList();
+            renderOnlinePlayersList();
+            showToast('Удалено из друзей');
+        });
+    });
+}
+
+function addFriendEntry(uid, name, friendCode) {
+    if (!uid || uid === currentUser?.uid) {
+        showToast('Нельзя добавить самого себя');
+        return;
+    }
+    if (state.friends.some(f => f.uid === uid)) {
+        showToast('Игрок уже в списке друзей');
+        return;
+    }
+    state.friends.push({ uid, name: name || 'Игрок', friendCode: friendCode || getFriendCodeForUid(uid) });
+    saveUserProfileToCloud();
+    renderFriendsList();
+    renderOnlinePlayersList();
+    showToast(`${name || 'Игрок'} добавлен в друзья!`);
+}
+
+function handleAddFriendByQuery() {
+    const input = document.getElementById('input-add-friend');
+    const q = (input.value || '').trim();
+    if (!q) { showToast('Введите код друга или никнейм'); return; }
+    const qLower = q.toLowerCase();
+    const qUpper = q.toUpperCase();
+
+    const match = cachedOnlinePlayers.find(p =>
+        p.uid !== currentUser?.uid && (
+            (p.friendCode && p.friendCode.toUpperCase() === qUpper) ||
+            (p.name && p.name.toLowerCase() === qLower) ||
+            (p.tgUsername && p.tgUsername.toLowerCase() === qLower.replace(/^@/, ''))
+        )
+    );
+
+    if (!match) {
+        showToast('Игрок не найден. Попросите друга открыть игру хотя бы один раз!');
+        return;
+    }
+    addFriendEntry(match.uid, match.name, match.friendCode);
+    input.value = '';
+}
+
+async function invitePlayerToTable(targetUid, targetName) {
     if (!db || !currentUser) { showToast('Нет подключения к серверу'); return; }
+    if (!targetUid) return;
+
+    let roomInfo = activeWaitingRoom;
+    if (!roomInfo) {
+        roomInfo = await createOnlineRoom(true);
+        if (!roomInfo) return;
+    }
+
+    const inviteId = `inv_${currentUser.uid}_${targetUid}_${Date.now()}`;
+    await setDoc(inviteDocRef(inviteId), {
+        toUid: targetUid,
+        fromUid: currentUser.uid,
+        fromName: state.nickname,
+        roomId: roomInfo.roomId,
+        roomCode: roomInfo.code,
+        stake: roomInfo.stake,
+        maxPlayers: roomInfo.maxPlayers,
+        deckSize: roomInfo.deckSize,
+        status: 'pending',
+        createdAt: Date.now()
+    }).catch(() => {});
+
+    showToast(`Приглашение отправлено игроку ${targetName}!`);
+}
+
+function buildStartedOnlineMatchData(players, deckSize) {
+    const deck = createDeck(deckSize || 36);
+    const trumpCard = deck[0];
+    const trumpSuit = trumpCard.suit;
+    const dealtPlayers = players.map(p => ({ ...p, hand: [] }));
+    for (let r = 0; r < 6; r++) {
+        for (const p of dealtPlayers) {
+            if (deck.length > 0) p.hand.push(deck.pop());
+        }
+    }
+    // В онлайне первый ход выбирается СЛУЧАЙНО
+    const attackerIdx = Math.floor(Math.random() * dealtPlayers.length);
+    const defenderIdx = (attackerIdx + 1) % dealtPlayers.length;
+    return {
+        status: 'playing',
+        players: dealtPlayers,
+        deck,
+        trumpCard,
+        trumpSuit,
+        attackerIdx,
+        defenderIdx,
+        table: [],
+        finishedOrder: [],
+        turnDeadline: Date.now() + TURN_DURATION_MS,
+        updatedAt: Date.now()
+    };
+}
+
+async function createOnlineRoom(returnMeta = false) {
+    if (!db || !currentUser) { showToast('Нет подключения к серверу'); return null; }
     const maxPlayers = Number(document.getElementById('online-max-players').value) || 2;
     const deckSize = Number(document.getElementById('online-deck-size').value) || 36;
     const stake = Number(document.getElementById('online-stake-select').value) || 100;
-    if (!ensureBalanceForStake(stake)) return;
+    if (!ensureBalanceForStake(stake)) return null;
 
     const code = Math.random().toString(36).substring(2, 6).toUpperCase();
     const roomId = `room_${Date.now()}_${code}`;
-    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
 
     state.balance -= stake;
     updateHUD();
     saveUserProfileToCloud();
 
-    await setDoc(roomRef, {
-        code,
-        hostId: currentUser.uid,
-        hostName: state.nickname,
-        status: 'waiting',
-        maxPlayers,
-        deckSize,
-        stake,
-        players: [{
-            id: currentUser.uid,
-            name: state.nickname,
-            isBot: false,
-            faceStyle: state.activeFace,
-            backStyle: state.activeBack,
-            hand: []
-        }],
-        updatedAt: Date.now()
-    });
+    try {
+        await setDoc(roomDocRef(roomId), {
+            code,
+            hostId: currentUser.uid,
+            hostName: state.nickname,
+            status: 'waiting',
+            maxPlayers,
+            deckSize,
+            stake,
+            players: [{
+                id: currentUser.uid,
+                name: state.nickname,
+                isBot: false,
+                faceStyle: state.activeFace,
+                backStyle: state.activeBack,
+                hand: []
+            }],
+            updatedAt: Date.now()
+        });
+    } catch (err) {
+        state.balance += stake;
+        updateHUD();
+        saveUserProfileToCloud();
+        showToast('Ошибка создания стола. Проверьте правила Firestore.');
+        return null;
+    }
+
+    activeWaitingRoom = { roomId, code, stake, maxPlayers, deckSize, isHost: true };
+    updateMyPresence('waiting', roomId, code);
     subscribeToRoom(roomId, true);
+    return returnMeta ? activeWaitingRoom : roomId;
+}
+
+async function joinOnlineRoomByCode(rawCode) {
+    const code = (rawCode || '').trim().toUpperCase().replace(/^#/, '');
+    if (!code) { showToast('Введите код стола'); return; }
+    const found = cachedRooms.find(r => r.status === 'waiting' && (r.code || '').toUpperCase() === code);
+    if (!found) {
+        showToast(`Стол #${code} не найден или игра уже началась`);
+        return;
+    }
+    await joinOnlineRoom(found.id);
 }
 
 async function joinOnlineRoom(roomId) {
-    if (!db || !currentUser) return;
-    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
-    const snap = await getDoc(roomRef);
-    if (!snap.exists()) { showToast('Стол уже закрыт'); return; }
-    const data = snap.data();
-    const stake = data.stake || 100;
-    const players = data.players || [];
+    if (!db || !currentUser) { showToast('Нет подключения к серверу'); return; }
+    const ref = roomDocRef(roomId);
 
-    if (!players.some(p => p.id === currentUser.uid)) {
-        if (players.length >= (data.maxPlayers || 2)) { showToast('Стол уже заполнен'); return; }
-        if (!ensureBalanceForStake(stake)) return;
-        state.balance -= stake;
+    try {
+        let deductedStake = 0;
+        let joinedMeta = null;
+
+        await runTransaction(db, async (tx) => {
+            const snap = await tx.get(ref);
+            if (!snap.exists()) throw new Error('ROOM_CLOSED');
+            const data = snap.data();
+            if (data.status !== 'waiting') throw new Error('ALREADY_STARTED');
+
+            const stake = data.stake || 100;
+            const maxPlayers = data.maxPlayers || 2;
+            const players = Array.isArray(data.players) ? [...data.players] : [];
+            const alreadyIn = players.some(p => p.id === currentUser.uid);
+
+            if (!alreadyIn) {
+                if (players.length >= maxPlayers) throw new Error('ROOM_FULL');
+                if (state.balance < stake) throw new Error('NO_BALANCE');
+                players.push({
+                    id: currentUser.uid,
+                    name: state.nickname,
+                    isBot: false,
+                    faceStyle: state.activeFace,
+                    backStyle: state.activeBack,
+                    hand: []
+                });
+                deductedStake = stake;
+            }
+
+            joinedMeta = { roomId, code: data.code, stake, maxPlayers, deckSize: data.deckSize || 36, isHost: data.hostId === currentUser.uid };
+
+            if (players.length >= maxPlayers) {
+                tx.update(ref, buildStartedOnlineMatchData(players, data.deckSize || 36));
+            } else {
+                tx.update(ref, { players, updatedAt: Date.now() });
+            }
+        });
+
+        if (deductedStake > 0) {
+            state.balance -= deductedStake;
+            updateHUD();
+            saveUserProfileToCloud();
+        }
+        activeWaitingRoom = joinedMeta;
+        updateMyPresence('waiting', roomId, joinedMeta?.code || null);
+        subscribeToRoom(roomId, joinedMeta?.isHost || false);
+    } catch (err) {
+        const m = err?.message || '';
+        if (m === 'ROOM_CLOSED') showToast('Стол уже закрыт');
+        else if (m === 'ALREADY_STARTED') showToast('Игра за этим столом уже началась');
+        else if (m === 'ROOM_FULL') showToast('Стол уже заполнен');
+        else if (m === 'NO_BALANCE') ensureBalanceForStake(100);
+        else showToast('Не удалось войти за стол');
+    }
+}
+
+async function hostForceStartRoom(roomId) {
+    if (!db || !currentUser || !roomId) return;
+    const ref = roomDocRef(roomId);
+    try {
+        await runTransaction(db, async (tx) => {
+            const snap = await tx.get(ref);
+            if (!snap.exists()) return;
+            const d = snap.data();
+            if (d.status !== 'waiting' || (d.players || []).length < 2) return;
+            tx.update(ref, buildStartedOnlineMatchData(d.players, d.deckSize || 36));
+        });
+    } catch (_) {
+        showToast('Не удалось запустить игру');
+    }
+}
+
+async function cancelOrLeaveWaitingRoom(roomId, isHost, stake) {
+    hideModal();
+    if (activeRoomUnsub) { activeRoomUnsub(); activeRoomUnsub = null; }
+    activeWaitingRoom = null;
+    updateMyPresence('online', null, null);
+
+    if (stake > 0) {
+        state.balance += stake;
         updateHUD();
         saveUserProfileToCloud();
-        players.push({
-            id: currentUser.uid,
-            name: state.nickname,
-            isBot: false,
-            faceStyle: state.activeFace,
-            backStyle: state.activeBack,
-            hand: []
-        });
     }
 
-    if (players.length >= (data.maxPlayers || 2)) {
-        const deck = createDeck(data.deckSize || 36);
-        const trumpCard = deck[0];
-        const trumpSuit = trumpCard.suit;
-        for (let r = 0; r < 6; r++) {
-            for (const p of players) { if (deck.length > 0) p.hand.push(deck.pop()); }
+    if (!db || !currentUser || !roomId) return;
+    const ref = roomDocRef(roomId);
+    try {
+        if (isHost) {
+            await deleteDoc(ref);
+        } else {
+            await runTransaction(db, async (tx) => {
+                const snap = await tx.get(ref);
+                if (!snap.exists()) return;
+                const d = snap.data();
+                if (d.status !== 'waiting') return;
+                const filtered = (d.players || []).filter(p => p.id !== currentUser.uid);
+                tx.update(ref, { players: filtered, updatedAt: Date.now() });
+            });
         }
-        await updateDoc(roomRef, {
-            status: 'playing',
-            players,
-            deck,
-            trumpCard,
-            trumpSuit,
-            attackerIdx: 0,
-            defenderIdx: 1,
-            table: [],
-            finishedOrder: [],
-            turnDeadline: Date.now() + TURN_DURATION_MS,
-            updatedAt: Date.now()
-        });
-    } else {
-        await updateDoc(roomRef, { players, updatedAt: Date.now() });
-    }
-    subscribeToRoom(roomId, false);
+    } catch (_) {}
+    openOnlineLobby();
 }
 
 async function quickMatchmaking() {
     if (!db || !currentUser) { showToast('Нет подключения — играйте с ботом!'); return; }
-    const listBtns = document.querySelectorAll('.btn-join-room');
-    if (listBtns.length > 0) {
-        joinOnlineRoom(listBtns[0].dataset.join);
+    const openRoom = cachedRooms.find(r =>
+        r.status === 'waiting' &&
+        (Date.now() - (r.updatedAt || 0) < ROOM_TTL_MS) &&
+        (r.players || []).length < (r.maxPlayers || 2) &&
+        !(r.players || []).some(p => p.id === currentUser.uid)
+    );
+    if (openRoom) {
+        await joinOnlineRoom(openRoom.id);
     } else {
         await createOnlineRoom();
     }
@@ -2003,31 +2629,70 @@ async function quickMatchmaking() {
 
 function subscribeToRoom(roomId, isHost) {
     if (activeRoomUnsub) activeRoomUnsub();
-    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
-    activeRoomUnsub = onSnapshot(roomRef, (snap) => {
+    const ref = roomDocRef(roomId);
+    activeRoomUnsub = onSnapshot(ref, (snap) => {
         if (!snap.exists()) {
+            const refund = activeWaitingRoom?.roomId === roomId ? (activeWaitingRoom.stake || 0) : 0;
+            activeWaitingRoom = null;
+            if (refund > 0) {
+                state.balance += refund;
+                updateHUD();
+                saveUserProfileToCloud();
+            }
             hideModal();
             showToast('Стол закрыт');
             leaveGame();
             return;
         }
+
         const d = snap.data();
         const stake = d.stake || 100;
+        const players = d.players || [];
+
         if (d.status === 'waiting') {
-            showModal('⏳', `Стол #${d.code}`, `Ожидаем соперников... (${(d.players || []).length}/${d.maxPlayers || 2})<br>Ставка: <b class="text-emerald-300">${stake} 💵</b> • Банк: <b class="text-emerald-300">${stake * (d.maxPlayers || 2)} 💵</b><br><span class="text-xs text-slate-400">Сообщите другу код #${d.code} или ваш ник</span>`, [
-                { label: 'Отменить и вернуть ставку', primary: false, onClick: async () => {
-                    hideModal();
-                    state.balance += stake;
-                    updateHUD();
-                    saveUserProfileToCloud();
-                    if (isHost || d.hostId === currentUser?.uid) await deleteDoc(roomRef).catch(() => {});
-                    leaveGame();
-                }}
-            ]);
-        } else if (d.status === 'playing') {
-            hideModal();
-            const wasSettled = game?.roomId === roomId ? game.settled : false;
-            const { totalBank, payouts } = calculatePayouts((d.players || []).length, stake);
+            const amHost = isHost || d.hostId === currentUser?.uid;
+            activeWaitingRoom = { roomId, code: d.code, stake, maxPlayers: d.maxPlayers || 2, deckSize: d.deckSize || 36, isHost: amHost };
+            const namesList = players.map(p => escapeHtml(p.name)).join(', ');
+            const actions = [];
+            if (amHost && players.length >= 2) {
+                actions.push({
+                    label: `▶ Начать сейчас (${players.length} игр.)`,
+                    primary: true,
+                    onClick: () => hostForceStartRoom(roomId)
+                });
+            }
+            actions.push({
+                label: '📨 Пригласить друга в Telegram',
+                primary: !(amHost && players.length >= 2),
+                onClick: () => shareInviteViaTelegram(d.code, stake)
+            });
+            actions.push({
+                label: `📋 Скопировать код #${d.code}`,
+                primary: false,
+                onClick: () => copyTextToClipboard(d.code, `Код стола #${d.code} скопирован!`)
+            });
+            actions.push({
+                label: 'Отменить и вернуть ставку',
+                primary: false,
+                onClick: () => cancelOrLeaveWaitingRoom(roomId, amHost, stake)
+            });
+
+            showModal(
+                '⏳',
+                `Стол #${d.code}`,
+                `Ожидаем игроков: <b>${players.length}/${d.maxPlayers || 2}</b><br>
+                <span class="text-xs text-sky-300">${namesList}</span><br>
+                Ставка: <b class="text-emerald-300">${stake} 💵</b> • Банк: <b class="text-emerald-300">${stake * (d.maxPlayers || 2)} 💵</b><br>
+                <span class="text-xs text-slate-400">Первый ход определится случайно 🎲</span>`,
+                actions
+            );
+        } else if (d.status === 'playing' || d.status === 'finished') {
+            activeWaitingRoom = null;
+            updateMyPresence('playing', roomId, d.code || null);
+            const wasOver = game?.roomId === roomId && game.over;
+            const wasSettled = (game?.roomId === roomId && game.settled) || settledRoomIds.has(roomId);
+            const { totalBank, payouts } = calculatePayouts(players.length, stake);
+
             game = {
                 mode: 'online',
                 roomId,
@@ -2037,29 +2702,38 @@ function subscribeToRoom(roomId, isHost) {
                 deck: d.deck || [],
                 trumpSuit: d.trumpSuit,
                 trumpCard: d.trumpCard,
-                players: d.players || [],
+                players,
                 attackerIdx: d.attackerIdx || 0,
-                defenderIdx: d.defenderIdx || 1,
+                defenderIdx: d.defenderIdx ?? 1,
                 table: d.table || [],
                 finishedOrder: d.finishedOrder || [],
                 turnDeadline: d.turnDeadline || (Date.now() + TURN_DURATION_MS),
-                over: false,
+                over: d.status === 'finished' || wasOver,
                 settled: wasSettled
             };
             timeoutActionLock = false;
-            sortHands();
+            sortHands(myPlayerIndex());
             showScreen('screen-game');
             renderGame();
-            startTurnTimerLoop();
-            checkGameOver();
+
+            if (d.status === 'finished') {
+                if (!wasOver) {
+                    const stillIn = game.players.filter(p => p.hand.length > 0);
+                    finalizeAndShowResults(currentUser?.uid, stillIn);
+                }
+            } else {
+                hideModal();
+                startTurnTimerLoop();
+                checkGameOver();
+            }
         }
     }, (err) => console.warn('Room sync error:', err));
 }
 
 async function pushOnlineRoomState() {
     if (!db || !currentUser || !game?.roomId) return;
-    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', game.roomId);
-    await updateDoc(roomRef, {
+    await updateDoc(roomDocRef(game.roomId), {
+        status: game.over ? 'finished' : 'playing',
         deck: game.deck,
         players: game.players,
         attackerIdx: game.attackerIdx,
@@ -2072,27 +2746,27 @@ async function pushOnlineRoomState() {
 }
 
 /* ============================================================================
-   10. RENDERING GAME TABLE, OPPONENTS, HAND & DRAG-AND-DROP
+10. RENDERING GAME TABLE, OPPONENTS, HAND & DRAG-AND-DROP
    ============================================================================ */
 function renderGame() {
     if (!game) return;
     const myIdx = myPlayerIndex();
     const me = game.players[myIdx];
     const myId = me?.id || (game.mode === 'online' ? currentUser?.uid : 'me');
-    const isDefender = myIdx === game.defenderIdx;
-    const isAttacker = myIdx === game.attackerIdx;
+    const isSpectator = me && me.hand.length === 0 && game.deck.length === 0;
+    const isDefender = !isSpectator && myIdx === game.defenderIdx;
+    const isAttacker = !isSpectator && myIdx === game.attackerIdx;
+    const effectiveAtkIdx = getEffectiveAttackerIdx();
+    const canPressBito = !isSpectator && !isDefender && myIdx === effectiveAtkIdx;
     const undefended = game.table.filter(p => !p.defense);
 
-    // Keep player's current design synced if changed
     if (me) {
         me.faceStyle = state.activeFace;
         me.backStyle = state.activeBack;
     }
 
-    // Table Bank Pill
     document.getElementById('game-bank-pill').textContent = `🏦 Банк: ${game.totalBank || (game.players.length * 100)} 💵`;
 
-    // 1. Render Opponents (Always visible with their own deck back design)
     const oppRow = document.getElementById('opponents-row');
     const opps = game.players.map((p, idx) => ({ p, idx })).filter(x => x.idx !== myIdx);
     const activeTurnIdx = getActiveTurnPlayerIdx();
@@ -2123,7 +2797,6 @@ function renderGame() {
             </div>`;
     }).join('');
 
-    // 2. Deck & Trump Visuals
     document.getElementById('deck-count-text').textContent = game.deck.length;
     const trumpBadge = document.getElementById('trump-suit-badge');
     const isRedTrump = game.trumpSuit === 'hearts' || game.trumpSuit === 'diamonds';
@@ -2145,7 +2818,6 @@ function renderGame() {
         deckStack.style.opacity = '0.65';
     }
 
-    // 3. Battle Pairs on Table (Exact 60 FPS Flight from Opponent/Player Hand + Player's Card Design)
     const battleGrid = document.getElementById('table-battle-grid');
     const dropHint = document.getElementById('table-drop-hint');
     dropHint.classList.toggle('hidden', game.table.length > 0);
@@ -2177,7 +2849,6 @@ function renderGame() {
             </div>`;
     }).join('');
 
-    // Trigger smooth 60 FPS GPU-accelerated flight from the exact player/opponent position
     if (newlyPlaced.length > 0) {
         requestAnimationFrame(() => {
             newlyPlaced.forEach(item => {
@@ -2193,25 +2864,27 @@ function renderGame() {
         });
     });
 
-    // Online spectator banner when player finished early and waits for others
     const specBanner = document.getElementById('spectator-banner');
     const myFinIdx = game.finishedOrder.indexOf(myId);
     if (game.mode === 'online' && myFinIdx !== -1 && !game.over) {
         const { payouts } = calculatePayouts(game.players.length, game.stake || 100);
         const prize = payouts[myFinIdx] || 0;
-        specBanner.textContent = `🏆 Вы вышли на ${myFinIdx + 1} месте! Ожидаем окончания партии для получения приза (+${prize} 💵)...`;
+        specBanner.textContent = `🏆 Вы вышли на ${myFinIdx + 1} месте! Ожидаем окончания партии (+${prize} 💵)...`;
         specBanner.classList.remove('hidden');
     } else {
         specBanner.classList.add('hidden');
     }
 
-    // 4. Status Pill & Action Buttons
     const statusPill = document.getElementById('game-status-pill');
     const roleBadge = document.getElementById('player-role-badge');
     const actionBtns = document.getElementById('game-action-buttons');
     actionBtns.innerHTML = '';
 
-    if (isDefender) {
+    if (isSpectator) {
+        roleBadge.textContent = '🏆 Вышли';
+        roleBadge.className = 'px-3 py-1.5 rounded-xl bg-emerald-900/70 border border-emerald-400/40 text-xs font-extrabold text-emerald-200';
+        statusPill.textContent = 'Наблюдение за партией...';
+    } else if (isDefender) {
         roleBadge.textContent = '🛡️ Защита';
         roleBadge.className = 'px-3 py-1.5 rounded-xl bg-sky-900/70 border border-sky-400/40 text-xs font-extrabold text-sky-200';
         statusPill.textContent = undefended.length > 0 ? 'Отбивайтесь! Перетащите карту на стол' : 'Отбито! Ждём хода соперника...';
@@ -2223,17 +2896,18 @@ function renderGame() {
         roleBadge.textContent = isAttacker ? '⚔️ Атака' : '➕ Подкинуть';
         roleBadge.className = 'px-3 py-1.5 rounded-xl bg-amber-900/60 border border-amber-400/40 text-xs font-extrabold text-amber-200';
         if (game.table.length === 0) {
-            statusPill.textContent = isAttacker ? 'Ваш ход — перетащите карту на стол!' : `Ходит ${game.players[game.attackerIdx].name}...`;
+            statusPill.textContent = isAttacker ? 'Ваш ход — перетащите карту на стол!' : `Ходит ${game.players[game.attackerIdx]?.name || 'игрок'}...`;
         } else if (undefended.length > 0) {
-            statusPill.textContent = `${game.players[game.defenderIdx].name} отбивается...`;
-        } else {
+            statusPill.textContent = `${game.players[game.defenderIdx]?.name || 'Игрок'} отбивается...`;
+        } else if (canPressBito) {
             statusPill.textContent = 'Можно подкинуть карту или нажать «Бито»';
             actionBtns.innerHTML = `<button id="btn-act-bito" class="px-5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-black shadow-lg">✅ Бито</button>`;
             document.getElementById('btn-act-bito').addEventListener('click', playerActionBito);
+        } else {
+            statusPill.textContent = 'Можно подкинуть карту...';
         }
     }
 
-    // 5. Player Hand with Overlap & Pointer Drag-and-Drop
     const handBox = document.getElementById('player-hand-container');
     handBox.innerHTML = '';
     if (!me) return;
@@ -2245,7 +2919,7 @@ function renderGame() {
         const el = document.createElement('div');
         const isPlayable = isDefender
             ? undefended.some(p => canBeat(p.attack, card, game.trumpSuit))
-            : (isAttacker || game.table.length > 0) && canThrowIn(card, game.table);
+            : !isSpectator && ((game.table.length === 0 && isAttacker) || (game.table.length > 0 && canThrowIn(card, game.table)));
 
         el.className = `card-3d-wrap hand-card ${isPlayable ? 'playable' : ''} ${selectedCardId === card.id ? 'selected' : ''}`;
         el.style.marginLeft = i === 0 ? '0px' : `${overlap}px`;
@@ -2368,7 +3042,7 @@ function attachCardDragAndTap(el, card) {
 }
 
 /* ============================================================================
-   11. SHOP UI & 3D CARD PREVIEW
+11. SHOP UI & 3D CARD PREVIEW
    ============================================================================ */
 function renderShop() {
     const isFaces = state.shopTab === 'faces';
@@ -2458,7 +3132,7 @@ function renderShop() {
 }
 
 /* ============================================================================
-   12. NAVIGATION, MODALS, TOASTS & EVENT BINDINGS
+12. NAVIGATION, MODALS, TOASTS & EVENT BINDINGS
    ============================================================================ */
 function showScreen(id) {
     ['screen-menu', 'screen-bot-setup', 'screen-online', 'screen-shop', 'screen-settings', 'screen-game'].forEach(s => {
@@ -2466,16 +3140,18 @@ function showScreen(id) {
     });
 }
 
-function leaveGame() {
+function leaveGame(goMenu = true) {
     clearTimeout(botTimeout);
     if (rafTimerId) { cancelAnimationFrame(rafTimerId); rafTimerId = null; }
     if (activeRoomUnsub) { activeRoomUnsub(); activeRoomUnsub = null; }
+    activeWaitingRoom = null;
     game = null;
     selectedCardId = null;
     animatedTableCardIds.clear();
     timeoutActionLock = false;
     document.getElementById('spectator-banner')?.classList.add('hidden');
-    showScreen('screen-menu');
+    updateMyPresence('online', null, null);
+    if (goMenu) showScreen('screen-menu');
 }
 
 function syncMusicTrackButtons() {
@@ -2489,6 +3165,7 @@ function updateHUD() {
     document.getElementById('hud-player-name').textContent = state.nickname;
     document.getElementById('hud-balance').textContent = state.balance;
     document.getElementById('input-nickname').value = state.nickname;
+    document.getElementById('my-friend-code').textContent = state.friendCode;
     document.getElementById('btn-quick-music').textContent = state.musicEnabled ? '🎵' : '🔇';
     document.getElementById('toggle-music').textContent = state.musicEnabled ? 'ВКЛ' : 'ВЫКЛ';
     document.getElementById('toggle-music').className = `px-3.5 py-1.5 rounded-xl text-white text-xs font-black ${state.musicEnabled ? 'bg-emerald-600' : 'bg-slate-700'}`;
@@ -2502,7 +3179,7 @@ function showToast(msg) {
     box.textContent = msg;
     box.classList.remove('hidden');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => box.classList.add('hidden'), 2400);
+    toastTimer = setTimeout(() => box.classList.add('hidden'), 2600);
 }
 
 function showModal(icon, title, descHtml, actions) {
@@ -2538,6 +3215,7 @@ document.getElementById('btn-settings-fullscreen').addEventListener('click', tog
 document.getElementById('btn-quick-music').addEventListener('click', () => {
     state.musicEnabled = !state.musicEnabled;
     if (state.musicEnabled) AudioEngine.startMusic(); else AudioEngine.stopMusic();
+    saveLocalProfile();
     updateHUD();
 });
 
@@ -2576,12 +3254,33 @@ document.querySelectorAll('.stake-opt-btn').forEach(btn => {
 });
 document.getElementById('btn-start-bot-game').addEventListener('click', () => { AudioEngine.sfx('click'); startLocalBotGame(); });
 
-// Online Config & Buttons
+// Online Tabs, Config & Social Buttons
+document.getElementById('tab-online-rooms').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('rooms'); });
+document.getElementById('tab-online-players').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('players'); });
+document.getElementById('tab-online-friends').addEventListener('click', () => { AudioEngine.sfx('click'); setOnlineTab('friends'); });
 document.getElementById('online-max-players').addEventListener('change', updateOnlinePayoutUI);
 document.getElementById('online-stake-select').addEventListener('change', updateOnlinePayoutUI);
 document.getElementById('btn-online-quick').addEventListener('click', quickMatchmaking);
-document.getElementById('btn-online-create').addEventListener('click', createOnlineRoom);
-document.getElementById('btn-room-search').addEventListener('click', () => openOnlineLobby());
+document.getElementById('btn-online-create').addEventListener('click', () => createOnlineRoom(false));
+document.getElementById('input-room-search').addEventListener('input', renderOnlineRoomsList);
+document.getElementById('btn-join-by-code').addEventListener('click', () => {
+    const val = document.getElementById('input-room-search').value.trim();
+    if (val.replace(/^#/, '').length === 4) {
+        joinOnlineRoomByCode(val);
+    } else {
+        renderOnlineRoomsList();
+    }
+});
+document.getElementById('btn-refresh-presence').addEventListener('click', () => {
+    updateMyPresence('online', null, null);
+    renderOnlinePlayersList();
+    showToast('Список обновлён');
+});
+document.getElementById('btn-copy-friend-code').addEventListener('click', () => {
+    copyTextToClipboard(state.friendCode, `Код друга ${state.friendCode} скопирован!`);
+});
+document.getElementById('btn-share-tg-app').addEventListener('click', () => shareInviteViaTelegram());
+document.getElementById('btn-add-friend').addEventListener('click', handleAddFriendByQuery);
 
 // Shop Tabs & Rank Switcher
 document.getElementById('tab-shop-faces').addEventListener('click', () => { state.shopTab = 'faces'; renderShop(); });
@@ -2597,12 +3296,19 @@ document.querySelectorAll('.shop-rank-btn').forEach(btn => {
 // Settings Controls
 document.getElementById('btn-save-nick').addEventListener('click', () => {
     const v = document.getElementById('input-nickname').value.trim();
-    if (v) { state.nickname = v; updateHUD(); saveUserProfileToCloud(); showToast('Никнейм сохранён'); }
+    if (v) {
+        state.nickname = v;
+        updateHUD();
+        saveUserProfileToCloud();
+        updateMyPresence('online', null, null);
+        showToast('Никнейм сохранён');
+    }
 });
-document.getElementById('toggle-sfx').addEventListener('click', () => { state.sfxEnabled = !state.sfxEnabled; updateHUD(); });
+document.getElementById('toggle-sfx').addEventListener('click', () => { state.sfxEnabled = !state.sfxEnabled; saveLocalProfile(); updateHUD(); });
 document.getElementById('toggle-music').addEventListener('click', () => {
     state.musicEnabled = !state.musicEnabled;
     if (state.musicEnabled) AudioEngine.startMusic(); else AudioEngine.stopMusic();
+    saveLocalProfile();
     updateHUD();
 });
 document.querySelectorAll('.music-track-btn').forEach(btn => {
@@ -2617,6 +3323,7 @@ document.querySelectorAll('.music-track-btn').forEach(btn => {
 
 // Boot App
 window.addEventListener('load', () => {
+    loadLocalProfile();
     updateHUD();
     updateBotPayoutUI();
     updateOnlinePayoutUI();
