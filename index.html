@@ -150,12 +150,6 @@
             shape-rendering: geometricPrecision;
             text-rendering: geometricPrecision;
         }
-        .card-3d-wrap svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-            border-radius: 10px;
-        }
         .hand-card:hover {
             transform: translateY(-14px) scale(1.05);
             z-index: 40 !important;
@@ -673,6 +667,14 @@
                     ⛶ Развернуть на весь экран (60 FPS)
                 </button>
             </div>
+        </div>
+    </section>
+
+    <!-- GAMEPLAY TABLE SCREEN -->
+    <section id="screen-game" class="hidden flex-1 flex flex-col justify-between overflow-hidden relative">
+        <!-- Opponents Row -->
+        <div id="opponents-row" class="w-full px-2 pt-2 pb-1 flex items-end justify-center gap-3 sm:gap-5 flex-wrap z-20 shrink-0 min-h-[84px]"></div>
+
         <!-- Turn Status, Table Bank & 15s Timer Banner -->
         <div class="w-full flex flex-col items-center justify-center gap-1 px-3 py-1 z-20 shrink-0">
             <div class="flex items-center justify-center gap-2 flex-wrap">
@@ -1641,6 +1643,42 @@ function finalizeAndShowResults(myId, stillIn) {
         ]);
     }
 }
+
+function myPlayerIndex() {
+    if (!game) return 0;
+    const myId = game.mode === 'online' ? currentUser?.uid : 'me';
+    const idx = game.players.findIndex(p => p.id === myId);
+    return idx === -1 ? 0 : idx;
+}
+
+function playerPlayCard(cardId, targetPairIdx = null) {
+    if (!game || game.over) return;
+    const myIdx = myPlayerIndex();
+    const me = game.players[myIdx];
+    if (!me) return;
+    const cardIdx = me.hand.findIndex(c => c.id === cardId);
+    if (cardIdx === -1) return;
+    const card = me.hand[cardIdx];
+
+    const isDefender = myIdx === game.defenderIdx;
+    const isAttacker = myIdx === game.attackerIdx || (game.table.length > 0 && !isDefender);
+
+    if (isDefender) {
+        const undefendedIndices = game.table
+            .map((p, i) => (!p.defense ? i : -1))
+            .filter(i => i !== -1);
+        if (undefendedIndices.length === 0) {
+            showToast('Все карты уже отбиты');
+            return;
+        }
+        let chosenIdx = targetPairIdx;
+        if (chosenIdx === null || chosenIdx === undefined || game.table[chosenIdx]?.defense) {
+            chosenIdx = undefendedIndices.find(i => canBeat(game.table[i].attack, card, game.trumpSuit));
+        }
+        if (chosenIdx === undefined || !canBeat(game.table[chosenIdx].attack, card, game.trumpSuit)) {
+            showToast('Эта карта не может побить атаку');
+            return;
+        }
         me.hand.splice(cardIdx, 1);
         card.styleId = me.faceStyle || state.activeFace;
         card.playedBy = me.id;
