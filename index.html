@@ -24,7 +24,7 @@
 
         :root {
 
-            --card-scale: 1.2;
+            --card-scale: 1.5;
 
         }
 
@@ -126,9 +126,9 @@
 
             width: 100%;
 
-            min-height: 245px;
+            min-height: 225px;
 
-            padding-bottom: 34px;
+            padding-bottom: 30px;
 
             transform-style: preserve-3d;
 
@@ -144,7 +144,7 @@
 
             bottom: 4px;
 
-            height: 44px;
+            height: 40px;
 
             display: flex;
 
@@ -160,7 +160,7 @@
 
             width: 26px;
 
-            height: 44px;
+            height: 40px;
 
             border-radius: 6px 6px 12px 12px;
 
@@ -178,11 +178,11 @@
 
             width: 100%;
 
-            min-height: 225px;
+            min-height: 205px;
 
             border-radius: 150px / 76px;
 
-            padding: 13px;
+            padding: 12px;
 
             background: linear-gradient(180deg, #7c3f1c 0%, #4e240d 55%, #2d1306 100%);
 
@@ -206,11 +206,11 @@
 
             width: 100%;
 
-            min-height: 198px;
+            min-height: 180px;
 
             border-radius: 138px / 66px;
 
-            padding: 14px 24px;
+            padding: 12px 22px;
 
             background: radial-gradient(ellipse at 50% 42%, #136f4a 0%, #0b4c32 62%, #073120 100%);
 
@@ -266,9 +266,9 @@
 
             position: relative;
 
-            width: calc(72px * var(--card-scale));
+            width: calc(68px * var(--card-scale));
 
-            height: calc(104px * var(--card-scale));
+            height: calc(98px * var(--card-scale));
 
             border-radius: 10px;
 
@@ -284,11 +284,9 @@
 
             flex-shrink: 0;
 
-            box-shadow: 0 6px 16px rgba(0,0,0,0.48);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.52);
 
             will-change: transform, opacity;
-
-            transform: translateZ(0);
 
         }
 
@@ -308,39 +306,47 @@
 
         }
 
+
+
+        /* Semicircle Fan Hand Cards */
+
         .hand-card {
 
             touch-action: none;
+
+            transform-origin: center bottom;
+
+            transform: translateY(var(--fan-y, 0px)) rotate(var(--fan-rot, 0deg)) translateZ(0);
 
         }
 
         .hand-card:hover {
 
-            transform: translateY(-14px) scale(1.05);
+            transform: translateY(calc(var(--fan-y, 0px) - 18px)) rotate(var(--fan-rot, 0deg)) scale(1.06) translateZ(0);
 
-            z-index: 40 !important;
+            z-index: 60 !important;
 
         }
 
         .hand-card.selected {
 
-            transform: translateY(-20px) scale(1.08);
+            transform: translateY(calc(var(--fan-y, 0px) - 26px)) rotate(0deg) scale(1.1) translateZ(0);
 
-            box-shadow: 0 0 0 2px #38bdf8, 0 14px 26px rgba(56,189,248,0.45);
+            box-shadow: 0 0 0 3px #38bdf8, 0 16px 28px rgba(56,189,248,0.55);
 
-            z-index: 50 !important;
+            z-index: 70 !important;
 
         }
 
         .hand-card.playable {
 
-            box-shadow: 0 0 0 1.5px rgba(74, 222, 128, 0.8), 0 8px 18px rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.85), 0 8px 18px rgba(0,0,0,0.55);
 
         }
 
         .hand-card.transferable {
 
-            box-shadow: 0 0 0 2px rgba(232, 121, 249, 0.9), 0 8px 20px rgba(217,70,239,0.45);
+            box-shadow: 0 0 0 2.5px rgba(232, 121, 249, 0.95), 0 8px 20px rgba(217,70,239,0.5);
 
         }
 
@@ -352,7 +358,7 @@
 
             z-index: 9999;
 
-            transform: translate(-50%, -50%) scale(1.12) rotate(-4deg);
+            transform: translate(-50%, -50%) scale(1.08) rotate(-4deg);
 
             box-shadow: 0 22px 38px rgba(0,0,0,0.65);
 
@@ -368,7 +374,7 @@
 
             position: relative;
 
-            height: 56px;
+            height: 54px;
 
             width: 118px;
 
@@ -482,7 +488,7 @@
 
             align-items: center;
 
-            gap: 10px 14px;
+            gap: 8px 12px;
 
             max-width: 100%;
 
@@ -494,9 +500,17 @@
 
             position: relative;
 
-            width: calc(74px * var(--card-scale));
+            width: calc(64px * min(var(--card-scale), 1.45));
 
-            height: calc(106px * var(--card-scale));
+            height: calc(92px * min(var(--card-scale), 1.45));
+
+        }
+
+        .battle-pair .card-3d-wrap {
+
+            width: calc(62px * min(var(--card-scale), 1.45));
+
+            height: calc(90px * min(var(--card-scale), 1.45));
 
         }
 
@@ -516,9 +530,9 @@
 
             position: absolute;
 
-            top: 10px;
+            top: 9px;
 
-            left: 12px;
+            left: 11px;
 
             transform: rotate(7deg);
 
@@ -550,13 +564,15 @@
 
             align-items: flex-end;
 
-            min-height: calc(122px * var(--card-scale));
+            min-height: calc(108px * var(--card-scale));
 
-            padding: 8px 14px 6px;
+            padding: 18px 12px 12px;
 
             width: 100%;
 
-            overflow-x: visible;
+            overflow: visible;
+
+            position: relative;
 
         }
 
@@ -632,15 +648,17 @@
 
             .table-stage-3d { max-width: 1180px; }
 
-            .table-assembly { min-height: 360px; padding-bottom: 50px; }
+            .table-assembly { min-height: 340px; padding-bottom: 46px; }
 
-            .table-top-3d { min-height: 325px; border-radius: 220px / 110px; padding: 18px; }
+            .table-top-3d { min-height: 305px; border-radius: 220px / 110px; padding: 18px; }
 
-            .table-felt { min-height: 288px; border-radius: 202px / 96px; padding: 22px 44px; }
+            .table-felt { min-height: 270px; border-radius: 202px / 96px; padding: 22px 44px; }
 
-            .card-3d-wrap { width: calc(96px * var(--card-scale)); height: calc(140px * var(--card-scale)); }
+            .card-3d-wrap { width: calc(86px * var(--card-scale)); height: calc(124px * var(--card-scale)); }
 
-            .battle-pair { width: calc(98px * var(--card-scale)); height: calc(142px * var(--card-scale)); }
+            .battle-pair { width: calc(82px * min(var(--card-scale), 1.5)); height: calc(118px * min(var(--card-scale), 1.5)); }
+
+            .battle-pair .card-3d-wrap { width: calc(80px * min(var(--card-scale), 1.5)); height: calc(116px * min(var(--card-scale), 1.5)); }
 
             .preview-card-size .card-3d-wrap { width: 178px; height: 258px; }
 
@@ -648,7 +666,7 @@
 
             .opp-fan-card { width: 48px; height: 68px; margin-left: -24px; }
 
-            #player-hand-container { min-height: calc(162px * var(--card-scale)); }
+            #player-hand-container { min-height: calc(140px * var(--card-scale)); }
 
         }
 
@@ -656,31 +674,37 @@
 
             .table-stage-3d { max-width: 1400px; }
 
-            .table-assembly { min-height: 420px; padding-bottom: 58px; }
+            .table-assembly { min-height: 400px; padding-bottom: 54px; }
 
-            .table-top-3d { min-height: 380px; border-radius: 260px / 128px; padding: 20px; }
+            .table-top-3d { min-height: 360px; border-radius: 260px / 128px; padding: 20px; }
 
-            .table-felt { min-height: 338px; border-radius: 240px / 112px; padding: 26px 56px; }
+            .table-felt { min-height: 320px; border-radius: 240px / 112px; padding: 26px 56px; }
 
-            .card-3d-wrap { width: calc(110px * var(--card-scale)); height: calc(160px * var(--card-scale)); }
+            .card-3d-wrap { width: calc(96px * var(--card-scale)); height: calc(138px * var(--card-scale)); }
 
-            .battle-pair { width: calc(112px * var(--card-scale)); height: calc(162px * var(--card-scale)); }
+            .battle-pair { width: calc(94px * min(var(--card-scale), 1.5)); height: calc(136px * min(var(--card-scale), 1.5)); }
+
+            .battle-pair .card-3d-wrap { width: calc(92px * min(var(--card-scale), 1.5)); height: calc(134px * min(var(--card-scale), 1.5)); }
 
             .preview-card-size .card-3d-wrap { width: 196px; height: 284px; }
 
-            #player-hand-container { min-height: calc(182px * var(--card-scale)); }
+            #player-hand-container { min-height: calc(156px * var(--card-scale)); }
 
         }
 
-        @media (max-width: 420px) {
+        @media (max-width: 480px) {
 
-            .card-3d-wrap { width: calc(62px * var(--card-scale)); height: calc(90px * var(--card-scale)); }
+            .card-3d-wrap { width: calc(56px * var(--card-scale)); height: calc(82px * var(--card-scale)); }
 
-            .battle-pair { width: calc(64px * var(--card-scale)); height: calc(92px * var(--card-scale)); }
+            .battle-pair { width: calc(54px * min(var(--card-scale), 1.35)); height: calc(78px * min(var(--card-scale), 1.35)); }
 
-            .table-top-3d { min-height: 195px; padding: 9px; }
+            .battle-pair .card-3d-wrap { width: calc(52px * min(var(--card-scale), 1.35)); height: calc(76px * min(var(--card-scale), 1.35)); }
 
-            .table-felt { min-height: 176px; padding: 10px 14px; }
+            .table-top-3d { min-height: 180px; padding: 9px; }
+
+            .table-felt { min-height: 162px; padding: 10px 14px; }
+
+            #player-hand-container { min-height: calc(96px * var(--card-scale)); padding: 16px 8px 10px; }
 
         }
 
@@ -966,7 +990,7 @@
 
                     </div>
 
-                    <div class="text-[11px] font-bold text-slate-300 uppercase">Распределение дохода по местам:</div>
+                    <div class="text-[11px] font-bold text-slate-300 uppercase">Выигрыш по местам:</div>
 
                     <div id="bot-payout-breakdown" class="space-y-1 text-xs"></div>
 
@@ -1428,7 +1452,7 @@
 
                 <div class="md:col-span-5 rounded-2xl bg-slate-950/70 border border-white/10 p-4 flex flex-col items-center justify-center">
 
-                    <div id="shop-preview-title" class="text-sm font-black text-sky-300 mb-3">Классика</div>
+                    <div id="shop-preview-title" class="text-sm font-black text-sky-300 mb-3">Белый Контраст</div>
 
                     <div class="preview-card-size flex items-center justify-center my-1" id="shop-preview-slot"></div>
 
@@ -1498,7 +1522,7 @@
 
                         <span class="font-bold text-sm">🃏 Размер карт</span>
 
-                        <span id="card-size-label" class="text-xs font-bold text-sky-300">Средний (+20%)</span>
+                        <span id="card-size-label" class="text-xs font-bold text-sky-300">Средний</span>
 
                     </div>
 
@@ -2610,7 +2634,7 @@ function calculatePayouts(playerCount, stake) {
 
 function updateBotPayoutUI() {
 
-    const { totalBank, payouts, ratios } = calculatePayouts(state.botPlayers, state.botStake);
+    const { totalBank, payouts } = calculatePayouts(state.botPlayers, state.botStake);
 
     document.getElementById('bot-bank-total').textContent = `${totalBank} 💵`;
 
@@ -2626,9 +2650,7 @@ function updateBotPayoutUI() {
 
         const isLast = i === payouts.length - 1;
 
-        const pct = Math.round(ratios[i] * 100);
-
-        const label = isLast ? '🃏 Дурак (последнее место)' : `${medals[i] || (i + 1) + ' место'} ${i + 1} место (${pct}%)`;
+        const label = isLast ? '🃏 Дурак (последнее место)' : `${medals[i] || (i + 1) + ' место'} ${i + 1} место`;
 
         const valClass = amt > 0 ? 'text-emerald-300 font-black' : 'text-rose-400 font-bold';
 
@@ -2676,17 +2698,17 @@ function updateOnlinePayoutUI() {
 
 const tgUser = tg?.initDataUnsafe?.user;
 
-const LOCAL_STORAGE_KEY = 'durak_3d_profile_v3';
+const LOCAL_STORAGE_KEY = 'durak_3d_profile_v4';
 
 
 
 const CARD_SIZE_MAP = {
 
-    small: { scale: 1.0, label: 'Мелкий (100%)' },
+    small: { scale: 1.2, label: 'Мелкий' },
 
-    medium: { scale: 1.2, label: 'Средний (+20%)' },
+    medium: { scale: 1.5, label: 'Средний' },
 
-    large: { scale: 1.5, label: 'Большой (+50%)' }
+    large: { scale: 1.8, label: 'Большой' }
 
 };
 
@@ -2702,7 +2724,7 @@ const state = {
 
     wins: 0,
 
-    cardSize: 'medium', // По умолчанию у всех новых игроков — Средний (+20%)
+    cardSize: 'medium', // По умолчанию у всех новых игроков — Средний
 
     ownedFaces: ['classic'],
 
@@ -2767,6 +2789,12 @@ function applyCardSize(sizeKey) {
         btn.className = `card-size-btn py-2 rounded-xl text-xs font-bold ${active ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`;
 
     });
+
+    if (game && !document.getElementById('screen-game').classList.contains('hidden')) {
+
+        renderGame();
+
+    }
 
 }
 
@@ -2852,15 +2880,15 @@ function saveLocalProfile() {
 
 const FACE_COLLECTIONS = [
 
-    { id: 'classic', name: 'Классика', price: 0, desc: 'Светлая классическая колода' },
+    { id: 'classic', name: 'Белый Контраст', price: 0, desc: 'Ярко-белый фон, чёрные и ярко-красные масти' },
 
-    { id: 'gold_lux', name: 'Золотой Люкс', price: 200, desc: 'Бордовый бархат и золотая рамка' },
+    { id: 'gold_lux', name: 'Тёмно-синий Люкс', price: 200, desc: 'Глубокий тёмно-синий с ярко-белыми и алыми знаками' },
 
-    { id: 'neon_noir', name: 'Неон-Нуар', price: 400, desc: 'Чёрная викторианская колода в неоновом свечении' },
+    { id: 'neon_noir', name: 'Неон-Нуар', price: 400, desc: 'Чёрная колода с ультра-ярким неоновым свечением' },
 
-    { id: 'cyber_ice', name: 'Кибер-Лёд', price: 600, desc: 'Ледяной сапфир и кристальный контур' },
+    { id: 'cyber_ice', name: 'Яркий Сапфир', price: 600, desc: 'Насыщенный синий фон с ослепительно белой графикой' },
 
-    { id: 'emerald_vip', name: 'Изумруд VIP', price: 900, desc: 'Изумрудный шёлк и античное золото' }
+    { id: 'emerald_vip', name: 'Изумруд Контраст', price: 900, desc: 'Тёмно-изумрудный фон с белыми и ярко-золотыми знаками' }
 
 ];
 
@@ -3198,7 +3226,7 @@ const AudioEngine = (() => {
 
 /* ============================================================================
 
-6. SVG CARD RENDERER (FULL ORIGINAL NEON-NOIR ART PRESERVED)
+6. SVG CARD RENDERER (HIGH-CONTRAST, LARGE READABLE INDICES & FULL NEON-NOIR)
 
    ============================================================================ */
 
@@ -3248,19 +3276,19 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
                 <path d="M50 18 C50 18 22 46 22 68 C22 83 35 88 45 80 L41 96 L59 96 L55 80 C65 88 78 83 78 68 C78 46 50 18 50 18 Z"
 
-                      fill="none" stroke="${t.ink}" stroke-width="2.2"/>
+                      fill="none" stroke="${t.ink}" stroke-width="2.4"/>
 
                 <path d="M50 23 C50 23 27 48 27 67 C27 78 37 82 46 75 L43 92 L57 92 L54 75 C63 82 73 78 73 67 C73 48 50 23 50 23 Z"
 
-                      fill="none" stroke="${t.accent}" stroke-width="1.3" stroke-dasharray="2.4 2.4"/>
+                      fill="none" stroke="${t.accent}" stroke-width="1.4" stroke-dasharray="2.4 2.4"/>
 
-                <polygon points="50,43 60,57 50,71 40,57" fill="#05050a" stroke="${t.ink}" stroke-width="1.3"/>
+                <polygon points="50,43 60,57 50,71 40,57" fill="#000000" stroke="${t.ink}" stroke-width="1.4"/>
 
                 <path d="M38 66 C32 62 33 52 40 50 M62 66 C68 62 67 52 60 50 M42 74 C36 74 35 69 39 67 M58 74 C64 74 65 69 61 67"
 
-                      fill="none" stroke="${t.accent}" stroke-width="1.2" stroke-linecap="round"/>
+                      fill="none" stroke="${t.accent}" stroke-width="1.3" stroke-linecap="round"/>
 
-                <text x="50" y="63" text-anchor="middle" font-size="18" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
+                <text x="50" y="64" text-anchor="middle" font-size="20" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
 
             </g>`;
 
@@ -3272,21 +3300,21 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g>
 
-                <ellipse cx="47" cy="24" rx="22" ry="7" transform="rotate(-14 47 24)" fill="${t.accent}" fill-opacity="0.22" stroke="${t.ink}" stroke-width="1.3"/>
+                <ellipse cx="47" cy="24" rx="22" ry="7" transform="rotate(-14 47 24)" fill="${t.accent}" fill-opacity="0.25" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M54 15 C68 10 78 24 73 44 C68 35 62 28 52 24 Z" fill="${t.accent}" fill-opacity="0.38" stroke="${t.accent}" stroke-width="1.2"/>
+                <path d="M54 15 C68 10 78 24 73 44 C68 35 62 28 52 24 Z" fill="${t.accent}" fill-opacity="0.4" stroke="${t.accent}" stroke-width="1.3"/>
 
-                <path d="M39 28 C37 36 40 45 48 46 C55 45 58 37 56 29 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M39 28 C37 36 40 45 48 46 C55 45 58 37 56 29 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M42 35 L46 35 M50 35 L53 35 M45 41 Q48 43 50 41" stroke="${t.ink}" stroke-width="0.9" fill="none"/>
+                <path d="M42 35 L46 35 M50 35 L53 35 M45 41 Q48 43 50 41" stroke="${t.ink}" stroke-width="1" fill="none"/>
 
-                <path d="M32 62 C34 50 42 46 48 46 C55 46 65 50 68 62 Z" fill="${t.accent}" fill-opacity="0.25" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M32 62 C34 50 42 46 48 46 C55 46 65 50 68 62 Z" fill="${t.accent}" fill-opacity="0.28" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <text x="48" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+                <text x="48" y="57" text-anchor="middle" font-size="12" fill="${t.ink}">${sym}</text>
 
-                <line x1="34" y1="52" x2="21" y2="34" stroke="${t.ink}" stroke-width="1.2"/>
+                <line x1="34" y1="52" x2="21" y2="34" stroke="${t.ink}" stroke-width="1.3"/>
 
-                <circle cx="20.5" cy="33" r="1.6" fill="${t.accent}"/>
+                <circle cx="20.5" cy="33" r="1.7" fill="${t.accent}"/>
 
             </g>`;
 
@@ -3294,13 +3322,13 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g filter="url(#glow_${uid})">
 
-                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                <rect x="19" y="10" width="62" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="1" opacity="0.6"/>
 
                 ${halfQueen}
 
                 <g transform="rotate(180 50 60)">${halfQueen}</g>
 
-                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.75"/>
 
             </g>`;
 
@@ -3312,19 +3340,19 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g>
 
-                <path d="M36 24 L39 14 L45 20 L50 12 L55 20 L61 14 L64 24 Z" fill="${t.accent}" fill-opacity="0.32" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M36 24 L39 14 L45 20 L50 12 L55 20 L61 14 L64 24 Z" fill="${t.accent}" fill-opacity="0.35" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M40 26 C39 36 42 45 50 46 C58 45 61 36 60 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M40 26 C39 36 42 45 50 46 C58 45 61 36 60 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M44 41 Q50 45 56 41" stroke="${t.accent}" stroke-width="1.2" fill="none"/>
+                <path d="M44 41 Q50 45 56 41" stroke="${t.accent}" stroke-width="1.3" fill="none"/>
 
-                <path d="M30 62 C33 49 42 46 50 46 C58 46 67 49 70 62 Z" fill="${t.accent}" fill-opacity="0.24" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M30 62 C33 49 42 46 50 46 C58 46 67 49 70 62 Z" fill="${t.accent}" fill-opacity="0.28" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <text x="50" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+                <text x="50" y="57" text-anchor="middle" font-size="12" fill="${t.ink}">${sym}</text>
 
-                <line x1="27" y1="54" x2="27" y2="20" stroke="${t.ink}" stroke-width="1.4"/>
+                <line x1="27" y1="54" x2="27" y2="20" stroke="${t.ink}" stroke-width="1.5"/>
 
-                <line x1="22" y1="44" x2="32" y2="44" stroke="${t.accent}" stroke-width="1.4"/>
+                <line x1="22" y1="44" x2="32" y2="44" stroke="${t.accent}" stroke-width="1.5"/>
 
             </g>`;
 
@@ -3332,13 +3360,13 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g filter="url(#glow_${uid})">
 
-                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                <rect x="19" y="10" width="62" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="1" opacity="0.6"/>
 
                 ${halfKing}
 
                 <g transform="rotate(180 50 60)">${halfKing}</g>
 
-                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.75"/>
 
             </g>`;
 
@@ -3350,15 +3378,15 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g>
 
-                <path d="M34 25 C38 15 62 15 66 25 Z" fill="${t.accent}" fill-opacity="0.3" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M34 25 C38 15 62 15 66 25 Z" fill="${t.accent}" fill-opacity="0.32" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M58 17 C67 12 73 20 69 30" fill="none" stroke="${t.accent}" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M58 17 C67 12 73 20 69 30" fill="none" stroke="${t.accent}" stroke-width="1.6" stroke-linecap="round"/>
 
-                <path d="M41 26 C40 36 43 44 50 45 C57 44 60 36 59 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M41 26 C40 36 43 44 50 45 C57 44 60 36 59 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <path d="M32 62 C35 49 43 46 50 46 C57 46 65 49 68 62 Z" fill="${t.accent}" fill-opacity="0.22" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M32 62 C35 49 43 46 50 46 C57 46 65 49 68 62 Z" fill="${t.accent}" fill-opacity="0.26" stroke="${t.ink}" stroke-width="1.4"/>
 
-                <text x="50" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+                <text x="50" y="57" text-anchor="middle" font-size="12" fill="${t.ink}">${sym}</text>
 
             </g>`;
 
@@ -3366,13 +3394,13 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
             <g filter="url(#glow_${uid})">
 
-                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                <rect x="19" y="10" width="62" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="1" opacity="0.6"/>
 
                 ${halfJack}
 
                 <g transform="rotate(180 50 60)">${halfJack}</g>
 
-                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.75"/>
 
             </g>`;
 
@@ -3384,7 +3412,7 @@ function renderNeonNoirArt(card, t, sym, uid) {
 
         const flip = y > 55 ? `transform="rotate(180 ${x} ${y + 10})"` : '';
 
-        return `<text x="${x}" y="${y + 16}" text-anchor="middle" font-size="17" fill="${t.ink}" ${flip} filter="url(#glow_${uid})">${sym}</text>`;
+        return `<text x="${x}" y="${y + 16}" text-anchor="middle" font-size="18" font-weight="900" fill="${t.ink}" ${flip} filter="url(#glow_${uid})">${sym}</text>`;
 
     }).join('');
 
@@ -3402,17 +3430,69 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
 
 
+    // Высококонтрастные яркие палитры для идеальной читаемости
+
     const themes = {
 
-        classic: { bg: '#ffffff', bg2: '#f1f5f9', border: '#cbd5e1', ink: isRed ? '#dc2626' : '#0f172a', accent: isRed ? '#ef4444' : '#334155', glow: '' },
+        classic: {
 
-        gold_lux: { bg: '#2c0b14', bg2: '#160409', border: '#f59e0b', ink: isRed ? '#fb7185' : '#fde68a', accent: '#f59e0b', glow: '' },
+            bg: '#ffffff', bg2: '#f8fafc', border: '#0f172a',
 
-        neon_noir: { bg: '#05050a', bg2: '#090814', border: isRed ? '#ff2e93' : '#22d3ee', ink: isRed ? '#ff2e93' : '#22d3ee', accent: isRed ? '#fb7185' : '#a855f7', glow: isRed ? '#ff2e93' : '#22d3ee' },
+            ink: isRed ? '#e11d48' : '#000000',
 
-        cyber_ice: { bg: '#091a33', bg2: '#050d1c', border: '#38bdf8', ink: isRed ? '#f472b6' : '#7dd3fc', accent: '#38bdf8', glow: '#38bdf8' },
+            accent: isRed ? '#ff1744' : '#0f172a',
 
-        emerald_vip: { bg: '#052e22', bg2: '#021912', border: '#fbbf24', ink: isRed ? '#fca5a5' : '#fde68a', accent: '#34d399', glow: '' }
+            glow: ''
+
+        },
+
+        gold_lux: {
+
+            bg: '#0b2254', bg2: '#051233', border: '#ffffff',
+
+            ink: isRed ? '#ff4d6d' : '#ffffff',
+
+            accent: isRed ? '#ff758f' : '#e0f2fe',
+
+            glow: ''
+
+        },
+
+        neon_noir: {
+
+            bg: '#000000', bg2: '#090916', border: isRed ? '#ff2e93' : '#00f5ff',
+
+            ink: isRed ? '#ff3399' : '#00f5ff',
+
+            accent: isRed ? '#ff85c0' : '#a855f7',
+
+            glow: isRed ? '#ff2e93' : '#00f5ff'
+
+        },
+
+        cyber_ice: {
+
+            bg: '#0e3a8a', bg2: '#071f4d', border: '#7dd3fc',
+
+            ink: isRed ? '#ff5c8a' : '#ffffff',
+
+            accent: isRed ? '#ff85a1' : '#7dd3fc',
+
+            glow: '#38bdf8'
+
+        },
+
+        emerald_vip: {
+
+            bg: '#043d2a', bg2: '#022117', border: '#fde047',
+
+            ink: isRed ? '#ff5252' : '#ffffff',
+
+            accent: '#fde047',
+
+            glow: ''
+
+        }
 
     };
 
@@ -3434,11 +3514,9 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
             <g transform="translate(0, 20)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
 
-                <circle cx="50" cy="50" r="24" fill="none" stroke="${t.accent}" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.85"/>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="${t.accent}" stroke-width="1.6" stroke-dasharray="3 2.5" opacity="0.9"/>
 
-                <circle cx="50" cy="50" r="19" fill="none" stroke="${t.ink}" stroke-width="0.9" opacity="0.65"/>
-
-                <text x="50" y="61" text-anchor="middle" font-size="38" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
+                <text x="50" y="63" text-anchor="middle" font-size="42" font-weight="900" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
 
             </g>`;
 
@@ -3450,13 +3528,13 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
             <g transform="translate(0, 20)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
 
-                <rect x="20" y="16" width="60" height="68" rx="6" fill="none" stroke="${t.border}" stroke-width="1.2" opacity="0.75"/>
+                <rect x="22" y="16" width="56" height="68" rx="6" fill="none" stroke="${t.border}" stroke-width="1.5" opacity="0.8"/>
 
-                <circle cx="50" cy="50" r="18" fill="${t.accent}" fill-opacity="0.14" stroke="${t.ink}" stroke-width="1.2"/>
+                <circle cx="50" cy="50" r="19" fill="${t.accent}" fill-opacity="0.16" stroke="${t.ink}" stroke-width="1.5"/>
 
-                <text x="50" y="45" text-anchor="middle" font-size="22" fill="${t.ink}">${roleTitle}</text>
+                <text x="50" y="45" text-anchor="middle" font-size="24" font-weight="900" fill="${t.ink}">${roleTitle}</text>
 
-                <text x="50" y="65" text-anchor="middle" font-size="20" fill="${t.accent}" font-family="Playfair Display, serif">${sym}</text>
+                <text x="50" y="67" text-anchor="middle" font-size="22" font-weight="900" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
 
             </g>`;
 
@@ -3468,7 +3546,7 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
             const flip = y > 55 ? `transform="rotate(180 ${x} ${y})"` : '';
 
-            return `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="16" fill="${t.ink}" ${flip} ${t.glow ? `filter="url(#glow_${uid})"` : ''}>${sym}</text>`;
+            return `<text x="${x}" y="${y + 6}" text-anchor="middle" font-size="18" font-weight="900" fill="${t.ink}" ${flip} ${t.glow ? `filter="url(#glow_${uid})"` : ''}>${sym}</text>`;
 
         }).join('')}</g>`;
 
@@ -3500,13 +3578,13 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
         </defs>
 
-        <rect x="0.8" y="0.8" width="98.4" height="138.4" rx="9" fill="url(#bg_${uid})" stroke="${t.border}" stroke-width="${styleId === 'neon_noir' ? '2.2' : '1.6'}"/>
+        <rect x="1" y="1" width="98" height="138" rx="9" fill="url(#bg_${uid})" stroke="${t.border}" stroke-width="2.4"/>
 
         <g ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
 
-            <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
+            <text x="13" y="23" text-anchor="middle" font-size="${lbl.length > 1 ? '15.5' : '19'}" font-weight="900" font-family="Inter, sans-serif" fill="${t.ink}">${lbl}</text>
 
-            <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
+            <text x="13" y="39" text-anchor="middle" font-size="16" font-weight="900" fill="${t.ink}">${sym}</text>
 
         </g>
 
@@ -3514,9 +3592,9 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 
         <g transform="rotate(180 50 70)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
 
-            <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
+            <text x="13" y="23" text-anchor="middle" font-size="${lbl.length > 1 ? '15.5' : '19'}" font-weight="900" font-family="Inter, sans-serif" fill="${t.ink}">${lbl}</text>
 
-            <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
+            <text x="13" y="39" text-anchor="middle" font-size="16" font-weight="900" fill="${t.ink}">${sym}</text>
 
         </g>
 
@@ -3556,7 +3634,7 @@ function renderCardBackSVG(backId = state.activeBack) {
 
         </defs>
 
-        <rect x="1" y="1" width="98" height="138" rx="9" fill="url(#g_${uid})" stroke="#ffffff" stroke-opacity="0.85" stroke-width="2"/>
+        <rect x="1" y="1" width="98" height="138" rx="9" fill="url(#g_${uid})" stroke="#ffffff" stroke-opacity="0.9" stroke-width="2.2"/>
 
         <rect x="7" y="7" width="86" height="126" rx="6" fill="url(#p_${uid})" stroke="${c3}" stroke-width="1.4"/>
 
@@ -6694,9 +6772,101 @@ async function pushOnlineRoomState() {
 
 /* ============================================================================
 
-13. RENDERING GAME TABLE (DURAK + SUNDUCHOK), OPPONENTS, HAND & DRAG-AND-DROP
+13. SEMICIRCLE FAN HAND LAYOUT + RENDERING GAME TABLE (DURAK + SUNDUCHOK)
 
    ============================================================================ */
+
+function getRenderedCardWidthPx() {
+
+    const scale = (CARD_SIZE_MAP[state.cardSize] || CARD_SIZE_MAP.medium).scale;
+
+    const w = window.innerWidth;
+
+    const h = window.innerHeight;
+
+    let base = 68;
+
+    if (w <= 480) base = 56;
+
+    else if (w >= 1600 && h >= 940) base = 96;
+
+    else if (w >= 1200 && h >= 860) base = 86;
+
+    return base * scale;
+
+}
+
+
+
+function layoutFanHand(handBox, cards, buildCardFn) {
+
+    handBox.innerHTML = '';
+
+    const n = cards.length;
+
+    if (n === 0) return;
+
+
+
+    const cardW = getRenderedCardWidthPx();
+
+    const availW = Math.max(240, (handBox.clientWidth || window.innerWidth) - 24);
+
+
+
+    // Динамический шаг: гарантирует, что даже 15–20 карт идеально влезут в экран телефона
+
+    let marginLeft = 0;
+
+    if (n > 1) {
+
+        const idealStep = cardW * 0.72;
+
+        const maxFitStep = (availW - cardW) / (n - 1);
+
+        const step = Math.min(idealStep, maxFitStep);
+
+        marginLeft = Math.min(0, step - cardW);
+
+    }
+
+
+
+    // Полукруг (дуга) усиливается, когда карт больше 5
+
+    const maxAngle = n <= 3 ? 4 : n <= 6 ? 12 : n <= 10 ? 22 : 30;
+
+    const maxDropY = n <= 4 ? 6 : n <= 8 ? 16 : 26;
+
+
+
+    cards.forEach((card, i) => {
+
+        const t = n === 1 ? 0 : (i / (n - 1)) * 2 - 1; // от -1 (лево) до +1 (право)
+
+        const angle = t * maxAngle;
+
+        const dropY = t * t * maxDropY;
+
+
+
+        const el = buildCardFn(card, i);
+
+        el.style.marginLeft = i === 0 ? '0px' : `${marginLeft.toFixed(1)}px`;
+
+        el.style.zIndex = String(i + 1);
+
+        el.style.setProperty('--fan-rot', `${angle.toFixed(2)}deg`);
+
+        el.style.setProperty('--fan-y', `${dropY.toFixed(1)}px`);
+
+        handBox.appendChild(el);
+
+    });
+
+}
+
+
 
 function renderGame() {
 
@@ -6910,6 +7080,8 @@ function renderGame() {
 
     const dropHint = document.getElementById('table-drop-hint');
 
+    const handBox = document.getElementById('player-hand-container');
+
     actionBtns.innerHTML = '';
 
 
@@ -6968,23 +7140,11 @@ function renderGame() {
 
 
 
-        const handBox = document.getElementById('player-hand-container');
-
-        handBox.innerHTML = '';
-
-        const n = me.hand.length;
-
-        const overlap = n > 8 ? -30 : n > 6 ? -22 : -12;
-
-        me.hand.forEach((card, i) => {
+        layoutFanHand(handBox, me.hand, (card) => {
 
             const el = document.createElement('div');
 
             el.className = `card-3d-wrap hand-card ${myTurn ? 'playable' : ''}`;
-
-            el.style.marginLeft = i === 0 ? '0px' : `${overlap}px`;
-
-            el.style.zIndex = String(i + 1);
 
             el.innerHTML = renderCardFaceSVG(card);
 
@@ -6994,7 +7154,7 @@ function renderGame() {
 
             }
 
-            handBox.appendChild(el);
+            return el;
 
         });
 
@@ -7208,21 +7368,11 @@ function renderGame() {
 
 
 
-    const handBox = document.getElementById('player-hand-container');
-
-    handBox.innerHTML = '';
-
-    if (!me) return;
+    if (!me) { handBox.innerHTML = ''; return; }
 
 
 
-    const n = me.hand.length;
-
-    const overlap = n > 8 ? -30 : n > 6 ? -22 : -12;
-
-
-
-    me.hand.forEach((card, i) => {
+    layoutFanHand(handBox, me.hand, (card) => {
 
         const el = document.createElement('div');
 
@@ -7240,15 +7390,11 @@ function renderGame() {
 
         el.className = `card-3d-wrap hand-card ${canTrans && !canBeatAny ? 'transferable' : isPlayable ? 'playable' : ''} ${selectedCardId === card.id ? 'selected' : ''}`;
 
-        el.style.marginLeft = i === 0 ? '0px' : `${overlap}px`;
-
-        el.style.zIndex = String(i + 1);
-
         el.innerHTML = renderCardFaceSVG(card);
 
         attachCardDragAndTap(el, card);
 
-        handBox.appendChild(el);
+        return el;
 
     });
 
@@ -7811,6 +7957,20 @@ function escapeHtml(str) {
     return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
 
 }
+
+
+
+// Re-layout semicircle hand on screen resize / orientation change
+
+window.addEventListener('resize', () => {
+
+    if (game && !document.getElementById('screen-game').classList.contains('hidden')) {
+
+        renderGame();
+
+    }
+
+});
 
 
 
