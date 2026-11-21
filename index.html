@@ -116,12 +116,12 @@
             position: absolute;
             inset: 12px 24px;
             border-radius: 120px / 54px;
-            border: 2px dashed rgba(255, 255, 255, 0.28);
+            border: 1.5px dashed rgba(255, 255, 255, 0.3);
             pointer-events: none;
             transition: all 0.2s ease;
         }
         .table-felt.drop-active .drop-zone-ring {
-            border-color: rgba(255, 255, 255, 0.92);
+            border-color: rgba(255, 255, 255, 0.95);
             background: rgba(255, 255, 255, 0.08);
             box-shadow: 0 0 24px rgba(255, 255, 255, 0.28);
         }
@@ -133,10 +133,11 @@
             height: 104px;
             border-radius: 10px;
             cursor: pointer;
-            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease;
+            transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.16s ease;
             transform-style: preserve-3d;
             flex-shrink: 0;
             box-shadow: 0 6px 16px rgba(0,0,0,0.48);
+            will-change: transform;
         }
         .card-3d-wrap svg {
             width: 100%;
@@ -238,8 +239,8 @@
 
         /* Shop 3D Preview */
         .preview-card-size .card-3d-wrap {
-            width: 138px;
-            height: 200px;
+            width: 148px;
+            height: 214px;
             cursor: default;
         }
         .preview-card-size .card-3d-wrap:hover {
@@ -253,19 +254,19 @@
 
         /* Desktop Fullscreen & 1280x1024 / 1920x1080 Scaling */
         @media (min-width: 1200px) and (min-height: 860px) {
-            .table-stage-3d { max-width: 1160px; }
+            .table-stage-3d { max-width: 1180px; }
             .table-assembly { min-height: 360px; padding-bottom: 50px; }
             .table-top-3d { min-height: 325px; border-radius: 220px / 110px; padding: 18px; }
             .table-felt { min-height: 288px; border-radius: 202px / 96px; padding: 22px 44px; }
             .card-3d-wrap { width: 96px; height: 140px; }
             .battle-pair { width: 98px; height: 142px; }
-            .preview-card-size .card-3d-wrap { width: 176px; height: 256px; }
+            .preview-card-size .card-3d-wrap { width: 178px; height: 258px; }
             .opp-fan-container { height: 60px; width: 130px; }
             .opp-fan-card { width: 40px; height: 58px; margin-left: -20px; }
             #player-hand-container { min-height: 162px; }
         }
         @media (min-width: 1600px) and (min-height: 940px) {
-            .table-stage-3d { max-width: 1380px; }
+            .table-stage-3d { max-width: 1400px; }
             .table-assembly { min-height: 420px; padding-bottom: 58px; }
             .table-top-3d { min-height: 380px; border-radius: 260px / 128px; padding: 20px; }
             .table-felt { min-height: 338px; border-radius: 240px / 112px; padding: 26px 56px; }
@@ -281,7 +282,6 @@
             .table-felt { min-height: 176px; padding: 10px 14px; }
         }
 
-        /* Animations */
         @keyframes toastIn {
             from { opacity: 0; transform: translate(-50%, -14px) scale(0.95); }
             to { opacity: 1; transform: translate(-50%, 0) scale(1); }
@@ -364,10 +364,10 @@
         </div>
     </main>
 
-    <!-- BOT SETUP MODAL / SCREEN -->
+    <!-- BOT SETUP SCREEN (WITH STAKE & PAYOUT DISTRIBUTION) -->
     <section id="screen-bot-setup" class="hidden flex-1 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="w-full max-w-md rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-6">
-            <div class="flex items-center justify-between mb-5">
+        <div class="w-full max-w-md rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 sm:p-6 max-h-[88dvh] overflow-y-auto thin-scroll">
+            <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-black">🤖 Играть с ботом</h2>
                 <button class="btn-back-menu px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">← Назад</button>
             </div>
@@ -387,19 +387,36 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Размер колоды</label>
                     <div id="bot-deck-picker" class="grid grid-cols-3 gap-2">
-                        <button data-val="24" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-slate-800 text-slate-300">24 карты</button>
-                        <button data-val="36" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-sky-600 text-white">36 карт</button>
-                        <button data-val="52" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-slate-800 text-slate-300">52 карты</button>
+                        <button data-val="24" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-slate-800 text-slate-300 text-sm">24 карты</button>
+                        <button data-val="36" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-sky-600 text-white text-sm">36 карт</button>
+                        <button data-val="52" class="deck-opt-btn py-2.5 rounded-xl font-bold bg-slate-800 text-slate-300 text-sm">52 карты</button>
                     </div>
                 </div>
 
-                <div class="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/25 flex items-center justify-between">
-                    <span class="text-sm text-emerald-200 font-semibold">Награда за победу</span>
-                    <span class="font-black text-emerald-300">+120 💵</span>
+                <!-- Stake Selection -->
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Ставка стола (💵)</label>
+                    <div id="bot-stake-picker" class="grid grid-cols-5 gap-1.5">
+                        <button data-val="50" class="stake-opt-btn py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-300">50</button>
+                        <button data-val="100" class="stake-opt-btn py-2 rounded-xl font-black text-xs bg-emerald-600 text-white">100</button>
+                        <button data-val="250" class="stake-opt-btn py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-300">250</button>
+                        <button data-val="500" class="stake-opt-btn py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-300">500</button>
+                        <button data-val="1000" class="stake-opt-btn py-2 rounded-xl font-black text-xs bg-slate-800 text-slate-300">1000</button>
+                    </div>
+                </div>
+
+                <!-- Live Bank & Payout Distribution Box -->
+                <div class="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/25 space-y-2">
+                    <div class="flex items-center justify-between border-b border-emerald-500/20 pb-2">
+                        <span class="text-xs font-bold text-emerald-200 uppercase">Общий банк стола</span>
+                        <span id="bot-bank-total" class="font-black text-base text-emerald-300">200 💵</span>
+                    </div>
+                    <div class="text-[11px] font-bold text-slate-300 uppercase">Распределение дохода по местам:</div>
+                    <div id="bot-payout-breakdown" class="space-y-1 text-xs"></div>
                 </div>
 
                 <button id="btn-start-bot-game" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 font-black text-base shadow-lg shadow-emerald-600/30 transition">
-                    Начать партию
+                    Играть (Ставка 100 💵)
                 </button>
             </div>
         </div>
@@ -407,14 +424,51 @@
 
     <!-- ONLINE LOBBY SCREEN -->
     <section id="screen-online" class="hidden flex-1 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="w-full max-w-lg rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 sm:p-6 flex flex-col max-h-[84dvh]">
+        <div class="w-full max-w-lg rounded-3xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl p-5 sm:p-6 flex flex-col max-h-[86dvh]">
             <div class="flex items-center justify-between mb-4">
                 <h2 class="text-xl font-black">🌐 Онлайн столы</h2>
                 <button class="btn-back-menu px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold">← Меню</button>
             </div>
 
+            <!-- Online Room Creation Config -->
+            <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 mb-3 space-y-2.5">
+                <div class="grid grid-cols-3 gap-2 text-xs">
+                    <div>
+                        <div class="text-slate-400 font-bold mb-1">Игроки</div>
+                        <select id="online-max-players" class="w-full px-2.5 py-1.5 rounded-xl bg-slate-800 border border-white/10 text-white font-bold">
+                            <option value="2">2 игрока</option>
+                            <option value="3">3 игрока</option>
+                            <option value="4">4 игрока</option>
+                            <option value="5">5 игроков</option>
+                            <option value="6">6 игроков</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 font-bold mb-1">Колода</div>
+                        <select id="online-deck-size" class="w-full px-2.5 py-1.5 rounded-xl bg-slate-800 border border-white/10 text-white font-bold">
+                            <option value="24">24 карты</option>
+                            <option value="36" selected>36 карт</option>
+                            <option value="52">52 карты</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="text-slate-400 font-bold mb-1">Ставка 💵</div>
+                        <select id="online-stake-select" class="w-full px-2.5 py-1.5 rounded-xl bg-slate-800 border border-white/10 text-emerald-300 font-black">
+                            <option value="50">50 💵</option>
+                            <option value="100" selected>100 💵</option>
+                            <option value="250">250 💵</option>
+                            <option value="500">500 💵</option>
+                            <option value="1000">1000 💵</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="online-payout-summary" class="text-[11px] text-emerald-300/90 font-semibold">
+                    Банк: 200 💵 • 1 место: 200 💵
+                </div>
+            </div>
+
             <!-- Quick Actions -->
-            <div class="grid grid-cols-2 gap-2.5 mb-4">
+            <div class="grid grid-cols-2 gap-2.5 mb-3">
                 <button id="btn-online-quick" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 font-extrabold text-sm shadow-lg shadow-blue-600/25">
                     ⚡ Быстрый подбор
                 </button>
@@ -424,9 +478,9 @@
             </div>
 
             <!-- Search by Nickname / Code -->
-            <div class="flex gap-2 mb-4">
-                <input id="input-room-search" type="text" placeholder="Поиск по нику или коду стола..." class="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
-                <button id="btn-room-search" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-sm">Найти</button>
+            <div class="flex gap-2 mb-3">
+                <input id="input-room-search" type="text" placeholder="Поиск по нику или коду стола..." class="flex-1 px-3.5 py-2 rounded-xl bg-slate-950/80 border border-white/10 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-sky-400">
+                <button id="btn-room-search" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-sm">Найти</button>
             </div>
 
             <!-- Open Rooms List -->
@@ -434,7 +488,7 @@
                 <span>Открытые столы</span>
                 <span id="online-rooms-count">0 столов</span>
             </div>
-            <div id="online-rooms-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[160px]">
+            <div id="online-rooms-list" class="flex-1 overflow-y-auto thin-scroll space-y-2 pr-1 min-h-[140px]">
                 <div class="text-center text-slate-500 text-sm py-8">Загрузка столов...</div>
             </div>
         </div>
@@ -503,7 +557,7 @@
                         <button id="toggle-music" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-black">ВКЛ</button>
                     </div>
                     <div>
-                        <div class="text-xs text-slate-400 font-semibold mb-2">Выбор мелодии:</div>
+                        <div class="text-xs text-slate-400 font-semibold mb-2">Выбор мелодии (4 варианта):</div>
                         <div id="music-track-picker" class="grid grid-cols-2 gap-2">
                             <button data-track="calm" class="music-track-btn py-2 px-2.5 rounded-xl text-xs font-bold bg-sky-600 text-white">🌙 Спокойная</button>
                             <button data-track="fun" class="music-track-btn py-2 px-2.5 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">🎉 Весёлая</button>
@@ -525,8 +579,11 @@
         <!-- Opponents Top Row -->
         <div id="opponents-row" class="w-full max-w-5xl mx-auto px-2 pt-1.5 flex items-start justify-center gap-2 sm:gap-5 z-20 shrink-0"></div>
 
-        <!-- Turn Status Banner -->
-        <div class="w-full flex items-center justify-center px-3 py-1 z-20 shrink-0">
+        <!-- Turn Status & Table Bank Banner -->
+        <div class="w-full flex items-center justify-center gap-2 px-3 py-1 z-20 shrink-0 flex-wrap">
+            <div id="game-bank-pill" class="px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-400/40 text-xs font-black text-emerald-300 shadow-lg">
+                🏦 Банк: 200 💵
+            </div>
             <div id="game-status-pill" class="px-4 py-1 rounded-full bg-slate-900/85 border border-white/15 text-xs sm:text-sm font-extrabold text-amber-300 shadow-lg">
                 Ваш ход — атакуйте!
             </div>
@@ -581,12 +638,12 @@
         </div>
     </section>
 
-    <!-- Custom Modal (Game Over / Room Waiting) -->
+    <!-- Custom Modal (Game Over / Results Table / Room Waiting) -->
     <div id="custom-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="w-full max-w-sm rounded-3xl bg-slate-900 border border-white/15 shadow-2xl p-6 text-center">
             <div id="modal-icon" class="text-5xl mb-3">🏆</div>
             <h3 id="modal-title" class="text-2xl font-black text-white mb-2">Победа!</h3>
-            <p id="modal-desc" class="text-sm text-slate-300 mb-5">Вы обыграли соперников и получили награду.</p>
+            <div id="modal-desc" class="text-sm text-slate-300 mb-5"></div>
             <div id="modal-actions" class="flex flex-col gap-2.5"></div>
         </div>
     </div>
@@ -649,7 +706,7 @@ function setOnlineBadge(ok, text) {
 }
 
 /* ============================================================================
-   2. TELEGRAM WEB APP INTEGRATION & FULLSCREEN
+   2. TELEGRAM WEB APP INTEGRATION & PC FULLSCREEN (1280x1024 / 1920x1080)
    ============================================================================ */
 const tg = window.Telegram?.WebApp;
 if (tg) {
@@ -682,7 +739,60 @@ window.addEventListener('pointerdown', () => {
 }, { passive: true });
 
 /* ============================================================================
-   3. PLAYER PROFILE, SHOP CATALOG & STATE
+   3. STAKE & INCOME DISTRIBUTION RULES (2–6 PLAYERS)
+   ============================================================================ */
+const PAYOUT_SPLITS = {
+    2: [1.00, 0],
+    3: [0.70, 0.30, 0],
+    4: [0.60, 0.28, 0.12, 0],
+    5: [0.50, 0.25, 0.15, 0.10, 0],
+    6: [0.45, 0.25, 0.15, 0.10, 0.05, 0]
+};
+
+function calculatePayouts(playerCount, stake) {
+    const totalBank = playerCount * stake;
+    const ratios = PAYOUT_SPLITS[playerCount] || PAYOUT_SPLITS[2];
+    const payouts = ratios.map(r => Math.round(totalBank * r));
+    // Ensure rounding sums cleanly to totalBank
+    const sum = payouts.reduce((a, b) => a + b, 0);
+    if (payouts.length > 0 && sum !== totalBank) {
+        payouts[0] += (totalBank - sum);
+    }
+    return { totalBank, payouts, ratios };
+}
+
+function updateBotPayoutUI() {
+    const { totalBank, payouts, ratios } = calculatePayouts(state.botPlayers, state.botStake);
+    document.getElementById('bot-bank-total').textContent = `${totalBank} 💵`;
+    document.getElementById('btn-start-bot-game').textContent = `Играть (Ставка ${state.botStake} 💵)`;
+
+    const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '🃏'];
+    const box = document.getElementById('bot-payout-breakdown');
+    box.innerHTML = payouts.map((amt, i) => {
+        const isLast = i === payouts.length - 1;
+        const pct = Math.round(ratios[i] * 100);
+        const label = isLast ? '🃏 Дурак (последнее место)' : `${medals[i] || (i + 1) + ' место'} ${i + 1} место (${pct}%)`;
+        const valClass = amt > 0 ? 'text-emerald-300 font-black' : 'text-rose-400 font-bold';
+        return `<div class="flex items-center justify-between">
+            <span class="text-slate-300">${label}</span>
+            <span class="${valClass}">${amt > 0 ? '+' + amt + ' 💵' : '0 💵'}</span>
+        </div>`;
+    }).join('');
+}
+
+function updateOnlinePayoutUI() {
+    const maxP = Number(document.getElementById('online-max-players').value) || 2;
+    const stake = Number(document.getElementById('online-stake-select').value) || 100;
+    const { totalBank, payouts } = calculatePayouts(maxP, stake);
+    const winnersText = payouts
+        .slice(0, -1)
+        .map((amt, i) => `${i + 1}м: ${amt}💵`)
+        .join(' • ');
+    document.getElementById('online-payout-summary').textContent = `Банк: ${totalBank} 💵 • ${winnersText}`;
+}
+
+/* ============================================================================
+   4. PLAYER PROFILE, SHOP CATALOG & STATE
    ============================================================================ */
 const tgUser = tg?.initDataUnsafe?.user;
 const state = {
@@ -697,6 +807,7 @@ const state = {
     musicTrack: 'calm',
     botPlayers: 2,
     botDeckSize: 36,
+    botStake: 100,
     shopTab: 'faces',
     shopPreviewId: 'classic',
     shopPreviewRank: 'A'
@@ -705,7 +816,7 @@ const state = {
 const FACE_COLLECTIONS = [
     { id: 'classic', name: 'Классика', price: 0, desc: 'Светлая классическая колода' },
     { id: 'gold_lux', name: 'Золотой Люкс', price: 200, desc: 'Бордовый бархат и золотая рамка' },
-    { id: 'neon_noir', name: 'Неон-Нуар', price: 400, desc: 'Чёрная колода с ярким неоновым свечением' },
+    { id: 'neon_noir', name: 'Неон-Нуар', price: 400, desc: 'Чёрная викторианская колода в неоновом свечении' },
     { id: 'cyber_ice', name: 'Кибер-Лёд', price: 600, desc: 'Ледяной сапфир и кристальный контур' },
     { id: 'emerald_vip', name: 'Изумруд VIP', price: 900, desc: 'Изумрудный шёлк и античное золото' }
 ];
@@ -734,6 +845,7 @@ async function loadUserProfileFromCloud() {
             if (d.activeBack) state.activeBack = d.activeBack;
             if (d.musicTrack) state.musicTrack = d.musicTrack;
             updateHUD();
+            syncMusicTrackButtons();
         }
     } catch (e) {
         console.warn('Profile load skipped:', e);
@@ -758,7 +870,7 @@ async function saveUserProfileToCloud() {
 }
 
 /* ============================================================================
-   4. WEB AUDIO ENGINE (SFX + 4 MUSIC THEMES)
+   5. WEB AUDIO ENGINE (SFX + 4 DISTINCT MUSIC THEMES)
    ============================================================================ */
 const AudioEngine = (() => {
     let ctx = null;
@@ -766,10 +878,38 @@ const AudioEngine = (() => {
     let step = 0;
 
     const TRACKS = {
-        calm: { tempo: 460, wave: 'sine', notes: [261.6, 329.6, 392.0, 493.9, 392.0, 329.6, 293.7, 349.2] },
-        fun: { tempo: 240, wave: 'triangle', notes: [523.3, 659.3, 784.0, 659.3, 880.0, 784.0, 659.3, 587.3] },
-        classic: { tempo: 360, wave: 'sine', notes: [440.0, 523.3, 659.3, 587.3, 523.3, 493.9, 440.0, 392.0] },
-        playable: { tempo: 210, wave: 'square', notes: [329.6, 392.0, 440.0, 523.3, 440.0, 392.0, 329.6, 293.7] }
+        // 1. Calm: warm lounge chords
+        calm: {
+            tempo: 520,
+            leadWave: 'sine',
+            bassWave: 'sine',
+            lead: [261.6, 329.6, 392.0, 493.9, 440.0, 392.0, 329.6, 293.7],
+            bass: [130.8, 0, 164.8, 0, 174.6, 0, 146.8, 0]
+        },
+        // 2. Fun: upbeat major melody
+        fun: {
+            tempo: 240,
+            leadWave: 'triangle',
+            bassWave: 'sine',
+            lead: [523.3, 659.3, 784.0, 659.3, 880.0, 784.0, 659.3, 587.3, 523.3, 587.3, 659.3, 784.0],
+            bass: [261.6, 0, 196.0, 0, 220.0, 0, 196.0, 0, 261.6, 0, 196.0, 0]
+        },
+        // 3. Classic: chamber waltz 3/4 feel
+        classic: {
+            tempo: 350,
+            leadWave: 'sine',
+            bassWave: 'triangle',
+            lead: [440.0, 523.3, 659.3, 587.3, 523.3, 493.9, 440.0, 493.9, 523.3, 392.0, 440.0, 493.9],
+            bass: [220.0, 329.6, 329.6, 196.0, 293.7, 293.7, 174.6, 261.6, 261.6, 164.8, 246.9, 246.9]
+        },
+        // 4. Playable: rhythmic arcade/card groove
+        playable: {
+            tempo: 215,
+            leadWave: 'triangle',
+            bassWave: 'sawtooth',
+            lead: [329.6, 392.0, 440.0, 523.3, 440.0, 392.0, 329.6, 293.7, 329.6, 440.0, 493.9, 523.3],
+            bass: [164.8, 0, 164.8, 196.0, 146.8, 0, 146.8, 164.8, 130.8, 0, 146.8, 164.8]
+        }
     };
 
     function ensure() {
@@ -781,7 +921,8 @@ const AudioEngine = (() => {
         return ctx;
     }
 
-    function playTone(freq, dur, type = 'triangle', vol = 0.06) {
+    function playTone(freq, dur, type = 'triangle', vol = 0.05) {
+        if (!freq) return;
         const c = ensure();
         if (!c) return;
         const osc = c.createOscillator();
@@ -789,7 +930,7 @@ const AudioEngine = (() => {
         osc.type = type;
         osc.frequency.setValueAtTime(freq, c.currentTime);
         gain.gain.setValueAtTime(0.0001, c.currentTime);
-        gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(vol, c.currentTime + 0.025);
         gain.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + dur);
         osc.connect(gain);
         gain.connect(c.destination);
@@ -803,7 +944,7 @@ const AudioEngine = (() => {
         else if (kind === 'defend') playTone(540, 0.1, 'sine', 0.09);
         else if (kind === 'bito') { playTone(523, 0.09, 'triangle', 0.08); setTimeout(() => playTone(659, 0.14, 'triangle', 0.08), 70); }
         else if (kind === 'take') playTone(210, 0.18, 'sawtooth', 0.06);
-        else if (kind === 'win') [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => playTone(f, 0.2, 'triangle', 0.09), i * 95));
+        else if (kind === 'win') [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => playTone(f, 0.22, 'triangle', 0.09), i * 95));
         else if (kind === 'click') playTone(680, 0.04, 'sine', 0.05);
     }
 
@@ -817,9 +958,11 @@ const AudioEngine = (() => {
         const tr = TRACKS[state.musicTrack] || TRACKS.calm;
         musicTimer = setInterval(() => {
             if (!state.musicEnabled || document.hidden) return;
-            const freq = tr.notes[step % tr.notes.length];
-            const vol = tr.wave === 'square' ? 0.022 : 0.038;
-            playTone(freq, tr.tempo / 1000 * 0.85, tr.wave, vol);
+            const lFreq = tr.lead[step % tr.lead.length];
+            const bFreq = tr.bass[step % tr.bass.length];
+            const dur = (tr.tempo / 1000) * 0.88;
+            playTone(lFreq, dur, tr.leadWave, 0.035);
+            if (bFreq) playTone(bFreq, dur * 0.9, tr.bassWave, tr.bassWave === 'sawtooth' ? 0.014 : 0.022);
             step++;
         }, tr.tempo);
     }
@@ -833,7 +976,7 @@ const AudioEngine = (() => {
 })();
 
 /* ============================================================================
-   5. SVG CARD RENDERER (5 FACE STYLES INCLUDING NEON-NOIR + 6 BACKS)
+   6. SVG CARD RENDERER (NEON-NOIR WITH DETAILED ORNATE ACE & COURT CARDS)
    ============================================================================ */
 const SUITS = ['spades', 'hearts', 'diamonds', 'clubs'];
 const SUIT_SYM = { spades: '♠', hearts: '♥', diamonds: '♦', clubs: '♣' };
@@ -852,52 +995,134 @@ const PIP_COORDS = {
     10: [[34, 22], [66, 22], [50, 32], [34, 42], [66, 42], [34, 58], [66, 58], [50, 68], [34, 78], [66, 78]]
 };
 
+function renderNeonNoirArt(card, t, sym, uid) {
+    // Detailed ornate layout from the black deck, rendered in vibrant neon on deep black
+    if (card.rank === 14) {
+        return `
+            <g filter="url(#glow_${uid})">
+                <path d="M50 18 C50 18 22 46 22 68 C22 83 35 88 45 80 L41 96 L59 96 L55 80 C65 88 78 83 78 68 C78 46 50 18 50 18 Z"
+                      fill="none" stroke="${t.ink}" stroke-width="2.2"/>
+                <path d="M50 23 C50 23 27 48 27 67 C27 78 37 82 46 75 L43 92 L57 92 L54 75 C63 82 73 78 73 67 C73 48 50 23 50 23 Z"
+                      fill="none" stroke="${t.accent}" stroke-width="1.3" stroke-dasharray="2.4 2.4"/>
+                <!-- Inner Victorian vine swirls & diamond -->
+                <polygon points="50,43 60,57 50,71 40,57" fill="#05050a" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M38 66 C32 62 33 52 40 50 M62 66 C68 62 67 52 60 50 M42 74 C36 74 35 69 39 67 M58 74 C64 74 65 69 61 67"
+                      fill="none" stroke="${t.accent}" stroke-width="1.2" stroke-linecap="round"/>
+                <text x="50" y="63" text-anchor="middle" font-size="18" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
+            </g>`;
+    }
+    if (card.rank === 12) {
+        // Mirrored Victorian Queen in wide-brimmed plumed hat + cigarette holder in neon contour
+        const halfQueen = `
+            <g>
+                <!-- Wide-brimmed hat & plume -->
+                <ellipse cx="47" cy="24" rx="22" ry="7" transform="rotate(-14 47 24)" fill="${t.accent}" fill-opacity="0.22" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M54 15 C68 10 78 24 73 44 C68 35 62 28 52 24 Z" fill="${t.accent}" fill-opacity="0.38" stroke="${t.accent}" stroke-width="1.2"/>
+                <!-- Face profile & hair -->
+                <path d="M39 28 C37 36 40 45 48 46 C55 45 58 37 56 29 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M42 35 L46 35 M50 35 L53 35 M45 41 Q48 43 50 41" stroke="${t.ink}" stroke-width="0.9" fill="none"/>
+                <!-- Victorian collar, necklace & gown -->
+                <path d="M32 62 C34 50 42 46 48 46 C55 46 65 50 68 62 Z" fill="${t.accent}" fill-opacity="0.25" stroke="${t.ink}" stroke-width="1.3"/>
+                <text x="48" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+                <!-- Cigarette holder -->
+                <line x1="34" y1="52" x2="21" y2="34" stroke="${t.ink}" stroke-width="1.2"/>
+                <circle cx="20.5" cy="33" r="1.6" fill="${t.accent}"/>
+            </g>`;
+        return `
+            <g filter="url(#glow_${uid})">
+                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                ${halfQueen}
+                <g transform="rotate(180 50 60)">${halfQueen}</g>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+            </g>`;
+    }
+    if (card.rank === 13) {
+        // Mirrored Neon King with crown & sword
+        const halfKing = `
+            <g>
+                <path d="M36 24 L39 14 L45 20 L50 12 L55 20 L61 14 L64 24 Z" fill="${t.accent}" fill-opacity="0.32" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M40 26 C39 36 42 45 50 46 C58 45 61 36 60 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M44 41 Q50 45 56 41" stroke="${t.accent}" stroke-width="1.2" fill="none"/>
+                <path d="M30 62 C33 49 42 46 50 46 C58 46 67 49 70 62 Z" fill="${t.accent}" fill-opacity="0.24" stroke="${t.ink}" stroke-width="1.3"/>
+                <text x="50" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+                <!-- Sword -->
+                <line x1="27" y1="54" x2="27" y2="20" stroke="${t.ink}" stroke-width="1.4"/>
+                <line x1="22" y1="44" x2="32" y2="44" stroke="${t.accent}" stroke-width="1.4"/>
+            </g>`;
+        return `
+            <g filter="url(#glow_${uid})">
+                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                ${halfKing}
+                <g transform="rotate(180 50 60)">${halfKing}</g>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+            </g>`;
+    }
+    if (card.rank === 11) {
+        // Mirrored Neon Jack with feathered beret & halberd
+        const halfJack = `
+            <g>
+                <path d="M34 25 C38 15 62 15 66 25 Z" fill="${t.accent}" fill-opacity="0.3" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M58 17 C67 12 73 20 69 30" fill="none" stroke="${t.accent}" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M41 26 C40 36 43 44 50 45 C57 44 60 36 59 26 Z" fill="#090914" stroke="${t.ink}" stroke-width="1.3"/>
+                <path d="M32 62 C35 49 43 46 50 46 C57 46 65 49 68 62 Z" fill="${t.accent}" fill-opacity="0.22" stroke="${t.ink}" stroke-width="1.3"/>
+                <text x="50" y="57" text-anchor="middle" font-size="11" fill="${t.ink}">${sym}</text>
+            </g>`;
+        return `
+            <g filter="url(#glow_${uid})">
+                <rect x="17" y="10" width="66" height="100" rx="6" fill="none" stroke="${t.accent}" stroke-width="0.9" opacity="0.5"/>
+                ${halfJack}
+                <g transform="rotate(180 50 60)">${halfJack}</g>
+                <line x1="22" y1="60" x2="78" y2="60" stroke="${t.ink}" stroke-width="0.8" stroke-dasharray="3 2" opacity="0.7"/>
+            </g>`;
+    }
+    // Numbered cards 2–10 with crisp neon pips
+    const coords = PIP_COORDS[card.rank] || [[50, 50]];
+    return coords.map(([x, y]) => {
+        const flip = y > 55 ? `transform="rotate(180 ${x} ${y + 10})"` : '';
+        return `<text x="${x}" y="${y + 16}" text-anchor="middle" font-size="17" fill="${t.ink}" ${flip} filter="url(#glow_${uid})">${sym}</text>`;
+    }).join('');
+}
+
 function renderCardFaceSVG(card, styleId = state.activeFace) {
     const isRed = card.suit === 'hearts' || card.suit === 'diamonds';
     const sym = SUIT_SYM[card.suit];
     const lbl = styleId === 'neon_noir' ? (RANK_ENG[card.rank] || card.rank) : (RANK_LABEL[card.rank] || card.rank);
 
-    // Theme palettes
     const themes = {
         classic: { bg: '#ffffff', bg2: '#f1f5f9', border: '#cbd5e1', ink: isRed ? '#dc2626' : '#0f172a', accent: isRed ? '#ef4444' : '#334155', glow: '' },
         gold_lux: { bg: '#2c0b14', bg2: '#160409', border: '#f59e0b', ink: isRed ? '#fb7185' : '#fde68a', accent: '#f59e0b', glow: '' },
-        neon_noir: { bg: '#06060c', bg2: '#0b0b16', border: isRed ? '#f43f5e' : '#22d3ee', ink: isRed ? '#ff2e93' : '#22d3ee', accent: isRed ? '#fb7185' : '#a855f7', glow: isRed ? '#ff2e93' : '#22d3ee' },
+        neon_noir: { bg: '#05050a', bg2: '#090814', border: isRed ? '#ff2e93' : '#22d3ee', ink: isRed ? '#ff2e93' : '#22d3ee', accent: isRed ? '#fb7185' : '#a855f7', glow: isRed ? '#ff2e93' : '#22d3ee' },
         cyber_ice: { bg: '#091a33', bg2: '#050d1c', border: '#38bdf8', ink: isRed ? '#f472b6' : '#7dd3fc', accent: '#38bdf8', glow: '#38bdf8' },
         emerald_vip: { bg: '#052e22', bg2: '#021912', border: '#fbbf24', ink: isRed ? '#fca5a5' : '#fde68a', accent: '#34d399', glow: '' }
     };
     const t = themes[styleId] || themes.classic;
-    const uid = `c_${styleId}_${card.suit}_${card.rank}_${Math.floor(Math.random()*9999)}`;
+    const uid = `c_${styleId}_${card.suit}_${card.rank}_${Math.floor(Math.random()*99999)}`;
 
     let centerArt = '';
-    if (card.rank === 14) {
-        // Ornate Filigree Ace (especially luminous in Neon-Noir)
-        const strokeColor = styleId === 'neon_noir' ? t.ink : t.accent;
+    if (styleId === 'neon_noir') {
+        centerArt = `<g transform="translate(0, 10)">${renderNeonNoirArt(card, t, sym, uid)}</g>`;
+    } else if (card.rank === 14) {
         centerArt = `
-            <g ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
-                <circle cx="50" cy="50" r="24" fill="none" stroke="${strokeColor}" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.85"/>
+            <g transform="translate(0, 20)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
+                <circle cx="50" cy="50" r="24" fill="none" stroke="${t.accent}" stroke-width="1.2" stroke-dasharray="2.5 2.5" opacity="0.85"/>
                 <circle cx="50" cy="50" r="19" fill="none" stroke="${t.ink}" stroke-width="0.9" opacity="0.65"/>
-                <path d="M50 24 L54 31 L50 34 L46 31 Z M50 76 L54 69 L50 66 L46 69 Z M24 50 L31 46 L34 50 L31 54 Z M76 50 L69 46 L66 50 L69 54 Z" fill="${t.accent}" opacity="0.85"/>
                 <text x="50" y="61" text-anchor="middle" font-size="38" fill="${t.ink}" font-family="Playfair Display, serif">${sym}</text>
             </g>`;
     } else if (card.rank >= 11 && card.rank <= 13) {
-        // Stylized Court Cards (Jack, Queen, King) with mirrored elegance
         const roleTitle = card.rank === 13 ? '♛' : card.rank === 12 ? '♕' : '♞';
-        const frameColor = styleId === 'neon_noir' ? t.ink : t.border;
         centerArt = `
-            <g ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
-                <rect x="20" y="16" width="60" height="68" rx="6" fill="none" stroke="${frameColor}" stroke-width="1.2" opacity="0.75"/>
-                <path d="M24 24 L76 24 M24 76 L76 76" stroke="${t.accent}" stroke-width="0.8" opacity="0.6"/>
+            <g transform="translate(0, 20)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
+                <rect x="20" y="16" width="60" height="68" rx="6" fill="none" stroke="${t.border}" stroke-width="1.2" opacity="0.75"/>
                 <circle cx="50" cy="50" r="18" fill="${t.accent}" fill-opacity="0.14" stroke="${t.ink}" stroke-width="1.2"/>
                 <text x="50" y="45" text-anchor="middle" font-size="22" fill="${t.ink}">${roleTitle}</text>
                 <text x="50" y="65" text-anchor="middle" font-size="20" fill="${t.accent}" font-family="Playfair Display, serif">${sym}</text>
             </g>`;
     } else {
-        // Numbered Pips (2–10)
         const coords = PIP_COORDS[card.rank] || [[50, 50]];
-        centerArt = coords.map(([x, y]) => {
+        centerArt = `<g transform="translate(0, 20)">${coords.map(([x, y]) => {
             const flip = y > 55 ? `transform="rotate(180 ${x} ${y})"` : '';
             return `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="16" fill="${t.ink}" ${flip} ${t.glow ? `filter="url(#glow_${uid})"` : ''}>${sym}</text>`;
-        }).join('');
+        }).join('')}</g>`;
     }
 
     return `
@@ -908,23 +1133,22 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
                 <stop offset="100%" stop-color="${t.bg2}"/>
             </linearGradient>
             ${t.glow ? `<filter id="glow_${uid}" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="1.8" result="blur"/>
+                <feGaussianBlur stdDeviation="1.7" result="blur"/>
                 <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>` : ''}
         </defs>
-        <rect x="1" y="1" width="98" height="138" rx="9" fill="url(#bg_${uid})" stroke="${t.border}" stroke-width="${styleId === 'neon_noir' ? '2.2' : '1.6'}"/>
-        ${styleId === 'neon_noir' ? `<rect x="4" y="4" width="92" height="132" rx="7" fill="none" stroke="${t.accent}" stroke-width="0.7" opacity="0.55"/>` : ''}
+        <rect x="0.8" y="0.8" width="98.4" height="138.4" rx="9" fill="url(#bg_${uid})" stroke="${t.border}" stroke-width="${styleId === 'neon_noir' ? '2.2' : '1.6'}"/>
         <!-- Top-Left Index -->
         <g ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
-            <text x="12" y="21" text-anchor="middle" font-size="${lbl.length > 1 ? '13' : '16'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
-            <text x="12" y="34" text-anchor="middle" font-size="13" fill="${t.ink}">${sym}</text>
+            <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
+            <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
         </g>
         <!-- Center Art -->
-        <g transform="translate(0, 20)">${centerArt}</g>
+        ${centerArt}
         <!-- Bottom-Right Index -->
         <g transform="rotate(180 50 70)" ${t.glow ? `filter="url(#glow_${uid})"` : ''}>
-            <text x="12" y="21" text-anchor="middle" font-size="${lbl.length > 1 ? '13' : '16'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
-            <text x="12" y="34" text-anchor="middle" font-size="13" fill="${t.ink}">${sym}</text>
+            <text x="11" y="20" text-anchor="middle" font-size="${lbl.length > 1 ? '12.5' : '15.5'}" font-weight="900" font-family="Playfair Display, serif" fill="${t.ink}">${lbl}</text>
+            <text x="11" y="33" text-anchor="middle" font-size="12.5" fill="${t.ink}">${sym}</text>
         </g>
     </svg>`;
 }
@@ -932,7 +1156,7 @@ function renderCardFaceSVG(card, styleId = state.activeFace) {
 function renderCardBackSVG(backId = state.activeBack) {
     const b = BACK_COLLECTIONS.find(x => x.id === backId) || BACK_COLLECTIONS[0];
     const [c1, c2, c3] = b.colors;
-    const uid = `bk_${backId}_${Math.floor(Math.random()*9999)}`;
+    const uid = `bk_${backId}_${Math.floor(Math.random()*99999)}`;
     return `
     <svg viewBox="0 0 100 140" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
@@ -952,7 +1176,7 @@ function renderCardBackSVG(backId = state.activeBack) {
 }
 
 /* ============================================================================
-   6. CORE DURAK GAME ENGINE (BOTS + ONLINE SYNC)
+   7. CORE DURAK GAME ENGINE (BOTS + ONLINE + STAKE & PAYOUT SETTLEMENT)
    ============================================================================ */
 let game = null;
 let selectedCardId = null;
@@ -989,7 +1213,30 @@ function canThrowIn(card, tablePairs) {
     return ranksOnTable.has(card.rank);
 }
 
+function ensureBalanceForStake(stake) {
+    if (state.balance < stake) {
+        if (state.balance < 50) {
+            state.balance += 150;
+            updateHUD();
+            saveUserProfileToCloud();
+            showToast('Бонус поддержки: +150 💵 зачислено на счёт!');
+        }
+        if (state.balance < stake) {
+            showToast(`Недостаточно средств! Выберите ставку до ${state.balance} 💵`);
+            return false;
+        }
+    }
+    return true;
+}
+
 function startLocalBotGame() {
+    if (!ensureBalanceForStake(state.botStake)) return;
+
+    // Deduct player's stake
+    state.balance -= state.botStake;
+    updateHUD();
+    saveUserProfileToCloud();
+
     clearTimeout(botTimeout);
     const count = state.botPlayers;
     const deck = createDeck(state.botDeckSize);
@@ -1008,7 +1255,6 @@ function startLocalBotGame() {
         }
     }
 
-    // Lowest trump starts
     let attackerIdx = 0;
     let lowestTrump = 99;
     players.forEach((p, idx) => {
@@ -1020,9 +1266,14 @@ function startLocalBotGame() {
         });
     });
 
+    const { totalBank, payouts } = calculatePayouts(count, state.botStake);
+
     game = {
         mode: 'bot',
         roomId: null,
+        stake: state.botStake,
+        totalBank,
+        payouts,
         deck,
         trumpSuit,
         trumpCard,
@@ -1031,7 +1282,8 @@ function startLocalBotGame() {
         defenderIdx: (attackerIdx + 1) % players.length,
         table: [],
         finishedOrder: [],
-        over: false
+        over: false,
+        settled: false
     };
 
     sortHands();
@@ -1084,33 +1336,66 @@ function checkGameOver() {
     if (!game || game.over) return false;
     if (game.deck.length > 0) return false;
 
+    // Record players who emptied their hands
     game.players.forEach(p => {
         if (p.hand.length === 0 && !game.finishedOrder.includes(p.id)) {
             game.finishedOrder.push(p.id);
         }
     });
 
+    const myId = game.mode === 'online' ? currentUser?.uid : 'me';
     const stillIn = game.players.filter(p => p.hand.length > 0);
-    if (stillIn.length <= 1) {
-        game.over = true;
-        const myId = game.mode === 'online' ? currentUser?.uid : 'me';
-        const loser = stillIn[0];
-        const iWon = !loser || loser.id !== myId;
+    const iFinishedEarly = game.finishedOrder.includes(myId) && game.mode === 'bot' && stillIn.length > 1;
 
-        if (iWon) {
+    if (stillIn.length <= 1 || iFinishedEarly) {
+        game.over = true;
+        // Build final ranking
+        const finalRanking = [...game.finishedOrder];
+        const remainingSorted = stillIn
+            .filter(p => !finalRanking.includes(p.id))
+            .sort((a, b) => a.hand.length - b.hand.length);
+        remainingSorted.forEach(p => finalRanking.push(p.id));
+
+        const { totalBank, payouts } = calculatePayouts(game.players.length, game.stake || 100);
+        const myRankIdx = finalRanking.indexOf(myId);
+        const myPayout = payouts[myRankIdx] || 0;
+        const isDurak = myRankIdx === finalRanking.length - 1;
+
+        if (!game.settled) {
+            game.settled = true;
+            if (myPayout > 0) {
+                state.balance += myPayout;
+                updateHUD();
+                saveUserProfileToCloud();
+            }
+        }
+
+        const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '🃏'];
+        const resultsHtml = `
+            <div class="text-xs text-slate-400 mb-2">Ставка: <b class="text-white">${game.stake || 100} 💵</b> • Банк: <b class="text-emerald-300">${totalBank} 💵</b></div>
+            <div class="rounded-2xl bg-slate-950/80 border border-white/10 p-3 space-y-1.5 text-left text-xs">
+                ${finalRanking.map((pid, idx) => {
+                    const pl = game.players.find(x => x.id === pid);
+                    const amt = payouts[idx] || 0;
+                    const last = idx === finalRanking.length - 1;
+                    const highlight = pid === myId ? 'bg-sky-500/20 border border-sky-400/40 rounded-lg px-2 py-1' : 'px-2 py-0.5';
+                    return `<div class="flex items-center justify-between ${highlight}">
+                        <span class="font-bold text-white">${last ? '🃏' : (medals[idx] || (idx+1)+'.')} ${escapeHtml(pl?.name || 'Игрок')} ${last ? '(Дурак)' : ''}</span>
+                        <span class="${amt > 0 ? 'text-emerald-300 font-black' : 'text-rose-400 font-bold'}">${amt > 0 ? '+' + amt + ' 💵' : '0 💵'}</span>
+                    </div>`;
+                }).join('')}
+            </div>`;
+
+        if (!isDurak) {
             AudioEngine.sfx('win');
-            const reward = 120;
-            state.balance += reward;
-            updateHUD();
-            saveUserProfileToCloud();
-            showModal('🏆', 'Победа!', `Отличная партия! Вы получили +${reward} 💵`, [
-                { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else showScreen('screen-online'); } },
+            showModal('🏆', `${myRankIdx + 1} место!`, resultsHtml, [
+                { label: 'Сыграть ещё', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
                 { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
             ]);
         } else {
             AudioEngine.sfx('take');
-            showModal('🃏', 'Вы остались в дураках!', 'Попробуйте ещё раз — удача обязательно улыбнётся.', [
-                { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else showScreen('screen-online'); } },
+            showModal('🃏', 'Вы остались в дураках!', resultsHtml, [
+                { label: 'Реванш', primary: true, onClick: () => { hideModal(); if (game.mode === 'bot') startLocalBotGame(); else openOnlineLobby(); } },
                 { label: 'В меню', primary: false, onClick: () => { hideModal(); leaveGame(); } }
             ]);
         }
@@ -1223,18 +1508,16 @@ function afterMoveSync() {
 }
 
 /* ============================================================================
-   7. SMART BOT AI
+   8. SMART BOT AI
    ============================================================================ */
 function scheduleBotTurn() {
     clearTimeout(botTimeout);
     if (!game || game.over || game.mode !== 'bot') return;
 
-    const myIdx = myPlayerIndex();
     const undefended = game.table.filter(p => !p.defense);
     const defender = game.players[game.defenderIdx];
     const attacker = game.players[game.attackerIdx];
 
-    // Case 1: Bot is defending and there are undefended cards
     if (defender.isBot && undefended.length > 0) {
         botTimeout = setTimeout(() => {
             if (!game || game.over) return;
@@ -1254,11 +1537,10 @@ function scheduleBotTurn() {
                 showToast(`${defender.name} берёт карты`);
                 playerActionTake();
             }
-        }, 680);
+        }, 650);
         return;
     }
 
-    // Case 2: Bot is attacking (initial attack or throw-in when all defended)
     if (attacker.isBot && undefended.length === 0) {
         botTimeout = setTimeout(() => {
             if (!game || game.over) return;
@@ -1283,21 +1565,21 @@ function scheduleBotTurn() {
                 showToast(`${attacker.name}: Бито!`);
                 playerActionBito();
             }
-        }, 720);
+        }, 700);
         return;
     }
 
-    // Case 3: Player is defending and defender ran out of cards -> auto bito
     if (game.table.length > 0 && undefended.length === 0 && defender.hand.length === 0) {
-        botTimeout = setTimeout(() => playerActionBito(), 650);
+        botTimeout = setTimeout(() => playerActionBito(), 620);
     }
 }
 
 /* ============================================================================
-   8. ONLINE MULTIPLAYER (FIRESTORE ROOMS)
+   9. ONLINE MULTIPLAYER (FIRESTORE ROOMS WITH STAKES)
    ============================================================================ */
 function openOnlineLobby() {
     showScreen('screen-online');
+    updateOnlinePayoutUI();
     if (!db || !currentUser) {
         document.getElementById('online-rooms-list').innerHTML =
             `<div class="text-center text-amber-300 text-sm py-8">Онлайн временно недоступен — попробуйте игру с ботом.</div>`;
@@ -1329,15 +1611,18 @@ function renderOnlineRoomsList(rooms) {
         return;
     }
 
-    list.innerHTML = active.map(r => `
+    list.innerHTML = active.map(r => {
+        const st = r.stake || 100;
+        const maxP = r.maxPlayers || 2;
+        return `
         <div class="p-3 rounded-2xl bg-slate-950/70 border border-white/10 flex items-center justify-between gap-2">
             <div>
                 <div class="font-extrabold text-sm text-white">${escapeHtml(r.hostName || 'Стол')} <span class="text-xs text-sky-400">#${escapeHtml(r.code || '')}</span></div>
-                <div class="text-xs text-slate-400">Игроки: ${(r.players || []).length}/${r.maxPlayers || 2} • Колода ${r.deckSize || 36}</div>
+                <div class="text-xs text-slate-400">Игроки: ${(r.players || []).length}/${maxP} • Колода ${r.deckSize || 36} • <span class="text-emerald-300 font-bold">Ставка ${st} 💵 (Банк ${st * maxP} 💵)</span></div>
             </div>
-            <button data-join="${r.id}" class="btn-join-room px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs text-white">Войти</button>
-        </div>
-    `).join('');
+            <button data-join="${r.id}" class="btn-join-room px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 font-bold text-xs text-white shrink-0">Войти</button>
+        </div>`;
+    }).join('');
 
     list.querySelectorAll('.btn-join-room').forEach(btn => {
         btn.addEventListener('click', () => joinOnlineRoom(btn.dataset.join));
@@ -1346,21 +1631,31 @@ function renderOnlineRoomsList(rooms) {
 
 async function createOnlineRoom() {
     if (!db || !currentUser) { showToast('Нет подключения к серверу'); return; }
+    const maxPlayers = Number(document.getElementById('online-max-players').value) || 2;
+    const deckSize = Number(document.getElementById('online-deck-size').value) || 36;
+    const stake = Number(document.getElementById('online-stake-select').value) || 100;
+    if (!ensureBalanceForStake(stake)) return;
+
     const code = Math.random().toString(36).substring(2, 6).toUpperCase();
     const roomId = `room_${Date.now()}_${code}`;
     const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+
+    state.balance -= stake;
+    updateHUD();
+    saveUserProfileToCloud();
 
     await setDoc(roomRef, {
         code,
         hostId: currentUser.uid,
         hostName: state.nickname,
         status: 'waiting',
-        maxPlayers: 2,
-        deckSize: 36,
+        maxPlayers,
+        deckSize,
+        stake,
         players: [{ id: currentUser.uid, name: state.nickname, isBot: false, hand: [] }],
         updatedAt: Date.now()
     });
-    subscribeToRoom(roomId);
+    subscribeToRoom(roomId, true);
 }
 
 async function joinOnlineRoom(roomId) {
@@ -1369,14 +1664,19 @@ async function joinOnlineRoom(roomId) {
     const snap = await getDoc(roomRef);
     if (!snap.exists()) { showToast('Стол уже закрыт'); return; }
     const data = snap.data();
+    const stake = data.stake || 100;
     const players = data.players || [];
+
     if (!players.some(p => p.id === currentUser.uid)) {
         if (players.length >= (data.maxPlayers || 2)) { showToast('Стол уже заполнен'); return; }
+        if (!ensureBalanceForStake(stake)) return;
+        state.balance -= stake;
+        updateHUD();
+        saveUserProfileToCloud();
         players.push({ id: currentUser.uid, name: state.nickname, isBot: false, hand: [] });
     }
 
     if (players.length >= (data.maxPlayers || 2)) {
-        // Start match immediately
         const deck = createDeck(data.deckSize || 36);
         const trumpCard = deck[0];
         const trumpSuit = trumpCard.suit;
@@ -1398,7 +1698,7 @@ async function joinOnlineRoom(roomId) {
     } else {
         await updateDoc(roomRef, { players, updatedAt: Date.now() });
     }
-    subscribeToRoom(roomId);
+    subscribeToRoom(roomId, false);
 }
 
 async function quickMatchmaking() {
@@ -1411,7 +1711,7 @@ async function quickMatchmaking() {
     }
 }
 
-function subscribeToRoom(roomId) {
+function subscribeToRoom(roomId, isHost) {
     if (activeRoomUnsub) activeRoomUnsub();
     const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
     activeRoomUnsub = onSnapshot(roomRef, (snap) => {
@@ -1422,19 +1722,28 @@ function subscribeToRoom(roomId) {
             return;
         }
         const d = snap.data();
+        const stake = d.stake || 100;
         if (d.status === 'waiting') {
-            showModal('⏳', `Стол #${d.code}`, `Ожидаем соперника... (${(d.players || []).length}/${d.maxPlayers || 2})\nСообщите другу код #${d.code} или свой ник.`, [
-                { label: 'Отменить и выйти', primary: false, onClick: async () => {
+            showModal('⏳', `Стол #${d.code}`, `Ожидаем соперников... (${(d.players || []).length}/${d.maxPlayers || 2})<br>Ставка: <b class="text-emerald-300">${stake} 💵</b> • Банк: <b class="text-emerald-300">${stake * (d.maxPlayers || 2)} 💵</b><br><span class="text-xs text-slate-400">Сообщите другу код #${d.code} или ваш ник</span>`, [
+                { label: 'Отменить и вернуть ставку', primary: false, onClick: async () => {
                     hideModal();
-                    if (d.hostId === currentUser?.uid) await deleteDoc(roomRef).catch(() => {});
+                    state.balance += stake;
+                    updateHUD();
+                    saveUserProfileToCloud();
+                    if (isHost || d.hostId === currentUser?.uid) await deleteDoc(roomRef).catch(() => {});
                     leaveGame();
                 }}
             ]);
         } else if (d.status === 'playing') {
             hideModal();
+            const wasSettled = game?.roomId === roomId ? game.settled : false;
+            const { totalBank, payouts } = calculatePayouts((d.players || []).length, stake);
             game = {
                 mode: 'online',
                 roomId,
+                stake,
+                totalBank,
+                payouts,
                 deck: d.deck || [],
                 trumpSuit: d.trumpSuit,
                 trumpCard: d.trumpCard,
@@ -1443,7 +1752,8 @@ function subscribeToRoom(roomId) {
                 defenderIdx: d.defenderIdx || 1,
                 table: d.table || [],
                 finishedOrder: d.finishedOrder || [],
-                over: false
+                over: false,
+                settled: wasSettled
             };
             sortHands();
             showScreen('screen-game');
@@ -1468,7 +1778,7 @@ async function pushOnlineRoomState() {
 }
 
 /* ============================================================================
-   9. RENDERING GAME TABLE, OPPONENTS, HAND & DRAG-AND-DROP
+   10. RENDERING GAME TABLE, OPPONENTS, HAND & DRAG-AND-DROP
    ============================================================================ */
 function renderGame() {
     if (!game) return;
@@ -1477,6 +1787,9 @@ function renderGame() {
     const isDefender = myIdx === game.defenderIdx;
     const isAttacker = myIdx === game.attackerIdx;
     const undefended = game.table.filter(p => !p.defense);
+
+    // Table Bank Pill
+    document.getElementById('game-bank-pill').textContent = `🏦 Банк: ${game.totalBank || (game.players.length * 100)} 💵`;
 
     // 1. Render Opponents
     const oppRow = document.getElementById('opponents-row');
@@ -1640,7 +1953,6 @@ function attachCardDragAndTap(el, card) {
                 playerPlayCard(card.id);
             }
         } else {
-            // Tap to select or double-tap/play immediately
             if (selectedCardId === card.id) {
                 playerPlayCard(card.id);
             } else {
@@ -1656,7 +1968,7 @@ function attachCardDragAndTap(el, card) {
 }
 
 /* ============================================================================
-   10. SHOP UI & 3D CARD PREVIEW
+   11. SHOP UI & 3D CARD PREVIEW
    ============================================================================ */
 function renderShop() {
     const isFaces = state.shopTab === 'faces';
@@ -1667,7 +1979,6 @@ function renderShop() {
     const items = isFaces ? FACE_COLLECTIONS : BACK_COLLECTIONS;
     if (!items.some(i => i.id === state.shopPreviewId)) state.shopPreviewId = items[0].id;
 
-    // Preview Card
     const previewItem = items.find(i => i.id === state.shopPreviewId) || items[0];
     document.getElementById('shop-preview-title').textContent = previewItem.name;
     const rankMap = { A: 14, K: 13, Q: 12, J: 11, 9: 9 };
@@ -1678,7 +1989,6 @@ function renderShop() {
             : renderCardBackSVG(previewItem.id)
     }</div>`;
 
-    // Items List
     const grid = document.getElementById('shop-items-grid');
     grid.innerHTML = items.map(item => {
         const owned = isFaces ? state.ownedFaces.includes(item.id) : state.ownedBacks.includes(item.id);
@@ -1748,7 +2058,7 @@ function renderShop() {
 }
 
 /* ============================================================================
-   11. NAVIGATION, MODALS, TOASTS & EVENT BINDINGS
+   12. NAVIGATION, MODALS, TOASTS & EVENT BINDINGS
    ============================================================================ */
 function showScreen(id) {
     ['screen-menu', 'screen-bot-setup', 'screen-online', 'screen-shop', 'screen-settings', 'screen-game'].forEach(s => {
@@ -1762,6 +2072,13 @@ function leaveGame() {
     game = null;
     selectedCardId = null;
     showScreen('screen-menu');
+}
+
+function syncMusicTrackButtons() {
+    document.querySelectorAll('.music-track-btn').forEach(x => {
+        const active = x.dataset.track === state.musicTrack;
+        x.className = `music-track-btn py-2 px-2.5 rounded-xl text-xs font-bold ${active ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`;
+    });
 }
 
 function updateHUD() {
@@ -1784,10 +2101,10 @@ function showToast(msg) {
     toastTimer = setTimeout(() => box.classList.add('hidden'), 2400);
 }
 
-function showModal(icon, title, desc, actions) {
+function showModal(icon, title, descHtml, actions) {
     document.getElementById('modal-icon').textContent = icon;
     document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-desc').textContent = desc;
+    document.getElementById('modal-desc').innerHTML = descHtml;
     const actBox = document.getElementById('modal-actions');
     actBox.innerHTML = '';
     actions.forEach(a => {
@@ -1821,9 +2138,9 @@ document.getElementById('btn-quick-music').addEventListener('click', () => {
 });
 
 document.getElementById('btn-menu-online').addEventListener('click', () => { AudioEngine.sfx('click'); openOnlineLobby(); });
-document.getElementById('btn-menu-bot').addEventListener('click', () => { AudioEngine.sfx('click'); showScreen('screen-bot-setup'); });
+document.getElementById('btn-menu-bot').addEventListener('click', () => { AudioEngine.sfx('click'); updateBotPayoutUI(); showScreen('screen-bot-setup'); });
 document.getElementById('btn-menu-shop').addEventListener('click', () => { AudioEngine.sfx('click'); showScreen('screen-shop'); renderShop(); });
-document.getElementById('btn-menu-settings').addEventListener('click', () => { AudioEngine.sfx('click'); showScreen('screen-settings'); });
+document.getElementById('btn-menu-settings').addEventListener('click', () => { AudioEngine.sfx('click'); syncMusicTrackButtons(); showScreen('screen-settings'); });
 document.getElementById('btn-menu-exit').addEventListener('click', () => {
     if (tg) tg.close();
     else showToast('В Telegram эта кнопка закроет мини-приложение');
@@ -1832,22 +2149,32 @@ document.getElementById('btn-menu-exit').addEventListener('click', () => {
 document.querySelectorAll('.btn-back-menu').forEach(b => b.addEventListener('click', () => { AudioEngine.sfx('click'); showScreen('screen-menu'); }));
 document.getElementById('btn-leave-game').addEventListener('click', () => { AudioEngine.sfx('click'); leaveGame(); });
 
-// Bot Setup Pickers
+// Bot Setup Pickers (Players, Deck, Stake)
 document.querySelectorAll('.bot-opt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         state.botPlayers = Number(btn.dataset.val);
         document.querySelectorAll('.bot-opt-btn').forEach(x => x.className = `bot-opt-btn py-2.5 rounded-xl font-black ${x === btn ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`);
+        updateBotPayoutUI();
     });
 });
 document.querySelectorAll('.deck-opt-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         state.botDeckSize = Number(btn.dataset.val);
-        document.querySelectorAll('.deck-opt-btn').forEach(x => x.className = `deck-opt-btn py-2.5 rounded-xl font-bold ${x === btn ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`);
+        document.querySelectorAll('.deck-opt-btn').forEach(x => x.className = `deck-opt-btn py-2.5 rounded-xl font-bold text-sm ${x === btn ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`);
+    });
+});
+document.querySelectorAll('.stake-opt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        state.botStake = Number(btn.dataset.val);
+        document.querySelectorAll('.stake-opt-btn').forEach(x => x.className = `stake-opt-btn py-2 rounded-xl font-black text-xs ${x === btn ? 'bg-emerald-600 text-white' : 'bg-slate-800 text-slate-300'}`);
+        updateBotPayoutUI();
     });
 });
 document.getElementById('btn-start-bot-game').addEventListener('click', () => { AudioEngine.sfx('click'); startLocalBotGame(); });
 
-// Online Buttons
+// Online Config & Buttons
+document.getElementById('online-max-players').addEventListener('change', updateOnlinePayoutUI);
+document.getElementById('online-stake-select').addEventListener('change', updateOnlinePayoutUI);
 document.getElementById('btn-online-quick').addEventListener('click', quickMatchmaking);
 document.getElementById('btn-online-create').addEventListener('click', createOnlineRoom);
 document.getElementById('btn-room-search').addEventListener('click', () => openOnlineLobby());
@@ -1877,7 +2204,7 @@ document.getElementById('toggle-music').addEventListener('click', () => {
 document.querySelectorAll('.music-track-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         state.musicTrack = btn.dataset.track;
-        document.querySelectorAll('.music-track-btn').forEach(x => x.className = `music-track-btn py-2 px-2.5 rounded-xl text-xs font-bold ${x === btn ? 'bg-sky-600 text-white' : 'bg-slate-800 text-slate-300'}`);
+        syncMusicTrackButtons();
         if (state.musicEnabled) AudioEngine.startMusic();
         saveUserProfileToCloud();
         showToast(`Музыка: ${btn.textContent.trim()}`);
@@ -1887,6 +2214,9 @@ document.querySelectorAll('.music-track-btn').forEach(btn => {
 // Boot App
 window.addEventListener('load', () => {
     updateHUD();
+    updateBotPayoutUI();
+    updateOnlinePayoutUI();
+    syncMusicTrackButtons();
     initFirebase();
 });
 </script>
